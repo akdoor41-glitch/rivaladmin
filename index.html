@@ -1078,6 +1078,38 @@
         <span class="input-group-text bg-transparent"><i class="bi bi-search"></i></span>
         <input type="search" id="tournamentSearchInput" class="form-control" placeholder="Search tournaments by name...">
     </div>
+<div style="display:flex; gap:12px; align-items:center; margin:8px 0; max-width:720px;">
+  <div style="display:flex; gap:8px; align-items:center;">
+    <label style="color:var(--text-secondary); margin-right:6px;">Filter:</label>
+    <div id="tournamentStatusFilters" style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+      <label class="form-check form-check-inline" style="margin-bottom:0;">
+        <input class="form-check-input" type="radio" name="tournamentFilter" value="all" id="filter_all" checked>
+        <span style="margin-left:6px; color:var(--text-primary);">All</span>
+      </label>
+      <label class="form-check form-check-inline" style="margin-bottom:0;">
+        <input class="form-check-input" type="radio" name="tournamentFilter" value="upcoming" id="filter_upcoming">
+        <span style="margin-left:6px; color:var(--text-primary);">Upcoming</span>
+      </label>
+      <label class="form-check form-check-inline" style="margin-bottom:0;">
+        <input class="form-check-input" type="radio" name="tournamentFilter" value="ongoing" id="filter_ongoing">
+        <span style="margin-left:6px; color:var(--text-primary);">Ongoing</span>
+      </label>
+      <label class="form-check form-check-inline" style="margin-bottom:0;">
+        <input class="form-check-input" type="radio" name="tournamentFilter" value="completed" id="filter_completed">
+        <span style="margin-left:6px; color:var(--text-primary);">Completed</span>
+      </label>
+      <label class="form-check form-check-inline" style="margin-bottom:0;">
+        <input class="form-check-input" type="radio" name="tournamentFilter" value="result" id="filter_result">
+        <span style="margin-left:6px; color:var(--text-primary);">Result</span>
+      </label>
+      <label class="form-check form-check-inline" style="margin-bottom:0;">
+        <input class="form-check-input" type="radio" name="tournamentFilter" value="cancelled" id="filter_cancelled">
+        <span style="margin-left:6px; color:var(--text-primary);">Cancelled</span>
+      </label>
+    </div>
+  </div>
+</div>
+
 </div>
 
                  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
@@ -1699,15 +1731,16 @@
                     <div class="table-responsive">
                         <table class="table table-dark table-sm table-hover">
                             <thead>
-                                <tr>
-                                    <th>Registered By</th>
-                                    <th>Player 1 (Captain)</th>
-                                    <th>Player 2</th>
-                                    <th>Player 3</th>
-                                    <th>Player 4</th>
-                                    <th>Joined At</th>
-                                </tr>
-                            </thead>
+<tr>
+<th>Registered By</th>
+<th>Player 1 (Captain)</th>
+<th>Team Name</th>
+<th>Player 2</th>
+<th>Player 3</th>
+<th>Player 4</th>
+<th>Joined At</th>
+</tr>
+</thead>
                             <tbody id="registeredPlayersTableBody"></tbody>
                         </table>
                     </div>
@@ -2452,7 +2485,11 @@
                                             <i class="bi bi-trash-fill me-1"></i> Delete
                                         </button>
                                     </div>
-                                </div>
+                                
+                                        <button class="btn btn-sm btn-outline-warning btn-duplicate-tournament" data-id="${sanitizeHTML(tournamentId)}" title="Duplicate Tournament">
+                                            <i class="bi bi-files me-1"></i> Duplicate
+                                        </button>
+    </div>
                             `;
                         } else {
                             console.warn("Skipping invalid tournament data:", tournamentId, t);
@@ -3284,7 +3321,32 @@
 
         async function deleteGame(gameId) { if (!db || !gameId || !isDesignatedAdmin(currentAdminUser)) return; if (!confirm(`DELETE Game ID: ${gameId}? Removes DB entry. Image on ImgBB NOT deleted. OK?`)) return; showLoader(true); const statusEl = elements.gamesStatus; clearStatus(statusEl); try { await remove(ref(db, `games/${gameId}`)); console.log("Game deleted from DB:", gameId); delete gameDataCache[gameId]; showStatus(statusEl, "Game data deleted.", "success", 3000); loadGames(); loadDashboardStats(); } catch (error) { console.error("Error deleting game:", error); showStatus(statusEl, `Error deleting game: ${error.message}. Check Rules.`, "danger", false); } finally { showLoader(false); } }
         async function deletePromotion(promoId) { if (!db || !promoId || !isDesignatedAdmin(currentAdminUser)) return; if (!confirm(`DELETE Promotion ID: ${promoId}? Removes DB entry. Image on ImgBB NOT deleted. OK?`)) return; showLoader(true); const statusEl = elements.promotionsStatus; clearStatus(statusEl); try { await remove(ref(db, `promotions/${promoId}`)); console.log("Promotion deleted from DB:", promoId); showStatus(statusEl, "Promotion data deleted.", "success", 3000); loadPromotions(); loadDashboardStats(); } catch (error) { console.error("Error deleting promotion:", error); showStatus(statusEl, `Error deleting promotion: ${error.message}. Check Rules.`, "danger", false); } finally { showLoader(false); } }
-        async function deleteTournament(tournamentId) { if (!db || !tournamentId || !isDesignatedAdmin(currentAdminUser)) return; if (!confirm(`DELETE Tournament ID: ${tournamentId}? Cannot be undone.`)) return; showLoader(true); const statusEl = elements.tournamentsStatus; clearStatus(statusEl); try { await remove(ref(db, `tournaments/${tournamentId}`)); console.log("Tournament deleted:", tournamentId); showStatus(statusEl, "Tournament deleted.", "success", 3000); loadTournaments(); loadDashboardStats(); } catch (error) { console.error("Error deleting tournament:", error); showStatus(statusEl, `Error: ${error.message}. Check Rules.`, "danger", false); } finally { showLoader(false); } }
+        
+async function duplicateTournament(tournamentId){
+    if (!db || !tournamentId || !isDesignatedAdmin(currentAdminUser)) return;
+    showLoader(true);
+    try{
+        const snap = await get(ref(db, `tournaments/${tournamentId}`));
+        if(!snap.exists()) return;
+        const data = snap.val();
+        delete data.registeredPlayers;
+        delete data.playerResults;
+        data.status = "upcoming";
+        data.createdAt = serverTimestamp();
+        const newRef = push(ref(db,"tournaments"));
+        await set(newRef,data);
+        showStatus(elements.tournamentsStatus,"Tournament duplicated!","success",3000);
+        loadTournaments();
+    }catch(e){ console.error(e); }
+    finally{ showLoader(false); }
+}
+document.addEventListener("click",(e)=>{
+    const btn=e.target.closest(".btn-duplicate-tournament");
+    if(btn){ duplicateTournament(btn.dataset.id); }
+});
+
+
+async function deleteTournament(tournamentId) { if (!db || !tournamentId || !isDesignatedAdmin(currentAdminUser)) return; if (!confirm(`DELETE Tournament ID: ${tournamentId}? Cannot be undone.`)) return; showLoader(true); const statusEl = elements.tournamentsStatus; clearStatus(statusEl); try { await remove(ref(db, `tournaments/${tournamentId}`)); console.log("Tournament deleted:", tournamentId); showStatus(statusEl, "Tournament deleted.", "success", 3000); loadTournaments(); loadDashboardStats(); } catch (error) { console.error("Error deleting tournament:", error); showStatus(statusEl, `Error: ${error.message}. Check Rules.`, "danger", false); } finally { showLoader(false); } }
 
         async function saveNewUser() {
             if (!auth || !db || !isDesignatedAdmin(currentAdminUser)) return;
@@ -4194,7 +4256,7 @@
 
             elements.registeredPlayersModalTitle.textContent = "Registered Players";
             elements.registeredPlayersTournamentName.textContent = tournamentName || "N/A";
-            elements.registeredPlayersTableBody.innerHTML = `<tr><td colspan="6" class="text-center p-3"><div class="spinner-border spinner-border-sm"></div></td></tr>`;
+            elements.registeredPlayersTableBody.innerHTML = `<tr><td colspan="14" class="text-center p-3"><div class="spinner-border spinner-border-sm"></div></td></tr>`;
             clearStatus(elements.registeredPlayersStatus);
             currentPlayersListForPdf = [];
             getModalInstance(elements.registeredPlayersModalEl)?.show();
@@ -4202,7 +4264,7 @@
                 const playersRef = ref(db, `tournaments/${tournamentId}/registeredPlayers`);
                 const snapshot = await get(playersRef);
                 if (!snapshot.exists()) {
-                    elements.registeredPlayersTableBody.innerHTML = `<tr><td colspan="6" class="text-center p-3 text-muted">No players registered.</td></tr>`;
+                    elements.registeredPlayersTableBody.innerHTML = `<tr><td colspan="14" class="text-center p-3 text-muted">No players registered.</td></tr>`;
                     return;
                 }
                 const registeredData = snapshot.val();
@@ -4221,52 +4283,63 @@
 
                 const results = await Promise.all(promises);
 
-                results.forEach(res => {
+                
+                // fetch tournament mode to know if this is a Squad match
+                const _tRef = ref(db, `tournaments/${tournamentId}`);
+                const _tSnap = await get(_tRef);
+                const tournamentMode = _tSnap.exists() ? (_tSnap.val().mode || 'Solo') : 'Solo';
+results.forEach(res => {
                     const { user, joinedAt, username, gameUid } = res;
                     const teammates = res.teammates || [];
 
-                    const player1Html = `<div>${sanitizeHTML(username || 'N/A')}</div><small class="text-muted">${sanitizeHTML(gameUid || 'N/A')}</small>`;
-                    
+                    let teamNameForDisplay = '';
+                    if (tournamentMode === 'Squad' && teammates[3] && teammates[3].username) {
+                        teamNameForDisplay = sanitizeHTML(teammates[3].username);
+                    }
+                    const player1Html = '<div>' + sanitizeHTML(username || 'N/A') + '</div>' +
+                        '<small class="text-muted">' + sanitizeHTML(gameUid || 'N/A') + '</small>' +
+                        (teamNameForDisplay ? ('<div class="text-muted small mt-1">' + teamNameForDisplay + '</div>') : '');
+// Build teammates HTML in desired order: Team Name (teammates[3]) immediately after Player1, then Player2..4
                     let teammatesHtml = '';
-                    for (let i = 0; i < 3; i++) {
-                        const teammate = teammates[i];
+                    const order = [3, 0, 1, 2]; // indices: 3->Team Name, 0->Player2, 1->Player3, 2->Player4
+                    order.forEach(function(idx) {
+                        const teammate = teammates[idx];
                         if (teammate) {
-                            teammatesHtml += `<td><div>${sanitizeHTML(teammate.username || 'N/A')}</div><small class="text-muted">${sanitizeHTML(teammate.uid || 'N/A')}</small></td>`;
+                            teammatesHtml += '<td><div>' + sanitizeHTML(teammate.username || 'N/A') + '</div><small class="text-muted">' + sanitizeHTML(teammate.uid || 'N/A') + '</small></td>';
                         } else {
                             teammatesHtml += '<td><small class="text-muted">N/A</small></td>';
                         }
-                    }
+                    });
 
-                    tableHtml += `
-                        <tr>
-                            <td>
-                                <div>${sanitizeHTML(user.displayName)}</div>
-                                <small class="text-muted">${sanitizeHTML(user.email)}</small>
-                            </td>
-                            <td>${player1Html}</td>
-                            ${teammatesHtml}
-                            <td>${formatDate(joinedAt)}</td>
-                        </tr>`;
+                    tableHtml += ''
+                        + '<tr>'
+                        + '<td><div>' + sanitizeHTML(user.displayName || 'N/A') + '</div><small class="text-muted">' + sanitizeHTML(user.email || 'N/A') + '</small></td>'
+                        + '<td>' + player1Html + '</td>'
+                        + teammatesHtml
+                        + '<td>' + formatDate(joinedAt) + '</td>'
+                        + '</tr>';
 
                     currentPlayersListForPdf.push({
-                        registeredBy: `${user.displayName} (${user.email || 'N/A'})`,
-                        p1_username: username || 'N/A',
-                        p1_uid: gameUid || 'N/A',
-                        p2_username: teammates[0]?.username || 'N/A',
-                        p2_uid: teammates[0]?.uid || 'N/A',
-                        p3_username: teammates[1]?.username || 'N/A',
-                        p3_uid: teammates[1]?.uid || 'N/A',
-                        p4_username: teammates[2]?.username || 'N/A',
-                        p4_uid: teammates[2]?.uid || 'N/A',
-                        joinedAt: formatDate(joinedAt)
-                    });
+    registeredBy: (user.displayName ? (user.displayName + ' (' + (user.email || 'N/A') + ')') : 'N/A'),
+    p1_username: username || 'N/A',
+    p1_uid: gameUid || 'N/A',
+    p5_username: teammates[3]?.username || 'N/A',
+    p5_uid: teammates[3]?.uid || 'N/A',
+    p2_username: teammates[0]?.username || 'N/A',
+    p2_uid: teammates[0]?.uid || 'N/A',
+    p5_username: teammates[1]?.username || 'N/A',
+    p5_uid: teammates[1]?.uid || 'N/A',
+    p4_username: teammates[3]?.username || 'N/A',
+    p4_uid: teammates[3]?.uid || 'N/A',
+    joinedAt: formatDate(joinedAt)
+});
                 });
 
-                elements.registeredPlayersTableBody.innerHTML = tableHtml || `<tr><td colspan="6" class="text-center p-3 text-muted">Could not load player details.</td></tr>`;
+                elements.registeredPlayersTableBody.innerHTML = tableHtml || `<tr><td colspan="14" class="text-center p-3 text-muted">Could not load player details.</td></tr>`;
                 elements.registeredPlayersModalTitle.textContent = `Registered Players (${results.length})`;
             } catch (error) {
                 console.error("Error loading registered players:", error);
-                elements.registeredPlayersTableBody.innerHTML = `<tr><td colspan="6" class="text-center p-3 text-danger">Error: ${error.message}.</td></tr>`;
+                elements.registeredPlayersTableBody.innerHTML = `<tr><td colspan="14" class="text-center p-3 text-danger">Error: ${error.message}.</td></tr>`;
                 showStatus(elements.registeredPlayersStatus, `Error: ${error.message}`, 'danger');
             }
         }
@@ -4365,15 +4438,17 @@
             doc.setTextColor(100);
             doc.text(`Generated on: ${new Date().toLocaleString()}`, logoBase64 ? 40 : 15, 24);
 
-            const tableColumn = ["Registered By", "P1 User", "P1 UID", "P2 User", "P2 UID", "P3 User", "P3 UID", "P4 User", "P4 UID", "Joined At"];
+            const tableColumn = ["Registered By", "P1 User", "P1 UID", "P5 User", "P5 UID", "P2 User", "P2 UID", "P3 User", "P3 UID", "P4 User", "P4 UID", "Joined At"];
             const tableRows = currentPlayersListForPdf.map(player => [
                 player.registeredBy,
                 player.p1_username,
                 player.p1_uid,
+                player.p5_username || "N/A",
+                player.p5_uid || "N/A",
                 player.p2_username,
                 player.p2_uid,
-                player.p3_username,
-                player.p3_uid,
+                player.p5_username,
+                player.p5_uid,
                 player.p4_username,
                 player.p4_uid,
                 player.joinedAt
@@ -4624,18 +4699,39 @@
                         const user = uSnap.val();
                         fullUserDataCache[uid] = { uid, ...user };
 
-                        tableHtml += `
-                            <tr data-uid="${uid}" data-per-kill-prize="${perKillPrize}">
-                                <td>${sanitizeHTML(user.displayName || 'N/A')}</td>
-                                <td><small class="text-muted">${sanitizeHTML(playerRegData.gameUid || user.gameUid || 'N/A')}</small></td>
-                                <td>${formatCurrency(perKillPrize)}</td>
-                                <td><input type="number" class="form-control kills-input" min="0" value="0" ${tournament.winningsCredited ? 'disabled' : ''}></td>
-                                <td><input type="number" class="form-control extra-amount-input" min="0" value="0" step="any" ${tournament.winningsCredited ? 'disabled' : ''}></td>
-                                <td><input type="number" class="form-control rank-input" min="1" ${tournament.winningsCredited ? 'disabled' : ''}></td>
-                                <td class="calculated-prize">${formatCurrency(0)}</td>
-                            </tr>`;
+                        // Determine what to show under Game UID column:
+                        // - If tournament supports squads (maxPlayers >= 5), show Player5's name (teammates[3]) if present.
+                        // - Otherwise (solo/duo), show player1/game UID as before.
+                        let displayUnderGameUid = '';
+                        try {
+                            if (tournament && Number(tournament.maxPlayers) >= 5) {
+                                const team = playerRegData.teammates || [];
+                                const p5 = team[3]; // teammate index 3 corresponds to Player5
+                                if (p5 && (p5.username || p5.uid)) {
+                                    displayUnderGameUid = sanitizeHTML(p5.username || p5.uid);
+                                } else {
+                                    // fallback to original sources
+                                    displayUnderGameUid = sanitizeHTML(playerRegData.username || playerRegData.player1Name || playerRegData.ingameName || playerRegData.playerName || user.displayName || playerRegData.gameUid || user.gameUid || 'N/A');
+                                }
+                            } else {
+                                displayUnderGameUid = sanitizeHTML(playerRegData.player1Name || playerRegData.ingameName || playerRegData.playerName || user.displayName || playerRegData.gameUid || user.gameUid || 'N/A');
+                            }
+                        } catch (e) {
+                            displayUnderGameUid = sanitizeHTML(playerRegData.player1Name || playerRegData.ingameName || playerRegData.playerName || user.displayName || playerRegData.gameUid || user.gameUid || 'N/A');
+                        }
+
+                        tableHtml += ''
+                            + '<tr data-uid="'+uid+'" data-per-kill-prize="'+perKillPrize+'">'
+                            + '<td>' + sanitizeHTML(user.displayName || 'N/A') + '</td>'
+                            + '<td><small class="text-muted">' + displayUnderGameUid + '</small></td>'
+                            + '<td>' + formatCurrency(perKillPrize) + '</td>'
+                            + '<td><input type="number" class="form-control kills-input" min="0" value="0" ' + (tournament.winningsCredited ? 'disabled' : '') + '></td>'
+                            + '<td><input type="number" class="form-control extra-amount-input" min="0" value="0" step="any" ' + (tournament.winningsCredited ? 'disabled' : '') + '></td>'
+                            + '<td><input type="number" class="form-control rank-input" min="1" ' + (tournament.winningsCredited ? 'disabled' : '') + '></td>'
+                            + '<td class="calculated-prize">' + formatCurrency(0) + '</td>'
+                            + '</tr>';
                     } else {
-                        tableHtml += `<tr><td><span class="text-danger">User Deleted (ID: ${uid})</span></td><td colspan="6"></td></tr>`;
+                        tableHtml += `<tr><td><span class="text-danger">User Deleted (ID: ${uid})</span></td><td colspan="14"></td></tr>`;
                     }
                 });
                 tableBody.innerHTML = tableHtml;
@@ -5817,5 +5913,69 @@
       </div>
     </section>
     
+
+<script>
+(function(){
+  function normalizeStatus(text){
+    if(!text) return 'unknown';
+    const t = text.toString().toLowerCase().trim();
+    if(t.includes('ongoing') || t.includes('open') || t.includes('started') || t.includes('running')) return 'ongoing';
+    if(t.includes('upcoming') || t.includes('scheduled')) return 'upcoming';
+    if(t.includes('completed') || t.includes('ended') || t.includes('finished') || t.includes('closed')) return 'completed';
+    if(t.includes('result') || t.includes('results')) return 'result';
+    if(t.includes('cancel') || t.includes('cancelled') || t.includes('canceled')) return 'cancelled';
+    return 'unknown';
+  }
+
+  function applyTournamentCardFilter(filterVal){
+    const container = document.getElementById('tournaments-card-container') || document.querySelector('.tournaments-grid') || document.getElementById('tournamentsList');
+    if(!container) return;
+    const cards = Array.from(container.children);
+    cards.forEach(card => {
+      try {
+        let statusText = '';
+        const badge = card.querySelector('.status-badge') || card.querySelector('.badge') || card.querySelector('[data-status]');
+        if(badge) statusText = badge.textContent || badge.innerText || '';
+        if(!statusText) statusText = card.textContent || '';
+        const status = normalizeStatus(statusText);
+        let show = true;
+        if(filterVal === 'all') show = true;
+        else show = (status === filterVal);
+        if(status === 'unknown' && filterVal !== 'all') show = false;
+        card.style.display = show ? '' : 'none';
+      } catch(e){
+        console.error('Filter error', e);
+      }
+    });
+  }
+
+  function setupFilters(){
+    const radios = Array.from(document.querySelectorAll('#tournamentStatusFilters input[type="radio"][name="tournamentFilter"]'));
+    radios.forEach(r => {
+      r.addEventListener('change', function(){
+        const val = this.value;
+        setTimeout(()=>applyTournamentCardFilter(val), 80);
+      });
+    });
+    const checked = document.querySelector('#tournamentStatusFilters input[type="radio"][name="tournamentFilter"]:checked');
+    if(checked) applyTournamentCardFilter(checked.value);
+  }
+
+  const container = document.getElementById('tournaments-card-container') || document.querySelector('.tournaments-grid') || document.getElementById('tournamentsList');
+  if(container){
+    const observer = new MutationObserver(function(muts){
+      const checked = document.querySelector('#tournamentStatusFilters input[type="radio"][name="tournamentFilter"]:checked');
+      if(checked) {
+        clearTimeout(window.__tFilterTimeout);
+        window.__tFilterTimeout = setTimeout(()=>applyTournamentCardFilter(checked.value), 120);
+      }
+    });
+    observer.observe(container, { childList: true, subtree: true });
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setupFilters);
+  else setupFilters();
+})();
+</script>
 </body>
 </html>
