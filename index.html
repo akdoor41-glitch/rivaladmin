@@ -122,357 +122,6 @@
             font-size: 1.1rem;
         }
 
-        .main-content { padding: 20px; }
-        .section { display: none; animation: fadeIn 0.5s; }
-        .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to: { opacity: 1; transform: translateY(0); } }
-        .section-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 20px; }
-
-        /* ========= NEW LOGIN & SIGNUP STYLES START ========= */
-.auth-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: calc(100vh - 60px);
-    padding: 2rem 1rem;
-}
-.auth-container {
-    max-width: 420px;
-    width: 100%;
-    background-color: var(--secondary-bg);
-    padding: 2.5rem;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    animation: fadeIn 0.6s ease-out;
-}
-.auth-header {
-    text-align: center;
-    margin-bottom: 2.5rem;
-}
-.auth-title {
-    font-size: 1.75rem;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-.auth-subtitle {
-    font-size: 0.95rem;
-    color: var(--text-secondary);
-}
-.auth-form .form-label {
-    font-weight: 500;
-    color: var(--text-secondary);
-    margin-bottom: 0.5rem;
-}
-.auth-form .input-group {
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    background-color: var(--primary-bg);
-    display: flex;
-    align-items: center;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-.auth-form .input-group > .form-control,
-.auth-form .input-group > .input-group-text {
-    border: none;
-    background-color: transparent;
-}
-.auth-form .input-group > .form-control {
-    color: var(--text-primary);
-    padding: 0.8rem 1rem 0.8rem 0.25rem;
-    height: auto;
-    box-shadow: none;
-    flex: 1;
-}
-.auth-form .input-group:focus-within {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 0.2rem rgba(250, 204, 21, 0.25);
-}
-.auth-form .input-group > .form-control::placeholder {
-    color: var(--text-secondary);
-    opacity: 0.7;
-}
-.auth-form .input-group-text {
-    padding: 0 0.6rem;
-}
-.auth-form .input-group-text:last-child {
-    cursor: pointer;
-}
-.auth-form .input-group-text i {
-    color: var(--text-secondary);
-    transition: color 0.2s ease;
-}
-.auth-form .input-group-text:hover i {
-    color: var(--text-primary);
-}
-.auth-submit-btn {
-    padding: 0.8rem;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-.auth-submit-btn.is-loading {
-    color: transparent !important;
-}
-.auth-submit-btn .spinner-border {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -0.75rem;
-    margin-left: -0.75rem;
-    width: 1.5rem;
-    height: 1.5rem;
-    color: white;
-    display: none;
-}
-.auth-submit-btn.is-loading .spinner-border {
-    display: block;
-}
-/* ========= NEW LOGIN & SIGNUP STYLES END ========= */
-
-        #adminLoader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 9999; display: none; }
-        .spinner-border { color: var(--accent-color); }
-        .card { background-color: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-primary); margin-bottom: 1.5rem; }
-        .card-title { color: var(--text-primary); }
-        .table-responsive { overflow-x: auto; }
-        .table { background-color: var(--card-bg); color: var(--text-primary); border-color: var(--border-color); margin-bottom: 0;}
-        .table > :not(caption) > * > * { background-color: transparent !important; border-bottom-color: var(--border-color); }
-        .table th { color: var(--text-secondary); font-weight: 500; white-space: nowrap; padding: 0.8rem 1rem;}
-        .table td { vertical-align: middle; white-space: nowrap; padding: 0.7rem 1rem;}
-        .table td .text-muted { color: var(--text-muted-custom) !important; }
-        .table td small.text-muted { font-size: 0.85em; }
-        .table-hover > tbody > tr:hover > * { background-color: rgba(255, 255, 255, 0.03) !important; color: var(--text-primary); }
-        .action-buttons button, .action-buttons a, .action-buttons select { margin-right: 5px; margin-bottom: 5px; }
-        .modal-content { background-color: var(--secondary-bg); color: var(--text-primary); border: 1px solid var(--border-color); }
-        .modal-header { border-bottom-color: var(--border-color); }
-        .modal-footer { border-top-color: var(--border-color); }
-        .modal-body label { margin-bottom: 0.5rem; font-weight: 500; color: var(--text-secondary); }
-        .form-control, .form-select { background-color: var(--primary-bg); color: var(--text-primary); border: 1px solid var(--border-color); }
-        .form-control:focus, .form-select:focus { background-color: var(--primary-bg); color: var(--text-primary); border-color: var(--accent-color); box-shadow: 0 0 0 0.2rem rgba(250, 204, 21, 0.25); }
-        .form-control::placeholder { color: var(--text-secondary); opacity: 0.7; }
-        .form-control:disabled, .form-select:disabled { background-color: #2d3748; opacity: 0.7; }
-        .form-control[type="file"] { background-color: var(--primary-bg); color: var(--text-secondary); border: 1px solid var(--border-color); }
-        .imgbb-upload-status { display: none; margin-top: 5px; font-size: 0.85rem; color: var(--text-secondary);}
-        .table img.preview-img { max-width: 60px; height: 40px; object-fit: cover; border-radius: 4px; cursor: pointer; border: 1px solid var(--border-color); }
-        .text-bg-primary { background-color: #3B82F6 !important; }
-        .text-bg-info { background-color: #0ea5e9 !important; }
-        .text-bg-warning { background-color: #f59e0b !important; }
-        .text-bg-success { background-color: #10b981 !important; }
-        .text-bg-danger { background-color: #ef4444 !important; }
-        .text-bg-secondary { background-color: #6b7280 !important; }
-        .text-bg-dark { background-color: #374151 !important; }
-        .nav-tabs .nav-link { color: var(--text-secondary); border-color: var(--border-color); border-bottom-color: transparent; margin-bottom: -1px;}
-        .nav-tabs .nav-link.active { color: var(--accent-color); background-color: var(--card-bg); border-color: var(--border-color); border-bottom-color: var(--card-bg); font-weight: 600; }
-        .nav-tabs { border-bottom-color: var(--border-color); }
-        textarea.form-control { min-height: 120px; }
-        .copy-btn { cursor: pointer; opacity: 0.6; transition: opacity: 0.2s; }
-        .copy-btn:hover { opacity: 1; }
-        .status-badge { font-size: 0.8em; padding: 0.3em 0.6em; border-radius: 0.25rem; }
-        .loading-placeholder td > div { background-color: var(--placeholder-bg); border-radius: 4px; min-height: 1.2em; animation: placeholder-glow 2s ease-in-out infinite; }
-        @keyframes placeholder-glow { 0% { background-color: var(--placeholder-bg); } 50% { background-color: rgba(100, 116, 139, 0.2); } 100% { background-color: var(--placeholder-bg); } }
-
-        /* Dashboard Styles */
-        .dashboard-card { background-color: var(--card-bg); background-image: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0) 50%); border: 1px solid var(--border-color); border-left-width: 5px; border-radius: 8px; padding: 1.25rem; position: relative; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15); transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
-        .dashboard-card:hover { transform: translateY(-5px); }
-        .dashboard-card.card-users:hover { box-shadow: 0 8px 25px rgba(96, 165, 250, 0.2), 0 0 15px rgba(96, 165, 250, 0.15); }
-        .dashboard-card.card-tournaments:hover { box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2), 0 0 15px rgba(16, 185, 129, 0.15); }
-        .dashboard-card.card-pending-wd:hover { box-shadow: 0 8px 25px rgba(245, 158, 11, 0.2), 0 0 15px rgba(245, 158, 11, 0.15); }
-        .dashboard-card.card-completed-wd:hover { box-shadow: 0 8px 25px rgba(59, 130, 246, 0.2), 0 0 15px rgba(59, 130, 246, 0.15); }
-        .dashboard-card.card-rejected-wd:hover { box-shadow: 0 8px 25px rgba(239, 68, 68, 0.2), 0 0 15px rgba(239, 68, 68, 0.15); }
-        .dashboard-card.card-secondary:hover { box-shadow: 0 8px 25px rgba(100, 116, 139, 0.2), 0 0 15px rgba(100, 116, 139, 0.15); }
-        .dashboard-card .card-content { position: relative; z-index: 2; }
-        .dashboard-card .card-title { font-size: 0.95rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 0.5rem; }
-        .dashboard-card .card-stat-number { font-size: 2.25rem; font-weight: 700; color: var(--text-primary); line-height: 1.1; }
-        .dashboard-card .card-icon { position: absolute; right: -20px; bottom: -20px; font-size: 6rem; color: var(--text-primary); opacity: 0.07; transform: rotate(-15deg); transition: transform 0.4s ease, opacity 0.4s ease; }
-        .dashboard-card:hover .card-icon { transform: rotate(0deg) scale(1.1); opacity: 0.1; }
-        .dashboard-card.card-users { border-left-color: var(--info-color); }
-        .dashboard-card.card-tournaments { border-left-color: var(--success-color); }
-        .dashboard-card.card-pending-wd { border-left-color: var(--warning-color); }
-        .dashboard-card.card-completed-wd { border-left-color: var(--primary-button-bg); }
-        .dashboard-card.card-rejected-wd { border-left-color: var(--danger-color); }
-        .dashboard-card.card-secondary { border-left-color: var(--text-muted-custom); }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        #dashboard-section .row > [class*="col-"] { animation: fadeInUp 0.5s ease-out forwards; animation-delay: calc(var(--order, 0) * 100ms); opacity: 0; }
-
-        /* Users Section Styles */
-        #users-section-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
-        .user-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease; animation: fadeIn 0.5s; position: relative; cursor: pointer; }
-        .user-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.25); }
-        @keyframes rgb-border-anim { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        .user-card.selected::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #ee82ee); background-size: 400% 100%; animation: rgb-border-anim 4s linear infinite; border-top-left-radius: 8px; border-top-right-radius: 8px; }
-        .user-card-header { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border-color); }
-        .user-card-header .user-name { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin: 0; }
-        .user-card-header .user-email { font-size: 0.85rem; color: var(--text-secondary); word-break: break-all; }
-        .user-card-body { padding: 1.25rem; flex-grow: 1; display: flex; flex-direction: column; gap: 0.75rem; }
-        .user-card-info-row { display: flex; justify-content: space-between; align-items: center; }
-        .user-card-info-row .label { font-size: 0.9rem; color: var(--text-secondary); }
-        .user-card-info-row .value { font-weight: 500; color: var(--text-primary); }
-        .user-card-info-row .value.balance { font-size: 1.2rem; font-weight: 700; color: var(--accent-color); }
-        .user-card-footer { padding: 0.75rem 1.25rem; background-color: rgba(0,0,0,0.2); border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 0.5rem; }
-        .user-card-footer .btn { transition: transform 0.1s ease; }
-        .user-card-footer .btn:active { transform: scale(0.95); }
-        .user-search-bar { position: relative; }
-        .user-search-bar .form-control { padding-left: 2.5rem; }
-        .user-search-bar .bi-search { position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
-
-        /* ======== NEW TOURNAMENTS SECTION STYLES START ======== */
-        #tournaments-card-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 1.5rem;
-        }
-        .tournament-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: fadeIn 0.5s ease-out;
-        }
-        .tournament-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
-        }
-        .tournament-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #ee82ee);
-            background-size: 400% 100%;
-            animation: rgb-border-anim 5s linear infinite;
-            border-top-left-radius: 12px;
-            border-top-right-radius: 12px;
-        }
-        .tournament-card-header {
-            padding: 1rem 1.25rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .tournament-card-header h5 {
-            font-size: 1.15rem;
-            font-weight: 600;
-            margin: 0;
-            color: var(--text-primary);
-        }
-        .tournament-card-header p {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin: 0;
-        }
-        .tournament-card-body {
-            padding: 1.25rem;
-            flex-grow: 1;
-        }
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-        .info-item {
-            display: flex;
-            flex-direction: column;
-        }
-        .info-label {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.25rem;
-            text-transform: uppercase;
-        }
-        .info-value {
-            f        .header-logo { width: 35px; height: 35px; border-radius: 50%; background-color: #fff; object-fit: cover; border: 1px solid var(--accent-color);}
-        .header-title { font-size: 1rem; font-weight: 600; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .header-right { display: flex; align-items: center; gap: 15px; flex-shrink: 0; }
-        .admin-email-header { font-size: 0.8rem; color: var(--text-secondary); display: none; }
-        @media (min-width: 576px) { .admin-email-header { display: inline; } }
-        
-        /* --- New Sidebar Styles --- */
-        .new-sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 260px;
-            height: 100vh;
-            background-color: var(--sidebar-bg);
-            color: var(--link-color);
-            border-right: 1px solid var(--border-color);
-            z-index: 1045;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease-in-out;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .new-sidebar.is-open {
-            transform: translateX(0);
-        }
-
-        .new-sidebar .offcanvas-header {
-            border-bottom: 1px solid var(--border-color);
-            padding: 1rem 1.2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        .new-sidebar .offcanvas-title h5 {
-            color: var(--text-primary);
-            margin-bottom: 0;
-            font-size: 1.1rem;
-        }
-
-        .new-sidebar .btn-close-white {
-            filter: invert(1) grayscale(100%) brightness(200%);
-        }
-
-        .new-sidebar .offcanvas-body {
-            padding: 1rem;
-            flex-grow: 1;
-            overflow-y: auto; /* VERTICAL SCROLLING */
-        }
-
-        .new-sidebar .nav-link {
-            color: var(--link-color);
-            padding: 0.9rem 1.2rem;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px; /* Space between buttons */
-            border-radius: 6px;
-            transition: all 0.2s ease-in-out;
-            border: 1px solid var(--border-color); /* VISIBLE BORDER */
-        }
-
-        .new-sidebar .nav-link:hover {
-            color: var(--link-hover-color);
-            background-color: rgba(255, 255, 255, 0.05);
-            border-color: var(--accent-color);
-        }
-
-        /* ACTIVE LINK ANIMATION */
-        .new-sidebar .nav-link.active {
-            color: var(--link-hover-color);
-            background-color: rgba(250, 204, 21, 0.1);
-            border-color: var(--accent-color);
-            font-weight: 600;
-            transform: translateX(5px) scale(1.02);
-            box-shadow: 0 0 10px rgba(250, 204, 21, 0.2);
-        }
-
-        .new-sidebar .nav-link i,
-        .new-sidebar .nav-link .sidebar-icon {
-            margin-right: 12px;
-            width: 20px;
-            text-align: center;
-            font-size: 1.1rem;
-        }
-
 
         .main-content { padding: 20px; }
         .section { display: none; animation: fadeIn 0.5s; }
@@ -650,7 +299,7 @@
         #dashboard-section .row > [class*="col-"] { animation: fadeInUp 0.5s ease-out forwards; animation-delay: calc(var(--order, 0) * 100ms); opacity: 0; }
 
         /* Users Section Styles */
-        #users-section-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+        #users-section-container, #new-users-section-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
         .user-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease; animation: fadeIn 0.5s; position: relative; cursor: pointer; }
         .user-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.25); }
         @keyframes rgb-border-anim { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
@@ -1126,6 +775,24 @@
             cursor: pointer;
         }
     </style>
+
+<style>
+#newUsersTableBody td small.text-muted {
+    color:#ffffff !important;
+    font-weight:600 !important;
+}
+</style>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<style>
+#tmsPlayerListTableBody td small.text-muted {
+    color:#ffffff !important;
+    font-weight:600 !important;
+}
+</style>
+
 </head>
 <body>
 
@@ -1258,6 +925,7 @@
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="tournament-management-section"><i class="bi bi-award-fill"></i> Tournament Mgt</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="leaderboard-mgt-section"><i class="bi bi-bar-chart-line-fill"></i> Leaderboard Mgt</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="users-section"><i class="bi bi-people"></i> Users</a> </li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="new-users-section"><i class="bi bi-person-plus-fill"></i> New Users</a></li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="user-analytics-section"><i class="bi bi-pie-chart-fill"></i> User Analytics</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="notifications-section"><i class="bi bi-bell"></i> Notifications</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="transactions-section"><i class="bi bi-receipt"></i> Transactions</a> </li>
@@ -1468,6 +1136,22 @@
                      <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#addTournamentModal" id="addNewTournamentBtn"><i class="bi bi-plus-circle"></i> Add Tournament</button>
                  </div>
                  <div id="tournamentsStatus" class="mb-3"></div>
+<!-- --- GAME FILTER (Injected by ChatGPT) --- -->
+<div id="tournament-game-filter" style="margin: 10px 0; width: 100%; max-width: 520px;">
+  <div class="input-group">
+    <label class="input-group-text bg-transparent" for="filterGameSelect" style="color:var(--text-secondary);">
+      <i class="bi bi-controller"></i>
+    </label>
+    <select id="filterGameSelect" class="form-select" aria-label="Filter by game">
+      <option value="">-- All Games --</option>
+    </select>
+    <button class="btn btn-outline-secondary" id="clearGameFilterBtn" type="button" title="Clear game filter" style="margin-left:8px;">
+      Clear
+    </button>
+  </div>
+</div>
+<!-- --- END GAME FILTER --- -->
+
                  <div id="tournaments-card-container">
                     <!-- Tournament cards will be injected here by JavaScript -->
                  </div>
@@ -1503,7 +1187,7 @@
                                     <thead>
                                         <tr>
                                             <th>Player</th>
-                                            <th>Game UID</th>
+                                            <th>Name</th>
                                             <th>Per Kill Prize</th>
                                             <th>Kills</th>
                                             <th>Extra Amount</th>
@@ -1514,7 +1198,10 @@
                                     <tbody id="tmsPlayerListTableBody"></tbody>
                                 </table>
                             </div>
-                            <div class="mt-4 text-end">
+                            <div class="mt-4 d-flex justify-content-end align-items-center gap-3 flex-wrap">
+                                <button class="btn btn-outline-light btn-lg" id="snapshotPageBtn">
+                                    <i class="bi bi-camera-fill"></i> Snap
+                                </button>
                                 <button class="btn btn-success btn-lg" id="creditWinningsBtn">
                                     <i class="bi bi-check-circle-fill"></i> Credit All Winnings
                                 </button>
@@ -1567,7 +1254,18 @@
                     <div class="user-search-bar mb-3">
                         <i class="bi bi-search"></i>
                         <input type="search" class="form-control" id="userSearchInput" placeholder="Search by name or email...">
-                    </div>
+
+<!-- ChatGPT: Date Range Filter (From - To) injected -->
+<div id="tournament-date-filter-row" style="margin:10px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+  <label style="font-weight:600;color:var(--text-secondary);margin-right:6px;">Date:</label>
+  <input type="date" id="filterDateFrom" style="padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);" />
+  <span style="font-weight:600;color:var(--text-secondary);">to</span>
+  <input type="date" id="filterDateTo" style="padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);" />
+  <button id="applyDateFilterBtn" class="btn" style="padding:8px 10px;background:#0d6efd;color:#fff;border-radius:6px;border:none;">Apply</button>
+  <button id="clearDateFilterBtn" class="btn" style="padding:8px 10px;background:#6c757d;color:#fff;border-radius:6px;border:none;">Clear</button>
+  <span id="dateFilterStatus" style="color:#9aa0a6;font-size:13px;margin-left:8px;"></span>
+</div>
+<!-- End date filter -->                    </div>
                     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUserModal">
                         <i class="bi bi-person-plus-fill me-1"></i> Add User
                     </button>
@@ -1575,6 +1273,27 @@
                  <div id="usersStatus" class="mb-3"></div>
                  <div id="users-section-container"></div>
             </section>
+            <section id="new-users-section" class="section">
+                <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                    <h2>New Users</h2>
+                    <div class="d-flex flex-column align-items-end gap-2">
+                        <div class="btn-group btn-group-sm" id="newUsersFilterGroup" role="group" aria-label="New users time filters">
+                            <button type="button" class="btn btn-outline-light active" data-new-users-range="24h">Last 24 hrs</button>
+                            <button type="button" class="btn btn-outline-light" data-new-users-range="7d">Last 7 days</button>
+                            <button type="button" class="btn btn-outline-light" data-new-users-range="30d">Last 30 days</button>
+                            <button type="button" class="btn btn-outline-light" data-new-users-range="90d">Last 90 days</button>
+                        </div>
+                        <small class="text-secondary" id="newUsersRangeLabel">
+                            Showing users registered in the last 24 hours
+                        </small>
+                    </div>
+                </div>
+
+                <div id="newUsersStatus" class="mb-3"></div>
+
+                <div id="new-users-section-container"></div>
+            </section>
+
 
              <section id="user-analytics-section" class="section">
                  <h2>User Analytics</h2>
@@ -1645,10 +1364,72 @@
                 </div>
             </section>
 
-            <section id="transactions-section" class="section card"> <div class="card-body"> <h2 class="card-title">User Transactions</h2> <p class="text-muted">Section under development.</p></div> </section>
+            
+            <section id="transactions-section" class="section">
+                <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                    <h2>User Transactions Summary</h2>
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <div class="btn-group btn-group-sm" id="transactionsRangeFilters" role="group" aria-label="Time range">
+                            <button type="button" class="btn btn-outline-light active" data-range="all">All Time</button>
+                            <button type="button" class="btn btn-outline-light" data-range="24h">Last 24h</button>
+                            <button type="button" class="btn btn-outline-light" data-range="7d">Last 7 days</button>
+                            <button type="button" class="btn btn-outline-light" data-range="30d">Last 30 days</button>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <div class="form-check form-check-inline text-white small">
+                                <input class="form-check-input" type="checkbox" id="transactionsSortDeposit" checked>
+                                <label class="form-check-label" for="transactionsSortDeposit">Deposit</label>
+                            </div>
+                            <div class="form-check form-check-inline text-white small">
+                                <input class="form-check-input" type="checkbox" id="transactionsSortWinning" checked>
+                                <label class="form-check-label" for="transactionsSortWinning">Winning</label>
+                            </div>
+                        </div>
+                        <input 
+                            type="text" 
+                            id="transactionsSearchInput" 
+                            class="form-control form-control-sm" 
+                            placeholder="Search by name or email">
+                    </div>
+                </div>
+
+                <div id="transactionsStatus" class="mb-2"></div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <p class="text-secondary small mb-3">
+                            All Transaction Of Players
+                        </p>
+
+                        <div class="table-responsive">
+                            <table class="table table-dark table-striped table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>User Name</th>
+                                        <th>Email</th>
+                                        <th>Total Deposit</th>
+                                        <th>Total Withdraw</th>
+                                        <th>Total Winnings</th>
+                                        <th>Matches Played</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transactionsTableBody">
+                                    <tr>
+                                        <td colspan="7" class="text-center p-3 text-muted">
+                                            Transactions summary loading...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             <!-- ==================================================== -->
             <!-- =========== NEW WITHDRAWALS SECTION ================ -->
+
             <!-- ==================================================== -->
             <section id="withdrawals-section" class="section">
                 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
@@ -1679,11 +1460,81 @@
             <!-- ================= END OF SECTION =================== -->
             <!-- ==================================================== -->
 
+            
             <section id="deposit-section" class="section">
-                <h2>Manage Deposits</h2>
+                <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                    <h2>Manage Deposits</h2>
+                </div>
                 <div id="depositsStatus" class="mb-3"></div>
-                <div id="pendingDepositsCardContainer"></div>
+
+                <!-- Deposit Tabs: Pending vs History -->
+                <ul class="nav nav-tabs mb-3" id="depositTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="pending-deposits-tab" data-bs-toggle="tab"
+                                data-bs-target="#pendingDepositsTab" type="button" role="tab">
+                            Pending Requests
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="history-deposits-tab" data-bs-toggle="tab"
+                                data-bs-target="#depositHistoryTab" type="button" role="tab">
+                            Deposit History
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <!-- Pending Tab -->
+                    <div class="tab-pane fade show active" id="pendingDepositsTab" role="tabpanel"
+                         aria-labelledby="pending-deposits-tab">
+                        <div id="pendingDepositsCardContainer"></div>
+                    </div>
+
+                    <!-- History Tab -->
+                    <div class="tab-pane fade" id="depositHistoryTab" role="tabpanel"
+                         aria-labelledby="history-deposits-tab">
+                        <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+                            <div class="btn-group btn-group-sm" id="depositHistoryStatusFilters" role="group"
+                                 aria-label="Deposit history filters">
+                                <button type="button" class="btn btn-outline-light active" data-status="completed">
+                                    Completed
+                                </button>
+                                <button type="button" class="btn btn-outline-light" data-status="rejected">
+                                    Rejected
+                                </button>
+                                <button type="button" class="btn btn-outline-light" data-status="all">
+                                    All
+                                </button>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-2 flex-wrap">
+                                <div class="btn-group btn-group-sm" id="depositHistoryTimeFilters" role="group"
+                                     aria-label="Deposit time filters">
+                                    <button type="button" class="btn btn-outline-light active" data-range="all">
+                                        All Time
+                                    </button>
+                                    <button type="button" class="btn btn-outline-light" data-range="24h">
+                                        Last 24h
+                                    </button>
+                                    <button type="button" class="btn btn-outline-light" data-range="7d">
+                                        Last 7 days
+                                    </button>
+                                </div>
+                                <input type="date" id="depositHistoryDateInput"
+                                       class="form-control form-control-sm"
+                                       style="min-width: 160px;">
+                                <input type="text" id="depositHistorySearchInput"
+                                       class="form-control form-control-sm"
+                                       placeholder="Search by name, email or UTR">
+                            </div>
+                        </div>
+                        <div id="depositHistoryContainer">
+                            <p class="text-muted w-100">Deposit history will appear here.</p>
+                        </div>
+                    </div>
+                </div>
             </section>
+
 
             <section id="referrals-section" class="section">
                 <h2>Manage Referrals</h2>
@@ -2196,6 +2047,9 @@
             try {
                 app = initializeApp(firebaseConfig, "adminApp");
                 db = getDatabase(app);
+                // Expose db & auth to window so non-module scripts can use them
+                window.db = db;
+                window.auth = auth;
                 auth = getAuth(app);
                 await setPersistence(auth, browserLocalPersistence);
             } catch (error) {
@@ -2292,6 +2146,11 @@
              tournamentsStatus: getElement('tournamentsStatus'),
              usersSection: getElement('users-section'),
              usersSectionContainer: getElement('users-section-container'),
+        newUsersSection: getElement('new-users-section'),
+        newUsersSectionContainer: getElement('new-users-section-container'),
+        newUsersStatus: getElement('newUsersStatus'),
+        newUsersFilterGroup: getElement('newUsersFilterGroup'),
+        newUsersRangeLabel: getElement('newUsersRangeLabel'),
              userSearchInput: getElement('userSearchInput'),
              userModalEl: getElement('userModal'),
              userModalTitle: getElement('userModalTitle'),
@@ -2344,6 +2203,13 @@
              pendingDepositCountBadge: getElement('pendingDepositCountBadge'),
              viewScreenshotModalEl: getElement('viewScreenshotModal'),
              screenshotImage: getElement('screenshotImage'),
+
+             // Deposit History Elements
+             depositHistoryContainer: getElement('depositHistoryContainer'),
+             depositHistorySearchInput: getElement('depositHistorySearchInput'),
+             depositHistoryStatusFilters: getElement('depositHistoryStatusFilters'),
+             depositHistoryTimeFilters: getElement('depositHistoryTimeFilters'),
+             depositHistoryDateInput: getElement('depositHistoryDateInput'),
              registeredPlayersModalEl: getElement('registeredPlayersModal'),
              registeredPlayersModalTitle: getElement('registeredPlayersModalTitle'),
              registeredPlayersTournamentName: getElement('registeredPlayersTournamentName'),
@@ -2372,7 +2238,16 @@
              settingPolicyUpdatesInput: getElement('settingPolicyUpdates'),
              settingPolicyPartnerInput: getElement('settingPolicyPartner'),
              settingsStatus: getElement('settingsStatus'),
+
+             // Transactions Section Elements
              transactionsSection: getElement('transactions-section'),
+             transactionsStatus: getElement('transactionsStatus'),
+             transactionsTableBody: getElement('transactionsTableBody'),
+             transactionsSearchInput: getElement('transactionsSearchInput'),
+             transactionsRangeFilters: getElement('transactionsRangeFilters'),
+             transactionsSortDeposit: getElement('transactionsSortDeposit'),
+             transactionsSortWinning: getElement('transactionsSortWinning'),
+
              referralsSection: getElement('referrals-section'),
              referralsStatus: getElement('referralsStatus'),
              pendingReferralsTableBody: getElement('pendingReferralsTableBody'),
@@ -2490,7 +2365,38 @@
         let currentChattingUserId = null;
         let gameDataCache = {};
         let userDataCache = {};
+        let depositHistoryList = [];
+        let depositHistoryTimeRange = 'all'; // all, 24h, 7d
+        let depositHistoryDateFilter = '';   // 'YYYY-MM-DD'
+
+
         let fullUserDataCache = {};
+        let transactionsUserSummaryCache = [];
+        let transactionsRange = 'all'; // all, 24h, 7d, 30d
+
+        function getTransactionsRangeWindowMs(rangeKey) {
+            switch (rangeKey) {
+                case '24h': return 24 * 60 * 60 * 1000;
+                case '7d': return 7 * 24 * 60 * 60 * 1000;
+                case '30d': return 30 * 24 * 60 * 60 * 1000;
+                case 'all':
+                default:
+                    return null; // no time limit
+            }
+        }
+
+
+        let newUsersRange = '24h'; // default filter
+        function getNewUsersCutoffMs() {
+            switch (newUsersRange) {
+                case '24h': return 24 * 60 * 60 * 1000;
+                case '7d': return 7 * 24 * 60 * 60 * 1000;
+                case '30d': return 30 * 24 * 60 * 60 * 1000;
+                case '90d': return 90 * 24 * 60 * 60 * 1000;
+                default: return 7 * 24 * 60 * 60 * 1000;
+            }
+        }
+
         let dbListeners = {};
         let isAdminSetupComplete = false;
         let designatedAdminUid = null;
@@ -2613,6 +2519,7 @@
                  case 'promotions-section': loadPromotions(); break;
                  case 'tournaments-section': loadTournaments(); break;
                  case 'users-section': loadUsers(); break;
+                case 'new-users-section': loadNewUsers(); break;
                  case 'withdrawals-section':
                     const activeFilterBtn = getElement('withdrawalFilters')?.querySelector('.filter-btn.active');
                     const statusToLoad = activeFilterBtn?.dataset.status || 'pending';
@@ -2620,6 +2527,7 @@
                     break;
                  case 'deposit-section':
                     loadDepositRequests();
+                    loadDepositHistory('completed');
                     break;
                  case 'referrals-section':
                     loadReferrals('pending');
@@ -2639,7 +2547,7 @@
                  case 'tournament-management-section': populateTournamentManagementSelector(); break;
                  case 'leaderboard-mgt-section': loadLeaderboardManagementData(); break;
                  case 'user-analytics-section': loadUserAnalyticsData(); break;
-                 case 'transactions-section': if (elements.transactionsSection) elements.transactionsSection.innerHTML = '<div class="card-body"><h2 class="card-title">User Transactions</h2><p class="text-muted">Section under development.</p></div>'; break;
+                 case 'transactions-section': loadTransactionsSectionData(); break;
                  default: console.warn("Unknown section requested:", sectionId); showStatus(elements.dashboardStatus, `Unknown section requested: ${sectionId}`, "warning");
              }
          }
@@ -2978,6 +2886,159 @@
             });
             console.log("Attached new users listener.");
         }
+        
+        
+async function loadNewUsers() {
+            // Directly read from Firebase users node, same as loadUsers,
+            // but with our own one-time get() (no listener).
+            if (!db || !isDesignatedAdmin(currentAdminUser)) return;
+
+            const statusEl = elements.newUsersStatus;
+            const container = elements.newUsersSectionContainer;
+
+            if (!statusEl || !container) {
+                console.warn("New Users section elements not found.");
+                return;
+            }
+
+            clearStatus(statusEl);
+            const labelEl = elements.newUsersRangeLabel;
+            if (labelEl) {
+                let text = '';
+                switch (newUsersRange) {
+                    case '24h': text = 'Showing users registered in the last 24 hours'; break;
+                    case '7d': text = 'Showing users registered in the last 7 days'; break;
+                    case '30d': text = 'Showing users registered in the last 30 days'; break;
+                    case '90d': text = 'Showing users registered in the last 90 days'; break;
+                    default: text = 'Showing users registered recently'; break;
+                }
+                labelEl.textContent = text;
+            }
+            container.innerHTML = `<p class="text-secondary p-3">Loading new users...</p>`;
+
+            try {
+                const usersRef = ref(db, 'users');
+                const snapshot = await get(usersRef);
+
+                if (!snapshot.exists()) {
+                    container.innerHTML = `<p class="text-center text-muted p-3">No users found in database.</p>`;
+                    return;
+                }
+
+                const users = [];
+                snapshot.forEach(childSnap => {
+                    const data = childSnap.val() || {};
+                    data.uid = childSnap.key;
+                    users.push(data);
+                });
+
+                if (!users.length) {
+                    container.innerHTML = `<p class="text-center text-muted p-3">No users found.</p>`;
+                    return;
+                }
+
+                const now = Date.now();
+                const cutoffMs = getNewUsersCutoffMs();
+
+                let newUsers = users.filter(user => {
+                    if (!user.createdAt) return false;
+                    const createdRaw = user.createdAt;
+                    const createdDate =
+                        typeof createdRaw === 'number'
+                            ? new Date(createdRaw)
+                            : new Date(createdRaw);
+
+                    if (isNaN(createdDate)) return false;
+
+                    const diff = now - createdDate.getTime();
+                    return diff >= 0 && diff <= cutoffMs;
+                });
+
+                // Fallback: agar 7 din ke andar koi user nahi mila,
+                // to sabhi users ko dikhayenge taaki section khaali na rahe.
+                if (!newUsers.length) {
+                    console.warn("No users found within last 7 days. Falling back to all users.");
+                    newUsers = users.slice();
+                }
+
+                // Latest createdAt pehle
+                newUsers.sort((a, b) => {
+                    const aTime = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+                    const bTime = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+                    return bTime - aTime;
+                });
+
+                // Build table HTML instead of cards
+                let rows = '';
+                newUsers.forEach((user, index) => {
+                    const displayName = sanitizeHTML(user.displayName || 'N/A');
+                    const email = sanitizeHTML(user.email || 'N/A');
+                    const uid = sanitizeHTML(user.uid || '');
+
+                    let createdText = 'N/A';
+                    if (user.createdAt) {
+                        const createdRaw = user.createdAt;
+                        const createdDate =
+                            typeof createdRaw === 'number'
+                                ? new Date(createdRaw)
+                                : new Date(createdRaw);
+                        if (!isNaN(createdDate)) {
+                            createdText = createdDate.toLocaleString('en-IN');
+                        }
+                    }
+
+                    rows += `
+                        <tr class="new-user-row" data-uid="${uid}">
+                            <td>${index + 1}</td>
+                            <td>${displayName}</td>
+                            <td>${createdText}</td>
+                            <td>${email}</td>
+                            <td>${uid}</td>
+                        </tr>
+                    `;
+                });
+
+                const tableHtml = `
+                    <div class="table-responsive mt-3">
+                        <table class="table table-dark table-striped table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Registered (Date & Time)</th>
+                                    <th>Email</th>
+                                    <th>UID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${rows}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+
+                container.innerHTML = tableHtml;
+
+                // Row click = same user detail modal
+                container.querySelectorAll('.new-user-row').forEach(row => {
+                    row.addEventListener('click', () => {
+                        const uid = row.getAttribute('data-uid');
+                        if (uid && typeof openUserDetailModal === 'function') {
+                            openUserDetailModal(uid);
+                        }
+                    });
+                });
+
+            } catch (error) {
+                console.error("Error loading new users:", error);
+                container.innerHTML =
+                    `<p class="text-center text-danger p-3">Error: ${sanitizeHTML(error.message)}</p>`;
+            }
+        }
+
+
+
+
 
         async function loadWithdrawals(status = 'pending') {
             if (!db || !isDesignatedAdmin(currentAdminUser)) return;
@@ -3366,7 +3427,186 @@
             }
         }
 
-        async function loadReferrals(status = 'pending') {
+        async function loadDepositHistory(status = 'completed') {
+            if (!db || !isDesignatedAdmin(currentAdminUser)) return;
+
+            const container = elements.depositHistoryContainer;
+            if (!container) {
+                console.warn('Deposit history container not found.');
+                return;
+            }
+
+            container.innerHTML = '<p class="text-secondary p-3 w-100">Loading deposit history...</p>';
+            clearStatus(elements.depositsStatus);
+
+            try {
+                let qRef;
+                if (status && status !== 'all') {
+                    qRef = query(ref(db, 'deposits'), orderByChild('status'), equalTo(status));
+                } else {
+                    qRef = ref(db, 'deposits');
+                }
+
+                const snapshot = await get(qRef);
+                depositHistoryList = [];
+
+                if (!snapshot.exists()) {
+                    container.innerHTML = '<p class="text-center text-muted p-3 w-100">No deposits found for this filter.</p>';
+                    return;
+                }
+
+                snapshot.forEach(child => {
+                    const val = child.val() || {};
+                    depositHistoryList.push({
+                        id: child.key,
+                        ...val
+                    });
+                });
+
+                // newest first
+                depositHistoryList.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+                renderDepositHistoryCards();
+            } catch (error) {
+                console.error('Error loading deposit history:', error);
+                container.innerHTML = `<p class="text-center text-danger p-3 w-100">Error loading deposit history: ${error.message}</p>`;
+            }
+        }
+
+        
+        function renderDepositHistoryCards() {
+            const container = elements.depositHistoryContainer;
+            if (!container) return;
+
+            if (!depositHistoryList || depositHistoryList.length === 0) {
+                container.innerHTML = '<p class="text-center text-muted p-3 w-100">No deposits found for this filter.</p>';
+                return;
+            }
+
+            const term = (elements.depositHistorySearchInput?.value || '').toLowerCase().trim();
+            const rangeKey = depositHistoryTimeRange || 'all';
+            const selectedDate = depositHistoryDateFilter || '';
+            const now = Date.now();
+
+            const filtered = depositHistoryList.filter(d => {
+                // time / range filter
+                const ts = d.timestamp;
+                let tsMs = null;
+                if (typeof ts === 'number') {
+                    tsMs = ts;
+                } else if (ts && typeof ts === 'object') {
+                    if (typeof ts.seconds === 'number') tsMs = ts.seconds * 1000;
+                    else if (typeof ts._seconds === 'number') tsMs = ts._seconds * 1000;
+                }
+                if (!tsMs) tsMs = 0;
+
+                // apply range
+                if (rangeKey === '24h') {
+                    if (now - tsMs > 24 * 60 * 60 * 1000) return false;
+                } else if (rangeKey === '7d') {
+                    if (now - tsMs > 7 * 24 * 60 * 60 * 1000) return false;
+                }
+
+                // apply date filter (local date)
+                if (selectedDate) {
+                    const dObj = new Date(tsMs || 0);
+                    const year = dObj.getFullYear();
+                    const month = String(dObj.getMonth() + 1).padStart(2, '0');
+                    const day = String(dObj.getDate()).padStart(2, '0');
+                    const dateStr = `${year}-${month}-${day}`;
+                    if (dateStr !== selectedDate) return false;
+                }
+
+                // apply search filter
+                const userId = d.userId;
+                let user = userId ? userDataCache[userId] : null;
+                if (!user && userId) {
+                    user = { displayName: d.userName || 'Unknown User', email: d.userEmail || userId };
+                }
+                if (!user) {
+                    user = { displayName: 'Unknown User', email: userId || '' };
+                }
+
+                const safeUtr = (d.utr || '').toString().toLowerCase();
+                const name = (user.displayName || '').toLowerCase();
+                const email = (user.email || '').toLowerCase();
+
+                if (!term) return true;
+                return name.includes(term) || email.includes(term) || safeUtr.includes(term);
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<p class="text-center text-muted p-3 w-100">No deposits found for this filter.</p>';
+                return;
+            }
+
+            let html = '';
+            for (const d of filtered) {
+                const userId = d.userId;
+                let user = userId ? userDataCache[userId] : null;
+
+                if (!user && userId) {
+                    // Try to hydrate from cache; actual cache fill happens elsewhere (users / deposits)
+                    user = { displayName: d.userName || 'Unknown User', email: d.userEmail || userId };
+                }
+
+                if (!user) {
+                    user = { displayName: 'Unknown User', email: userId || '' };
+                }
+
+                const statusLabel = d.status ? String(d.status).toUpperCase() : 'UNKNOWN';
+                const safeUtr = d.utr || 'N/A';
+                const method = d.paymentMethod || 'N/A';
+                const timeStr = formatDate(d.timestamp);
+                const processedStr = d.processedAt ? formatDate(d.processedAt) : '';
+
+                html += `
+                    <div class="deposit-card deposit-history-card"
+                         data-id="${d.id}"
+                         data-userid="${userId || ''}"
+                         data-utr="${sanitizeHTML(safeUtr)}"
+                         data-screenshot-url="${sanitizeHTML(d.screenshotUrl || '')}">
+                        <div class="deposit-card-header">
+                            <div class="deposit-card-user">
+                                <span class="name">${sanitizeHTML(user.displayName)}</span>
+                                <span class="email">${sanitizeHTML(user.email)}</span>
+                            </div>
+                            <div class="deposit-card-amount">${formatCurrency(d.amount || 0)}</div>
+                        </div>
+                        <div class="deposit-card-body">
+                            <div class="info-row">
+                                <span class="label">Status:</span>
+                                <span class="value">${sanitizeHTML(statusLabel)}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Time:</span>
+                                <span class="value">${timeStr}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">UTR:</span>
+                                <span class="value">${sanitizeHTML(safeUtr)}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Method:</span>
+                                <span class="value">${sanitizeHTML(method)}</span>
+                            </div>
+                        </div>
+                        <div class="deposit-card-footer d-flex align-items-center gap-2">
+                            ${d.screenshotUrl ? `<button class="btn btn-sm btn-outline-info btn-view-screenshot"><i class="bi bi-image"></i> View Screenshot</button>` : ''}
+                            ${processedStr ? `<small class="text-muted ms-auto">Processed: ${processedStr}</small>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+
+            elements.depositHistoryContainer.innerHTML = html;
+        }
+
+        function filterDepositHistoryCards() {
+            // just re-render using current filters
+            renderDepositHistoryCards();
+        }
+async function loadReferrals(status = 'pending') {
             if (!db || !isDesignatedAdmin(currentAdminUser)) return;
 
             const targetTableId = status === 'pending' ? 'pendingReferralsTableBody' : 'completedReferralsTableBody';
@@ -5050,7 +5290,7 @@ results.forEach(res => {
                         const user = uSnap.val();
                         fullUserDataCache[uid] = { uid, ...user };
 
-                        // Determine what to show under Game UID column:
+                        // Determine what to show under Name column:
                         // - If tournament supports squads (maxPlayers >= 5), show Player5's name (teammates[3]) if present.
                         // - Otherwise (solo/duo), show player1/game UID as before.
                         let displayUnderGameUid = '';
@@ -5484,6 +5724,302 @@ results.forEach(res => {
             } catch(e) { elements.inactiveUsersContainer.innerHTML = `<p class="text-danger">Error: ${e.message}</p>`; }
 
         }
+
+        async function loadTransactionsSectionData() {
+            if (!db || !isDesignatedAdmin(currentAdminUser)) return;
+
+            const statusEl = elements.transactionsStatus;
+            const tableBody = elements.transactionsTableBody;
+            const searchInput = elements.transactionsSearchInput;
+            const rangeFilters = elements.transactionsRangeFilters;
+            const sortDepositCb = elements.transactionsSortDeposit;
+            const sortWinningCb = elements.transactionsSortWinning;
+
+            if (!statusEl || !tableBody) {
+                console.warn("Transactions section elements not found.");
+                return;
+            }
+
+            clearStatus(statusEl);
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="text-center p-3 text-muted">
+                        Loading user transactions summary...
+                    </td>
+                </tr>
+            `;
+
+            try {
+                // 1. Saare users read karo
+                const usersSnap = await get(ref(db, 'users'));
+                if (!usersSnap.exists()) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="7" class="text-center p-3 text-muted">
+                                No users found.
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                const summaries = [];
+                usersSnap.forEach(child => {
+                    const uid = child.key;
+                    const u = child.val() || {};
+                    if (!u.email) return;
+
+                    const emptyMetrics = () => ({
+                        deposit: 0,
+                        withdraw: 0,
+                        winnings: 0
+                    });
+
+                    summaries.push({
+                        uid,
+                        name: u.displayName || 'N/A',
+                        email: u.email,
+                        totalMatches: Number(u.totalMatches || 0),
+                        byRange: {
+                            all: emptyMetrics(),
+                            '24h': emptyMetrics(),
+                            '7d': emptyMetrics(),
+                            '30d': emptyMetrics()
+                        }
+                    });
+                });
+
+                const summaryByUid = {};
+                summaries.forEach(s => { summaryByUid[s.uid] = s; });
+
+                // 2. Transactions se totals nikaalo (har range ke liye)
+                const txSnap = await get(ref(db, 'transactions'));
+                const allTx = txSnap.exists() ? (txSnap.val() || {}) : {};
+                const now = Date.now();
+
+                Object.entries(allTx).forEach(([uid, txs]) => {
+                    const summary = summaryByUid[uid];
+                    if (!summary || !txs || typeof txs !== 'object') return;
+
+                    Object.values(txs).forEach(tx => {
+                        if (!tx || typeof tx !== 'object') return;
+                        const type = tx.type || '';
+                        const amt = Number(tx.amount || 0);
+                        const ts = tx.timestamp;
+                        let tsMs = null;
+
+                        if (typeof ts === 'number') {
+                            tsMs = ts;
+                        } else if (ts && typeof ts === 'object') {
+                            if (typeof ts.seconds === 'number') {
+                                tsMs = ts.seconds * 1000;
+                            } else if (typeof ts._seconds === 'number') {
+                                tsMs = ts._seconds * 1000;
+                            }
+                        }
+
+                        let depositDelta = 0;
+                        let withdrawDelta = 0;
+                        let winningsDelta = 0;
+
+                        // Deposits
+                        if (type === 'deposit_completed' || type === 'admin_deposit') {
+                            if (amt !== 0) depositDelta += amt;
+                        }
+
+                        // Withdrawals (approved)
+                        if (type === 'withdrawal_approved') {
+                            if (amt < 0) {
+                                withdrawDelta += Math.abs(amt);
+                            } else if (amt > 0) {
+                                withdrawDelta += amt;
+                            }
+                        }
+
+                        // Winnings & bonuses
+                        if (
+                            type === 'tournament_winnings' ||
+                            type === 'referral_bonus' ||
+                            type === 'withdrawal_refund' ||
+                            type.startsWith('admin_winning') ||
+                            type.startsWith('admin_bonus')
+                        ) {
+                            if (amt !== 0) winningsDelta += amt;
+                        }
+
+                        if (depositDelta === 0 && withdrawDelta === 0 && winningsDelta === 0) return;
+
+                        const ranges = ['all', '24h', '7d', '30d'];
+                        ranges.forEach(rKey => {
+                            const metrics = summary.byRange[rKey];
+                            if (!metrics) return;
+
+                            if (rKey === 'all') {
+                                metrics.deposit += depositDelta;
+                                metrics.withdraw += withdrawDelta;
+                                metrics.winnings += winningsDelta;
+                            } else {
+                                if (!tsMs) return;
+                                const windowMs = getTransactionsRangeWindowMs(rKey);
+                                if (!windowMs) return;
+                                if (now - tsMs <= windowMs) {
+                                    metrics.deposit += depositDelta;
+                                    metrics.withdraw += withdrawDelta;
+                                    metrics.winnings += winningsDelta;
+                                }
+                            }
+                        });
+                    });
+                });
+
+                // Cache base data
+                transactionsUserSummaryCache = summaries;
+
+                const getCurrentRangeKey = () => transactionsRange || 'all';
+
+                const sortByHighDepositAndWinnings = (list, rangeKey) => {
+                    const key = rangeKey || 'all';
+
+                    // Decide weights based on checkboxes:
+                    // - Only Deposit checked  => sort by Deposit
+                    // - Only Winning checked  => sort by Winning
+                    // - Both / none checked   => Deposit + Winning
+                    const useDeposit = !sortDepositCb || sortDepositCb.checked;
+                    const useWinning = !sortWinningCb || sortWinningCb.checked;
+
+                    return [...list].sort((a, b) => {
+                        const ma = a.byRange[key] || a.byRange.all;
+                        const mb = b.byRange[key] || b.byRange.all;
+
+                        const depA = ma.deposit || 0;
+                        const depB = mb.deposit || 0;
+                        const winA = ma.winnings || 0;
+                        const winB = mb.winnings || 0;
+
+                        let scoreA = 0;
+                        let scoreB = 0;
+
+                        if (useDeposit && !useWinning) {
+                            scoreA = depA;
+                            scoreB = depB;
+                        } else if (!useDeposit && useWinning) {
+                            scoreA = winA;
+                            scoreB = winB;
+                        } else {
+                            // dono select (ya none select) => Deposit + Winning
+                            scoreA = depA + winA;
+                            scoreB = depB + winB;
+                        }
+
+                        if (scoreB !== scoreA) return scoreB - scoreA;
+
+                        // Tie-breaker: more matches first
+                        if ((b.totalMatches || 0) !== (a.totalMatches || 0)) {
+                            return (b.totalMatches || 0) - (a.totalMatches || 0);
+                        }
+
+                        // Last: alphabetical by name
+                        return (a.name || '').localeCompare(b.name || '');
+                    });
+                };
+
+                const renderRows = (list, rangeKey) => {
+                    const key = rangeKey || 'all';
+                    if (!list || list.length === 0) {
+                        tableBody.innerHTML = `
+                            <tr>
+                                <td colspan="7" class="text-center p-3 text-muted">
+                                    No transaction data found.
+                                </td>
+                            </tr>
+                        `;
+                        return;
+                    }
+
+                    const sorted = sortByHighDepositAndWinnings(list, key);
+                    let index = 1;
+                    const rowsHtml = sorted.map(user => {
+                        const metrics = user.byRange[key] || user.byRange.all || { deposit: 0, withdraw: 0, winnings: 0 };
+                        return `
+                            <tr>
+                                <td>${index++}</td>
+                                <td>${sanitizeHTML(user.name)}</td>
+                                <td>${sanitizeHTML(user.email)}</td>
+                                <td>${formatCurrency(metrics.deposit)}</td>
+                                <td>${formatCurrency(metrics.withdraw)}</td>
+                                <td>${formatCurrency(metrics.winnings)}</td>
+                                <td>${user.totalMatches}</td>
+                            </tr>
+                        `;
+                    }).join('');
+
+                    tableBody.innerHTML = rowsHtml;
+                };
+
+                const getFilteredList = () => {
+                    const baseList = transactionsUserSummaryCache || [];
+                    const q = (searchInput?.value || '').toLowerCase().trim();
+                    if (!q) return baseList;
+
+                    return baseList.filter(u => {
+                        return (u.name && u.name.toLowerCase().includes(q)) ||
+                               (u.email && u.email.toLowerCase().includes(q));
+                    });
+                };
+
+                const rerender = () => {
+                    const list = getFilteredList();
+                    renderRows(list, getCurrentRangeKey());
+                };
+
+                // Initial render (all time)
+                rerender();
+
+                // Search filter – name/email
+                if (searchInput) {
+                    searchInput.oninput = () => {
+                        rerender();
+                    };
+                }
+
+                // Time range filter buttons
+                if (rangeFilters) {
+                    const buttons = rangeFilters.querySelectorAll('button[data-range]');
+                    buttons.forEach(btn => {
+                        btn.onclick = () => {
+                            const selectedRange = btn.getAttribute('data-range') || 'all';
+                            transactionsRange = selectedRange;
+
+                            buttons.forEach(b => b.classList.remove('active'));
+                            btn.classList.add('active');
+
+                            rerender();
+                        };
+                    });
+                }
+
+                // Sort checkboxes change
+                if (sortDepositCb) {
+                    sortDepositCb.onchange = () => rerender();
+                }
+                if (sortWinningCb) {
+                    sortWinningCb.onchange = () => rerender();
+                }
+
+            } catch (error) {
+                console.error("Error loading transactions summary:", error);
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center p-3 text-danger">
+                            Error: ${sanitizeHTML(error.message || 'Failed to load data.')}.
+                        </td>
+                    </tr>
+                `;
+                showStatus(statusEl, `Error loading user transactions summary: ${error.message}`, 'danger', false);
+            }
+        }
+
+
 
         const defaultTheme = {
             'primary-bg': '#0F172A', 'secondary-bg': '#1E293B', 'card-bg': '#1E293B',
@@ -5935,6 +6471,68 @@ results.forEach(res => {
                 }
             });
 
+
+            // Deposit history filters (Completed / Rejected / All)
+            if (elements.depositHistoryStatusFilters) {
+                elements.depositHistoryStatusFilters.addEventListener('click', (e) => {
+                    const btn = e.target.closest('button[data-status]');
+                    if (!btn) return;
+
+                    elements.depositHistoryStatusFilters.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    const status = btn.dataset.status || 'completed';
+                    loadDepositHistory(status);
+                });
+            }
+
+            // Deposit history time range filters (All / 24h / 7d)
+            if (elements.depositHistoryTimeFilters) {
+                elements.depositHistoryTimeFilters.addEventListener('click', (e) => {
+                    const btn = e.target.closest('button[data-range]');
+                    if (!btn) return;
+
+                    elements.depositHistoryTimeFilters.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    depositHistoryTimeRange = btn.dataset.range || 'all';
+                    filterDepositHistoryCards();
+                });
+            }
+
+            // Deposit history specific date filter
+            if (elements.depositHistoryDateInput) {
+                elements.depositHistoryDateInput.addEventListener('change', () => {
+                    depositHistoryDateFilter = elements.depositHistoryDateInput.value || '';
+                    filterDepositHistoryCards();
+                });
+            }
+
+
+            // Deposit history search
+            if (elements.depositHistorySearchInput) {
+                elements.depositHistorySearchInput.addEventListener('input', () => {
+                    filterDepositHistoryCards();
+                });
+            }
+
+            // Deposit history screenshot viewer
+            if (elements.depositHistoryContainer) {
+                elements.depositHistoryContainer.addEventListener('click', (event) => {
+                    const card = event.target.closest('.deposit-history-card');
+                    if (!card) return;
+
+                    const screenshotBtn = event.target.closest('.btn-view-screenshot');
+                    if (screenshotBtn) {
+                        const url = card.getAttribute('data-screenshot-url') || '';
+                        if (url) {
+                            elements.screenshotImage.src = url;
+                            getModalInstance(elements.viewScreenshotModalEl)?.show();
+                        }
+                    }
+                });
+            }
+
             elements.liveSupportUserListContainer?.addEventListener('click', (event) => {
                 const target = event.target;
                 const card = target.closest('.support-user-card');
@@ -6135,6 +6733,37 @@ results.forEach(res => {
             onAuthStateChanged(auth, handleAdminAuthStateChange);
         });
     
+
+        // Setup New Users range filter buttons
+        function setupNewUsersFilters() {
+            const group = elements.newUsersFilterGroup;
+            if (!group) return;
+
+            const buttons = group.querySelectorAll('[data-new-users-range]');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const range = btn.getAttribute('data-new-users-range');
+                    if (!range) return;
+                    newUsersRange = range;
+
+                    // toggle active class
+                    buttons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    // reload list with new range
+                    try {
+                        loadNewUsers();
+                    } catch (e) {
+                        console.error('Error reloading New Users with range filter:', e);
+                    }
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            try { setupNewUsersFilters(); } catch (e) { console.error('Failed to setup New Users filters:', e); }
+        });
+
         // ADMIN NEWS CRUD
         const newsRefA = ref(db, 'news');
         const _newsTbody = document.getElementById('newsTableBody');
@@ -6328,5 +6957,810 @@ results.forEach(res => {
   else setupFilters();
 })();
 </script>
+
+<!-- Game filter script injected by ChatGPT -->
+<script>
+function populateFilterGameSelect() {
+  const select = document.getElementById('filterGameSelect');
+  if (!select) return;
+  select.innerHTML = '<option value="">Loading...</option>';
+  try {
+    if (!window.gameDataCache || Object.keys(window.gameDataCache).length === 0) {
+      if (typeof loadGames === 'function') {
+        const maybePromise = loadGames();
+        if (maybePromise && typeof maybePromise.then === 'function') {
+          maybePromise.then(() => buildOptions());
+        } else {
+          setTimeout(buildOptions, 200);
+        }
+      } else {
+        buildOptions();
+      }
+    } else {
+      buildOptions();
+    }
+  } catch (e) {
+    console.error('populateFilterGameSelect error', e);
+    select.innerHTML = '<option value="">Error</option>';
+  }
+
+  function buildOptions() {
+    select.innerHTML = '<option value="">-- All Games --</option>';
+    try {
+      const entries = Object.entries(window.gameDataCache || {}).sort((a,b) => a[1].localeCompare(b[1]));
+      entries.forEach(([id, name]) => {
+        const opt = document.createElement('option');
+        opt.value = id;
+        opt.textContent = name;
+        select.appendChild(opt);
+      });
+    } catch (err) {
+      console.error('buildOptions error', err);
+    }
+  }
+}
+
+function applyGameFilter(gameId) {
+  const container = document.getElementById('tournaments-card-container') || document.querySelector('.tournaments-grid') || document.getElementById('tournamentsList');
+  if (!container) return;
+  const cards = Array.from(container.children || []);
+  cards.forEach(card => {
+    try {
+      const cardGameId = card.dataset?.gameId || card.getAttribute('data-game-id') || '';
+      if (gameId === '' || !gameId) {
+        card.style.display = '';
+        return;
+      }
+      if (cardGameId) {
+        card.style.display = (cardGameId === gameId) ? '' : 'none';
+      } else {
+        const gameName = (window.gameDataCache && window.gameDataCache[gameId]) || '';
+        if (gameName) {
+          const txt = (card.textContent || '').toLowerCase();
+          card.style.display = txt.includes(gameName.toLowerCase()) ? '' : 'none';
+        } else {
+          card.style.display = 'none';
+        }
+      }
+    } catch (e) {
+      console.error('applyGameFilter card error', e);
+    }
+  });
+}
+
+function setupGameFilter() {
+  const select = document.getElementById('filterGameSelect');
+  const clearBtn = document.getElementById('clearGameFilterBtn');
+  if (!select) return;
+  populateFilterGameSelect();
+  select.addEventListener('change', function() {
+    const val = (this.value || '').toString();
+    applyGameFilter(val);
+  });
+  clearBtn?.addEventListener('click', function() {
+    if (select) {
+      select.value = '';
+      applyGameFilter('');
+    }
+  });
+  const container = document.getElementById('tournaments-card-container') || document.querySelector('.tournaments-grid') || document.getElementById('tournamentsList');
+  if (container && window.MutationObserver) {
+    const obs = new MutationObserver(() => {
+      clearTimeout(window.__gameFilterDeb);
+      window.__gameFilterDeb = setTimeout(() => {
+        const cur = select ? select.value : '';
+        applyGameFilter(cur);
+      }, 120);
+    });
+    obs.observe(container, { childList: true, subtree: true });
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    try { setupGameFilter(); } catch(e){ console.error(e); }
+  });
+} else {
+  try { setupGameFilter(); } catch(e){ console.error(e); }
+}
+</script>
+<!-- End of injected script -->
+
+<!-- Game filter v2: robust population + auto-assign data-game-id based on game name matching -->
+<script>
+(function(){
+  // static fallback list (from your screenshots)
+  const staticGames = [
+    {id: 'clash_squad', name: 'CLASH SQUAD'},
+    {id: 'e_sports', name: 'E-SPORTS'},
+    {id: 'ff_full_map', name: 'FF FULL MAP'},
+    {id: 'free_fire_max', name: 'FREE FIRE MAX'},
+    {id: 'free_matches', name: 'FREE MATCHES'},
+    {id: 'giveaways', name: 'GIVEAWAYS'},
+    {id: 'lone_wolf', name: 'LONE WOLF'},
+    {id: 'only_kills', name: 'ONLY KILLS'},
+    {id: 'survival', name: 'SURVIVAL'}
+  ];
+
+  function ensureOptions() {
+    const select = document.getElementById('filterGameSelect');
+    if (!select) return;
+    // Build combined map: prefer window.gameDataCache if present, else use staticGames
+    const cache = window.gameDataCache || {};
+    const combined = {};
+    // from cache may be {id: name} or {name: id} - try best
+    try {
+      Object.entries(cache).forEach(([k,v]) => {
+        // if value looks like a name (string), use k as id
+        if (typeof v === 'string' && v.trim().length>0) combined[k] = v;
+        else if (typeof k === 'string' && k.trim().length>0 && typeof v === 'object' && v.name) combined[k] = v.name;
+      });
+    } catch(e){ console.error(e); }
+    // add static ones if not present
+    staticGames.forEach(g => { if(!combined[g.id] && !Object.values(combined).includes(g.name)) combined[g.id] = g.name; });
+
+    // clear and add
+    select.innerHTML = '<option value="">-- All Games --</option>';
+    Object.entries(combined).sort((a,b)=> a[1].localeCompare(b[1])).forEach(([id,name])=>{
+      const opt = document.createElement('option');
+      opt.value = id;
+      opt.textContent = name;
+      select.appendChild(opt);
+    });
+  }
+
+  function assignDataGameIdToCards() {
+    const container = document.getElementById('tournaments-card-container') || document.querySelector('.tournaments-grid') || document.getElementById('tournamentsList');
+    if (!container) return;
+    const select = document.getElementById('filterGameSelect');
+    const cache = window.gameDataCache || {};
+    // build name->id map (case-insensitive)
+    const nameToId = {};
+    Object.entries(cache).forEach(([id,name])=> {
+      if (typeof name === 'string') nameToId[name.trim().toLowerCase()] = id;
+    });
+    // also include static list
+    staticGames.forEach(g=> nameToId[g.name.toLowerCase()] = nameToId[g.name.toLowerCase()] || g.id);
+
+    const cards = Array.from(container.children || []);
+    cards.forEach(card => {
+      try {
+        const existing = card.getAttribute('data-game-id') || card.dataset?.gameId;
+        if (existing) return;
+        const txt = (card.textContent || '').toLowerCase();
+        // find best matching game name in txt
+        let matchedId = '';
+        Object.keys(nameToId).forEach(nameKey => {
+          if (!matchedId && nameKey && txt.includes(nameKey)) matchedId = nameToId[nameKey];
+        });
+        if (matchedId) {
+          card.setAttribute('data-game-id', matchedId);
+        }
+      } catch(e){ console.error('assign error', e); }
+    });
+  }
+
+  // enhance existing setupGameFilter if present
+  function enhance() {
+    try { ensureOptions(); } catch(e){console.error(e);}
+    try { assignDataGameIdToCards(); } catch(e){console.error(e);}
+    // observe DOM mutations to keep options and assignments up-to-date
+    const container = document.getElementById('tournaments-card-container') || document.querySelector('.tournaments-grid') || document.getElementById('tournamentsList');
+    if (container && window.MutationObserver) {
+      const obs = new MutationObserver(() => {
+        clearTimeout(window.__gameFilterV2Deb);
+        window.__gameFilterV2Deb = setTimeout(()=>{
+          try { ensureOptions(); } catch(e){}
+          try { assignDataGameIdToCards(); } catch(e){}
+        }, 150);
+      });
+      obs.observe(container, { childList: true, subtree: true });
+    }
+    // also update when gameDataCache changes (polling small)
+    let lastCacheStr = JSON.stringify(window.gameDataCache || {});
+    setInterval(()=>{
+      const cur = JSON.stringify(window.gameDataCache || {});
+      if (cur !== lastCacheStr) {
+        lastCacheStr = cur;
+        try { ensureOptions(); } catch(e){}
+      }
+    }, 800);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', enhance); else enhance();
+})();
+</script>
+<!-- End Game filter v2 -->
+
+<!-- ChatGPT: persist game filter + stable ordering for tournaments -->
+<script>
+(function(){
+  const GAME_FILTER_KEY = 'admin_selected_game_filter';
+
+  function saveGameFilter(val){
+    try { if(val) localStorage.setItem(GAME_FILTER_KEY, val); else localStorage.removeItem(GAME_FILTER_KEY); } catch(e){}
+  }
+  function getSavedGameFilter(){ try { return localStorage.getItem(GAME_FILTER_KEY) || ''; } catch(e){ return ''; } }
+
+  // Ensure filter select exists and attach change handler
+  function initGameFilterPersistence(){
+    const sel = document.getElementById('filterGameSelect');
+    const clearBtn = document.getElementById('clearGameFilterBtn');
+    if(!sel) return;
+    // apply saved value if present
+    const saved = getSavedGameFilter();
+    if(saved) {
+      // try set after options built (options may be built asynchronously)
+      setTimeout(()=>{
+        try { sel.value = saved; applyGameFilter(saved); } catch(e){}
+      }, 250);
+    }
+    sel.addEventListener('change', function(){
+      const v = this.value || '';
+      saveGameFilter(v);
+      // apply filter immediately
+      if(typeof applyGameFilter === 'function') applyGameFilter(v);
+    });
+    if(clearBtn){
+      clearBtn.addEventListener('click', function(){ sel.value = ''; saveGameFilter(''); if(typeof applyGameFilter === 'function') applyGameFilter(''); });
+    }
+    // also keep an observer to re-apply saved filter when options are (re)built
+    const optObs = new MutationObserver(()=>{
+      const s = getSavedGameFilter();
+      if(s && sel.value !== s){
+        try { sel.value = s; } catch(e){}
+        if(typeof applyGameFilter === 'function') applyGameFilter(s);
+      }
+    });
+    optObs.observe(sel, { childList: true, subtree: true });
+  }
+
+  // Reorder tournament cards so that completed/result/cancelled are at the bottom
+  function reorderTournamentCards(){
+    const container = document.getElementById('tournaments-card-container') || document.querySelector('.tournaments-grid') || document.getElementById('tournamentsList');
+    if(!container) return;
+    try {
+      const all = Array.from(container.children || []);
+      if(all.length <= 1) return;
+      // classify nodes
+      const top = [], middle = [], bottom = [];
+      all.forEach(card => {
+        let statusText = '';
+        const badge = card.querySelector('.status-badge') || card.querySelector('.badge') || card.querySelector('[data-status]');
+        if(badge) statusText = (badge.textContent || badge.innerText || '').toString().toLowerCase().trim();
+        if(!statusText) statusText = (card.getAttribute('data-status') || '') .toString().toLowerCase();
+        if(!statusText) statusText = (card.textContent || '').toString().toLowerCase();
+        // normalize simple keywords
+        if(statusText.includes('completed') || statusText.includes('ended') || statusText.includes('finished')) bottom.push(card);
+        else if(statusText.includes('result') || statusText.includes('results')) bottom.push(card);
+        else if(statusText.includes('cancel') || statusText.includes('cancelled') || statusText.includes('canceled')) bottom.push(card);
+        else if(statusText.includes('ongoing') || statusText.includes('open') || statusText.includes('running')) top.push(card);
+        else if(statusText.includes('upcoming') || statusText.includes('scheduled')) middle.push(card);
+        else middle.push(card);
+      });
+      // Build new order: top (ongoing), middle (upcoming/others), bottom (completed/result/cancelled)
+      const newOrder = top.concat(middle).concat(bottom);
+      // append in order (this will move existing nodes)
+      newOrder.forEach(n => container.appendChild(n));
+    } catch(e){
+      console.warn('reorderTournamentCards error', e);
+    }
+  }
+
+  function setupReorderObserver(){
+    const container = document.getElementById('tournaments-card-container') || document.querySelector('.tournaments-grid') || document.getElementById('tournamentsList');
+    if(!container) return;
+    const obs = new MutationObserver((muts)=>{
+      // small debounce
+      clearTimeout(window.__tournReorderTimer);
+      window.__tournReorderTimer = setTimeout(()=>{
+        try {
+          reorderTournamentCards();
+          // reapply game filter if saved (in case items were re-rendered)
+          const saved = getSavedGameFilter();
+          if(saved && typeof applyGameFilter === 'function') applyGameFilter(saved);
+          // reapply status radio filter as well if present
+          const checked = document.querySelector('#tournamentStatusFilters input[type="radio"][name="tournamentFilter"]:checked');
+          if(checked && typeof applyTournamentCardFilter === 'function') applyTournamentCardFilter(checked.value);
+        } catch(e){ console.warn(e); }
+      }, 120);
+    });
+    obs.observe(container, { childList: true, subtree: true });
+    // run once on init
+    setTimeout(()=>{ reorderTournamentCards(); const s = getSavedGameFilter(); if(s && typeof applyGameFilter === 'function') applyGameFilter(s); }, 300);
+  }
+
+  // Initialize on DOM ready
+  function init(){
+    initGameFilterPersistence();
+    setupReorderObserver();
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
+<!-- End ChatGPT injection -->
+<!-- ChatGPT: persist game filter + stable ordering for tournaments (patched v2: reduce blink) -->
+<script>
+(function(){
+  const GAME_FILTER_KEY = 'admin_selected_game_filter';
+
+  function saveGameFilter(val){
+    try { if(val) localStorage.setItem(GAME_FILTER_KEY, val); else localStorage.removeItem(GAME_FILTER_KEY); } catch(e){}
+  }
+  function getSavedGameFilter(){ try { return localStorage.getItem(GAME_FILTER_KEY) || ''; } catch(e){ return ''; } }
+
+  function initGameFilterPersistence(){
+    const sel = document.getElementById('filterGameSelect');
+    const clearBtn = document.getElementById('clearGameFilterBtn');
+    if(!sel) return;
+    const saved = getSavedGameFilter();
+    if(saved) {
+      setTimeout(()=>{ try { sel.value = saved; if(typeof applyGameFilter === 'function') applyGameFilter(saved); } catch(e){} }, 250);
+    }
+    sel.addEventListener('change', function(){
+      const v = this.value || '';
+      saveGameFilter(v);
+      if(typeof applyGameFilter === 'function') applyGameFilter(v);
+    });
+    if(clearBtn){
+      clearBtn.addEventListener('click', function(){ sel.value = ''; saveGameFilter(''); if(typeof applyGameFilter === 'function') applyGameFilter(''); });
+    }
+    const optObs = new MutationObserver(()=>{
+      const s = getSavedGameFilter();
+      if(s && sel.value !== s){
+        try { sel.value = s; } catch(e){}
+        if(typeof applyGameFilter === 'function') applyGameFilter(s);
+      }
+    });
+    optObs.observe(sel, { childList: true, subtree: true });
+  }
+
+  function nodesEqualOrder(arrA, arrB){
+    if(!arrA || !arrB || arrA.length !== arrB.length) return false;
+    for(let i=0;i<arrA.length;i++){ if(arrA[i] !== arrB[i]) return false; }
+    return true;
+  }
+
+  function reorderTournamentCards(){
+    const container = document.getElementById('tournaments-card-container') || document.querySelector('.tournaments-grid') || document.getElementById('tournamentsList');
+    if(!container) return;
+    try {
+      const all = Array.from(container.children || []);
+      if(all.length <= 1) return;
+      const top = [], middle = [], bottom = [];
+      all.forEach(card => {
+        let statusText = '';
+        const badge = card.querySelector('.status-badge') || card.querySelector('.badge') || card.querySelector('[data-status]');
+        if(badge) statusText = (badge.textContent || badge.innerText || '').toString().toLowerCase().trim();
+        if(!statusText) statusText = (card.getAttribute('data-status') || '') .toString().toLowerCase();
+        if(!statusText) statusText = (card.textContent || '').toString().toLowerCase();
+        if(statusText.includes('completed') || statusText.includes('ended') || statusText.includes('finished')) bottom.push(card);
+        else if(statusText.includes('result') || statusText.includes('results')) bottom.push(card);
+        else if(statusText.includes('cancel') || statusText.includes('cancelled') || statusText.includes('canceled')) bottom.push(card);
+        else if(statusText.includes('ongoing') || statusText.includes('open') || statusText.includes('running')) top.push(card);
+        else if(statusText.includes('upcoming') || statusText.includes('scheduled')) middle.push(card);
+        else middle.push(card);
+      });
+      const newOrder = top.concat(middle).concat(bottom);
+      if(nodesEqualOrder(all, newOrder)) return;
+      const prevVisibility = container.style.visibility || '';
+      container.style.visibility = 'hidden';
+      const frag = document.createDocumentFragment();
+      newOrder.forEach(n => frag.appendChild(n));
+      container.appendChild(frag);
+      requestAnimationFrame(()=>{
+        container.style.visibility = prevVisibility;
+      });
+    } catch(e){
+      console.warn('reorderTournamentCards error', e);
+    }
+  }
+
+  function setupReorderObserver(){
+    const container = document.getElementById('tournaments-card-container') || document.querySelector('.tournaments-grid') || document.getElementById('tournamentsList');
+    if(!container) return;
+    const obs = new MutationObserver((muts)=>{
+      clearTimeout(window.__tournReorderTimer);
+      window.__tournReorderTimer = setTimeout(()=>{
+        try {
+          reorderTournamentCards();
+          const saved = getSavedGameFilter();
+          if(saved && typeof applyGameFilter === 'function') applyGameFilter(saved);
+        } catch(e){ console.warn(e); }
+      }, 250);
+    });
+    obs.observe(container, { childList: true, subtree: true });
+    setTimeout(()=>{ reorderTournamentCards(); const s = getSavedGameFilter(); if(s && typeof applyGameFilter === 'function') applyGameFilter(s); }, 300);
+  }
+
+  function init(){
+    initGameFilterPersistence();
+    setupReorderObserver();
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
+<!-- End ChatGPT injection -->
+
+<script>
+// ChatGPT-injected: Tournament Date Range Filter
+(function(){
+  const STORAGE_KEY_FROM = 'admin_tournament_date_from';
+  const STORAGE_KEY_TO = 'admin_tournament_date_to';
+
+  function parseDateStringToUTC(dstr) {
+    // handle YYYY-MM-DD or common formats; return Date at 00:00 local
+    if(!dstr) return null;
+    // If it's already a timestamp number string
+    if(/^\d+$/.test(dstr)) {
+      const n = Number(dstr);
+      // if large (ms) try ms, else seconds
+      return new Date(n > 1e12 ? n : n*1000);
+    }
+    // if like "2025-11-20" use direct
+    const isoMatch = dstr.match(/(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
+    if(isoMatch) {
+      const y = Number(isoMatch[1]), m = Number(isoMatch[2]) - 1, day = Number(isoMatch[3]);
+      return new Date(y, m, day);
+    }
+    // try Date constructor as fallback
+    const dd = new Date(dstr);
+    if(!isNaN(dd)) return dd;
+    return null;
+  }
+
+  function getCardDate(card) {
+    if(!card) return null;
+    // common data attributes
+    const candidates = [
+      'data-start-time','data-start','data-date','data-timestamp','data-starttimestamp','data-startdate','data-time'
+    ];
+    for(const attr of candidates) {
+      const v = card.getAttribute(attr) || card.dataset && card.dataset[attr.replace('data-','').replace(/[-]/g,'')];
+      if(v) {
+        const dt = parseDateStringToUTC(String(v));
+        if(dt && !isNaN(dt)) return dt;
+      }
+    }
+    // look for elements inside card that contain date-like text (e.g., "20 Nov 2025" or "2025-11-20")
+    const text = (card.textContent || '').replace(/\s+/g,' ').trim();
+    // regex to find YYYY-MM-DD
+    let m = text.match(/(\d{4}[-\/]\d{1,2}[-\/]\d{1,2})/);
+    if(m) {
+      const dt = parseDateStringToUTC(m[1]);
+      if(dt) return dt;
+    }
+    // regex for dd MMM yyyy (e.g., 20 Nov 2025)
+    m = text.match(/(\d{1,2}\s+[A-Za-z]{3,}\s+\d{4})/);
+    if(m) {
+      const dt = new Date(m[1]);
+      if(!isNaN(dt)) return dt;
+    }
+    // regex for dd-mm-yyyy or dd/mm/yyyy
+    m = text.match(/(\d{1,2}[-\/]\d{1,2}[-\/]\d{4})/);
+    if(m) {
+      const parts = m[1].split(/[-\/]/);
+      const day = Number(parts[0]), mon = Number(parts[1]) - 1, yr = Number(parts[2]);
+      const dt = new Date(yr, mon, day);
+      if(!isNaN(dt)) return dt;
+    }
+    return null;
+  }
+
+  function applyDateFilter(fromISO, toISO) {
+    const container = document.getElementById('tournaments-card-container') || document.querySelector('.tournaments-grid') || document.getElementById('tournamentsList');
+    if(!container) return;
+    const fromDate = fromISO ? new Date(fromISO + 'T00:00:00') : null;
+    const toDate = toISO ? new Date(toISO + 'T23:59:59') : null;
+    const cards = Array.from(container.children || []);
+    let shown = 0;
+    cards.forEach(card => {
+      try {
+        const cardDate = getCardDate(card);
+        if(!fromDate && !toDate) {
+          card.style.display = '';
+          shown++;
+          return;
+        }
+        if(!cardDate) {
+          // if card has no date, hide it (conservative)
+          card.style.display = 'none';
+          return;
+        }
+        const okFrom = fromDate ? (cardDate >= fromDate) : true;
+        const okTo = toDate ? (cardDate <= toDate) : true;
+        if(okFrom && okTo) { card.style.display = ''; shown++; }
+        else card.style.display = 'none';
+      } catch(e){ console.warn('date filter card error', e); }
+    });
+    const status = document.getElementById('dateFilterStatus');
+    if(status) status.textContent = shown + ' shown';
+  }
+
+  function initDateFilterUI() {
+    const fromInp = document.getElementById('filterDateFrom');
+    const toInp = document.getElementById('filterDateTo');
+    const applyBtn = document.getElementById('applyDateFilterBtn');
+    const clearBtn = document.getElementById('clearDateFilterBtn');
+    if(!fromInp || !toInp || !applyBtn) return;
+    // load from storage
+    try {
+      const sfrom = localStorage.getItem(STORAGE_KEY_FROM);
+      const sto = localStorage.getItem(STORAGE_KEY_TO);
+      if(sfrom) fromInp.value = sfrom;
+      if(sto) toInp.value = sto;
+      if(sfrom || sto) applyDateFilter(sfrom, sto);
+    } catch(e){}
+    applyBtn.addEventListener('click', ()=>{
+      const f = fromInp.value || '';
+      const t = toInp.value || '';
+      try { localStorage.setItem(STORAGE_KEY_FROM, f); localStorage.setItem(STORAGE_KEY_TO, t); } catch(e){}
+      applyDateFilter(f,t);
+    });
+    clearBtn.addEventListener('click', ()=>{
+      fromInp.value = ''; toInp.value = '';
+      try { localStorage.removeItem(STORAGE_KEY_FROM); localStorage.removeItem(STORAGE_KEY_TO); } catch(e){}
+      applyDateFilter('', '');
+    });
+    // reapply when tournaments re-render (keeps date filter persistent)
+    const container = document.getElementById('tournaments-card-container') || document.querySelector('.tournaments-grid') || document.getElementById('tournamentsList');
+    if(container && window.MutationObserver) {
+      const obs = new MutationObserver(()=>{
+        clearTimeout(window.__dateFilterDeb);
+        window.__dateFilterDeb = setTimeout(()=>{
+          const f = fromInp.value || localStorage.getItem(STORAGE_KEY_FROM) || '';
+          const t = toInp.value || localStorage.getItem(STORAGE_KEY_TO) || '';
+          applyDateFilter(f,t);
+        }, 180);
+      });
+      obs.observe(container, { childList: true, subtree: true });
+    }
+  }
+
+  // insert UI near search area if not already present
+  function placeDateFilterUI() {
+    if(document.getElementById('tournament-date-filter-row')) return;
+    // prefer placing under search area: look for search input placeholder or toolbar
+    let insertAfter = null;
+    const searchArea = Array.from(document.querySelectorAll('input,div,section')).find(el=> (el.getAttribute && (el.getAttribute('placeholder')||'').toLowerCase().includes('search by')));
+    if(searchArea && searchArea.parentElement) insertAfter = searchArea.parentElement;
+    else insertAfter = document.querySelector('main') || document.querySelector('.content') || document.body;
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = `
+<!-- ChatGPT: Date Range Filter (From - To) injected -->
+<div id="tournament-date-filter-row" style="margin:10px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+  <label style="font-weight:600;color:var(--text-secondary);margin-right:6px;">Date:</label>
+  <input type="date" id="filterDateFrom" style="padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);" />
+  <span style="font-weight:600;color:var(--text-secondary);">to</span>
+  <input type="date" id="filterDateTo" style="padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);" />
+  <button id="applyDateFilterBtn" class="btn" style="padding:8px 10px;background:#0d6efd;color:#fff;border-radius:6px;border:none;">Apply</button>
+  <button id="clearDateFilterBtn" class="btn" style="padding:8px 10px;background:#6c757d;color:#fff;border-radius:6px;border:none;">Clear</button>
+  <span id="dateFilterStatus" style="color:#9aa0a6;font-size:13px;margin-left:8px;"></span>
+</div>
+<!-- End date filter -->`;
+    // replace placeholder with actual HTML (handled below)
+    // Instead, directly create nodes:
+    const frag = document.createRange().createContextualFragment(`
+<!-- ChatGPT: Date Range Filter (From - To) injected -->
+<div id="tournament-date-filter-row" style="margin:10px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+  <label style="font-weight:600;color:var(--text-secondary);margin-right:6px;">Date:</label>
+  <input type="date" id="filterDateFrom" style="padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);" />
+  <span style="font-weight:600;color:var(--text-secondary);">to</span>
+  <input type="date" id="filterDateTo" style="padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);" />
+  <button id="applyDateFilterBtn" class="btn" style="padding:8px 10px;background:#0d6efd;color:#fff;border-radius:6px;border:none;">Apply</button>
+  <button id="clearDateFilterBtn" class="btn" style="padding:8px 10px;background:#6c757d;color:#fff;border-radius:6px;border:none;">Clear</button>
+  <span id="dateFilterStatus" style="color:#9aa0a6;font-size:13px;margin-left:8px;"></span>
+</div>
+<!-- End date filter -->`);
+    try {
+      if(insertAfter && insertAfter.parentElement) insertAfter.parentElement.insertBefore(frag, insertAfter.nextSibling);
+    } catch(e){
+      document.body.insertBefore(frag, document.body.firstChild);
+    }
+  }
+
+  // perform insertion and init on DOM ready
+  function init() {
+    // place HTML block
+    const markup = `
+<!-- ChatGPT: Date Range Filter (From - To) injected -->
+<div id="tournament-date-filter-row" style="margin:10px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+  <label style="font-weight:600;color:var(--text-secondary);margin-right:6px;">Date:</label>
+  <input type="date" id="filterDateFrom" style="padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);" />
+  <span style="font-weight:600;color:var(--text-secondary);">to</span>
+  <input type="date" id="filterDateTo" style="padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);" />
+  <button id="applyDateFilterBtn" class="btn" style="padding:8px 10px;background:#0d6efd;color:#fff;border-radius:6px;border:none;">Apply</button>
+  <button id="clearDateFilterBtn" class="btn" style="padding:8px 10px;background:#6c757d;color:#fff;border-radius:6px;border:none;">Clear</button>
+  <span id="dateFilterStatus" style="color:#9aa0a6;font-size:13px;margin-left:8px;"></span>
+</div>
+<!-- End date filter -->_RAW`;
+    if(!document.getElementById('tournament-date-filter-row')) {
+      const el = document.createElement('div');
+      el.innerHTML = markup;
+      // find insertion point (after search area)
+      const searchArea = Array.from(document.querySelectorAll('input,div,section')).find(el=> (el.getAttribute && (el.getAttribute('placeholder')||'').toLowerCase().includes('search by')));
+      if(searchArea && searchArea.parentElement && searchArea.parentElement.parentElement) searchArea.parentElement.parentElement.insertBefore(el, searchArea.parentElement.nextSibling);
+      else (document.querySelector('main') || document.body).insertBefore(el, (document.querySelector('main') || document.body).firstChild);
+    }
+    initDateFilterUI();
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
+<!-- End ChatGPT Date Filter -->
+<!-- Added by assistant: loadDeposits to render deposit history similar to withdrawals -->
+<script>
+async function loadDeposits(status = 'all') {
+    try {
+        const container = document.getElementById('pendingDepositsCardContainer') || document.getElementById('depositCardsContainer') || document.querySelector('#deposit-section .card-body') ;
+        if (!container) return console.warn('Deposit container not found.');
+
+        container.innerHTML = '<p class="text-muted p-3">Loading deposits...</p>';
+
+        // If firebase-style db is available
+        if (typeof db !== 'undefined' && typeof get === 'function' && typeof ref === 'function') {
+            try {
+                let depositsRef = ref(db, 'deposits');
+                let snap;
+                if (status && status !== 'all' && typeof query === 'function' && typeof orderByChild === 'function' && typeof equalTo === 'function') {
+                    snap = await get(query(depositsRef, orderByChild('status'), equalTo(status)));
+                } else {
+                    snap = await get(depositsRef);
+                }
+                if (!snap || !snap.exists()) {
+                    container.innerHTML = '<p class="text-center text-muted p-3 w-100">No deposits found.</p>';
+                    return;
+                }
+                const cards = [];
+                snap.forEach(child => {
+                    const id = child.key;
+                    const d = child.val();
+                    const user = d.user || {};
+                    const amount = d.amount ?? d.value ?? 0;
+                    const ts = d.timestamp || d.createdAt || null;
+                    const statusBadge = (d.status && typeof d.status === 'string') ? (d.status.charAt(0).toUpperCase() + d.status.slice(1)) : 'Unknown';
+
+                    const html = `
+                    <div class="deposit-card" data-id="${id}">
+                      <div class="deposit-card-header">
+                        <div class="deposit-card-user">
+                          <span class="name">${(user.displayName || user.name || user.email || 'Unknown User')}</span>
+                          <span class="email">${(user.email || user.uid || '')}</span>
+                        </div>
+                        <div class="deposit-card-amount">${(amount)}</div>
+                      </div>
+                      <div class="deposit-card-body">
+                        <div class="info-row"><span class="label">Method:</span><span class="value">${(d.method || d.channel || 'N/A')}</span></div>
+                        <div class="info-row"><span class="label">Status:</span><span class="value">${statusBadge}</span></div>
+                        <div class="info-row"><span class="label">Ref ID:</span><span class="value">${(d.txId || d.ref || id)}</span></div>
+                        <div class="info-row"><span class="label">Date:</span><span class="value">${(new Date(ts || Date.now())).toLocaleString()}</span></div>
+                      </div>
+                      <div class="deposit-card-footer">
+                        <button class="btn btn-sm btn-outline-primary btn-view-deposit" data-id="${id}">View</button>
+                        <button class="btn btn-sm btn-outline-danger btn-delete-deposit" data-id="${id}">Delete</button>
+                      </div>
+                    </div>
+                    `;
+                    cards.push(html);
+                });
+                container.innerHTML = cards.join('\n') || '<p class="text-center text-muted p-3 w-100">No deposits found.</p>';
+                return;
+            } catch(e) {
+                console.warn('Error reading deposits from db', e);
+            }
+        }
+
+        // Fallback to global depositsList if present
+        if (typeof depositsList !== 'undefined' && Array.isArray(depositsList)) {
+            if (depositsList.length === 0) {
+                container.innerHTML = '<p class="text-center text-muted p-3 w-100">No deposits found.</p>';
+                return;
+            }
+            const cards = depositsList.map(d => {
+                const id = d.id || d.key || ('dep_'+Math.random().toString(36).slice(2,9));
+                const user = d.user || {};
+                const amount = d.amount || d.value || 0;
+                const ts = d.timestamp || d.createdAt || Date.now();
+                const statusBadge = (d.status && typeof d.status === 'string') ? (d.status.charAt(0).toUpperCase() + d.status.slice(1)) : 'Unknown';
+                return `
+                <div class="deposit-card" data-id="${id}">
+                  <div class="deposit-card-header">
+                    <div class="deposit-card-user">
+                      <span class="name">${(user.displayName || user.name || user.email || 'Unknown User')}</span>
+                      <span class="email">${(user.email || user.uid || '')}</span>
+                    </div>
+                    <div class="deposit-card-amount">${(amount)}</div>
+                  </div>
+                  <div class="deposit-card-body">
+                    <div class="info-row"><span class="label">Method:</span><span class="value">${(d.method || d.channel || 'N/A')}</span></div>
+                    <div class="info-row"><span class="label">Status:</span><span class="value">${statusBadge}</span></div>
+                    <div class="info-row"><span class="label">Ref ID:</span><span class="value">${(d.txId || d.ref || id)}</span></div>
+                    <div class="info-row"><span class="label">Date:</span><span class="value">${(new Date(ts)).toLocaleString()}</span></div>
+                  </div>
+                  <div class="deposit-card-footer">
+                    <button class="btn btn-sm btn-outline-primary btn-view-deposit" data-id="${id}">View</button>
+                    <button class="btn btn-sm btn-outline-danger btn-delete-deposit" data-id="${id}">Delete</button>
+                  </div>
+                </div>
+                `;
+            });
+            container.innerHTML = cards.join('\n');
+            return;
+        }
+
+        container.innerHTML = '<p class="text-center text-muted p-3 w-100">No deposit data source available.</p>';
+    } catch (err) {
+        console.error('loadDeposits error', err);
+        const container = document.getElementById('pendingDepositsCardContainer');
+        if (container) container.innerHTML = '<p class="text-danger p-3">Error loading deposits.</p>';
+    }
+}
+
+// Auto-call when deposit section is present
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.getElementById('deposit-section') || document.getElementById('pendingDepositsCardContainer')) {
+        setTimeout(()=>{ try{ loadDeposits('all'); }catch(e){console.warn(e);} }, 300);
+    }
+});
+
+
+
+
+
+</script>
+
+<script>
+function downloadPageSnapshot() {
+    const btn = document.getElementById('snapshotPageBtn');
+    btn.disabled = true;
+    btn.innerText = "Snapping...";
+
+    const originalX = window.scrollX;
+    const originalY = window.scrollY;
+
+    // Scroll to top so full page (top-to-bottom) is captured
+    window.scrollTo(0, 0);
+
+    const fullHeight = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight
+    );
+    const fullWidth = Math.max(
+        document.body.scrollWidth,
+        document.documentElement.scrollWidth
+    );
+
+    html2canvas(document.body, {
+        useCORS: true,
+        scrollX: 0,
+        scrollY: 0,
+        width: fullWidth,
+        height: fullHeight,
+        windowWidth: fullWidth,
+        windowHeight: fullHeight,
+        backgroundColor: getComputedStyle(document.body).backgroundColor || '#000000'
+    }).then(canvas=>{
+        window.scrollTo(originalX, originalY);
+        canvas.toBlob(function(blob){
+            const url = URL.createObjectURL(blob);
+            const a=document.createElement("a");
+            a.href=url;
+            a.download="snapshot.png";
+            a.click();
+            URL.revokeObjectURL(url);
+            btn.disabled=false;
+            btn.innerText="📸 Snap";
+        });
+    });
+}
+document.addEventListener("DOMContentLoaded",()=>{
+    document.getElementById("snapshotPageBtn").onclick=downloadPageSnapshot;
+});
+</script>
+
 </body>
 </html>
