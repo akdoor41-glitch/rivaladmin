@@ -307,6 +307,7 @@
         .user-card-header { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border-color); }
         .user-card-header .user-name { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin: 0; }
         .user-card-header .user-email { font-size: 0.85rem; color: var(--text-secondary); word-break: break-all; }
+        .user-card-header .user-mobile { font-size: 0.9rem; color: #ffffff; font-weight: 600; }
         .user-card-body { padding: 1.25rem; flex-grow: 1; display: flex; flex-direction: column; gap: 0.75rem; }
         .user-card-info-row { display: flex; justify-content: space-between; align-items: center; }
         .user-card-info-row .label { font-size: 0.9rem; color: var(--text-secondary); }
@@ -514,6 +515,7 @@
             text-overflow: ellipsis;
             max-width: 200px; /* Adjust as needed */
         }
+        .withdrawal-card-user .mobile { font-size: 0.8rem; color: var(--text-secondary); }
         .withdrawal-card-amount {
             font-size: 1.6rem; /* Reduced font size */
             font-weight: 700;
@@ -733,6 +735,7 @@
         .deposit-card-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 0.75rem; gap: 1rem; }
         .deposit-card-user .name { font-weight: 600; color: var(--text-primary); display: block; }
         .deposit-card-user .email { font-size: 0.8rem; color: var(--text-secondary); word-break: break-all; }
+        .deposit-card-user .mobile { font-size: 0.75rem; color: var(--text-secondary); display:block; }
         .deposit-card-amount { font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 700; color: var(--success-color); line-height: 1; text-align: right; flex-shrink: 1; }
         .deposit-card-body .info-row { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.5rem; }
         .deposit-card-body .info-row .label { color: var(--text-secondary); }
@@ -1934,7 +1937,7 @@
                         <table class="table table-dark table-sm table-hover">
                             <thead>
 <tr>
-<th>Registered By</th>
+<th>Registered By</th><th>Slot</th>
 <th>Player 1 (Captain)</th>
 <th>Team Name</th>
 <th>Player 2</th>
@@ -2156,6 +2159,7 @@
              userModalTitle: getElement('userModalTitle'),
              userDetailUid: getElement('userDetailUid'),
              userDetailEmail: getElement('userDetailEmail'),
+            userDetailMobile: getElement('userDetailMobile'),
              userDetailName: getElement('userDetailName'),
              userDetailCreatedAt: getElement('userDetailCreatedAt'),
              userDetailDepositBalance: getElement('userDetailDepositBalance'),
@@ -2606,7 +2610,7 @@
                 if(elements.adminPageTitle) elements.adminPageTitle.textContent='Admin Panel';
                 document.title='Admin Panel';
                 if(elements.adminUserEmailDisplay) elements.adminUserEmailDisplay.textContent='';
-                Object.values(elements).filter(el => el.id?.startsWith('stat')).forEach(el => el.textContent = '--');
+                Object.values(elements).filter(el => el?.id?.startsWith('stat')).forEach(el => el.textContent = '--');
                 if(elements.pendingWithdrawalCountBadge) {
                     elements.pendingWithdrawalCountBadge.textContent='0';
                     elements.pendingWithdrawalCountBadge.style.display='none';
@@ -2617,7 +2621,7 @@
             setTimeout(() => showLoader(false), 150);
         }
 
-        async function loadDashboardStats() { if (!db || !isDesignatedAdmin(currentAdminUser)) return; console.log("Loading dashboard stats..."); clearStatus(elements.dashboardStatus); Object.values(elements).filter(el => el.id?.startsWith('stat')).forEach(el => el.textContent = '...'); const usersRef = ref(db, 'users'); const gamesRef = ref(db, 'games'); const promotionsRef = ref(db, 'promotions'); const tournamentsRef = ref(db, 'tournaments'); const withdrawalsRef = ref(db, 'withdrawals'); const activeTournamentsQuery = query(tournamentsRef, orderByChild('status')); const pendingWithdrawalsQuery = query(withdrawalsRef, orderByChild('status'), equalTo('pending')); const completedWithdrawalsQuery = query(withdrawalsRef, orderByChild('status'), equalTo('completed')); const rejectedWithdrawalsQuery = query(withdrawalsRef, orderByChild('status'), equalTo('rejected')); const results = await Promise.allSettled([ get(usersRef), get(gamesRef), get(promotionsRef), get(activeTournamentsQuery), get(pendingWithdrawalsQuery), get(completedWithdrawalsQuery), get(rejectedWithdrawalsQuery) ]); let errorsFound = false; const setError = (element) => { element.textContent = 'Error'; errorsFound = true; }; if (results[0].status === 'fulfilled') elements.statTotalUsers.textContent = results[0].value.exists() ? results[0].value.size : 0; else { console.error("Err Users:", results[0].reason); setError(elements.statTotalUsers); showStatus(elements.dashboardStatus, `Err Users: ${results[0].reason?.message}`, "warning"); } if (results[1].status === 'fulfilled') elements.statTotalGames.textContent = results[1].value.exists() ? results[1].value.size : 0; else { console.error("Err Games:", results[1].reason); setError(elements.statTotalGames); } if (results[2].status === 'fulfilled') elements.statTotalPromotions.textContent = results[2].value.exists() ? results[2].value.size : 0; else { console.error("Err Promos:", results[2].reason); setError(elements.statTotalPromotions); } if (results[3].status === 'fulfilled') { let activeCount = 0; let finishedCount = 0; if (results[3].value.exists()) { results[3].value.forEach(child => { const status = child.val()?.status; if (status === 'ongoing' || status === 'upcoming') activeCount++; else if (status === 'completed' || status === 'result' || status === 'cancelled') finishedCount++; }); } elements.statActiveTournaments.textContent = activeCount; elements.statFinishedTournaments.textContent = finishedCount; } else { console.error("Err Tournaments:", results[3].reason); setError(elements.statActiveTournaments); setError(elements.statFinishedTournaments); if (results[3].reason?.message?.includes("index")) showStatus(elements.dashboardStatus, "WARNING: Tournament query fail. Add '.indexOn': 'status' to '/tournaments' rules.", "warning", false); else showStatus(elements.dashboardStatus, `Err Tournaments: ${results[3].reason?.message}`, "warning"); } if (results[4].status === 'fulfilled') { const count = results[4].value.exists() ? results[4].value.size : 0; elements.statPendingWithdrawals.textContent = count; elements.pendingWithdrawalCountBadge.textContent = count; elements.pendingWithdrawalCountBadge.style.display = count > 0 ? 'inline-block' : 'none'; } else { console.error("Err Pending Withdrawals:", results[4].reason); setError(elements.statPendingWithdrawals); elements.pendingWithdrawalCountBadge.textContent = 'Err'; elements.pendingWithdrawalCountBadge.style.display = 'inline-block'; if (results[4].reason?.message?.includes("index")) showStatus(elements.dashboardStatus, "CRITICAL: Pending withdrawal query fail. Add '.indexOn': 'status' to '/withdrawals' rules.", "danger", false); else showStatus(elements.dashboardStatus, `Err Pending Withdrawals: ${results[4].reason?.message}`, "warning"); } if (results[5].status === 'fulfilled') elements.statCompletedWithdrawals.textContent = results[5].value.exists() ? results[5].value.size : 0; else { console.error("Err Completed Withdrawals:", results[5].reason); setError(elements.statCompletedWithdrawals); if (results[5].reason?.message?.includes("index")) showStatus(elements.dashboardStatus, "WARNING: Completed withdrawal query fail. Add '.indexOn': 'status' to '/withdrawals' rules.", "warning", false); } if (results[6].status === 'fulfilled') elements.statRejectedWithdrawals.textContent = results[6].value.exists() ? results[6].value.size : 0; else { console.error("Err Rejected Withdrawals:", results[6].reason); setError(elements.statRejectedWithdrawals); if (results[6].reason?.message?.includes("index")) showStatus(elements.dashboardStatus, "WARNING: Rejected withdrawal query fail. Add '.indexOn': 'status' to '/withdrawals' rules.", "warning", false); } renderNewUserChart(); console.log("Dashboard stats loading complete.", errorsFound ? "Errors occurred." : ""); }
+        async function loadDashboardStats() { if (!db || !isDesignatedAdmin(currentAdminUser)) return; console.log("Loading dashboard stats..."); clearStatus(elements.dashboardStatus); Object.values(elements).filter(el => el?.id?.startsWith('stat')).forEach(el => el.textContent = '...'); const usersRef = ref(db, 'users'); const gamesRef = ref(db, 'games'); const promotionsRef = ref(db, 'promotions'); const tournamentsRef = ref(db, 'tournaments'); const withdrawalsRef = ref(db, 'withdrawals'); const activeTournamentsQuery = query(tournamentsRef, orderByChild('status')); const pendingWithdrawalsQuery = query(withdrawalsRef, orderByChild('status'), equalTo('pending')); const completedWithdrawalsQuery = query(withdrawalsRef, orderByChild('status'), equalTo('completed')); const rejectedWithdrawalsQuery = query(withdrawalsRef, orderByChild('status'), equalTo('rejected')); const results = await Promise.allSettled([ get(usersRef), get(gamesRef), get(promotionsRef), get(activeTournamentsQuery), get(pendingWithdrawalsQuery), get(completedWithdrawalsQuery), get(rejectedWithdrawalsQuery) ]); let errorsFound = false; const setError = (element) => { element.textContent = 'Error'; errorsFound = true; }; if (results[0].status === 'fulfilled') elements.statTotalUsers.textContent = results[0].value.exists() ? results[0].value.size : 0; else { console.error("Err Users:", results[0].reason); setError(elements.statTotalUsers); showStatus(elements.dashboardStatus, `Err Users: ${results[0].reason?.message}`, "warning"); } if (results[1].status === 'fulfilled') elements.statTotalGames.textContent = results[1].value.exists() ? results[1].value.size : 0; else { console.error("Err Games:", results[1].reason); setError(elements.statTotalGames); } if (results[2].status === 'fulfilled') elements.statTotalPromotions.textContent = results[2].value.exists() ? results[2].value.size : 0; else { console.error("Err Promos:", results[2].reason); setError(elements.statTotalPromotions); } if (results[3].status === 'fulfilled') { let activeCount = 0; let finishedCount = 0; if (results[3].value.exists()) { results[3].value.forEach(child => { const status = child.val()?.status; if (status === 'ongoing' || status === 'upcoming') activeCount++; else if (status === 'completed' || status === 'result' || status === 'cancelled') finishedCount++; }); } elements.statActiveTournaments.textContent = activeCount; elements.statFinishedTournaments.textContent = finishedCount; } else { console.error("Err Tournaments:", results[3].reason); setError(elements.statActiveTournaments); setError(elements.statFinishedTournaments); if (results[3].reason?.message?.includes("index")) showStatus(elements.dashboardStatus, "WARNING: Tournament query fail. Add '.indexOn': 'status' to '/tournaments' rules.", "warning", false); else showStatus(elements.dashboardStatus, `Err Tournaments: ${results[3].reason?.message}`, "warning"); } if (results[4].status === 'fulfilled') { const count = results[4].value.exists() ? results[4].value.size : 0; elements.statPendingWithdrawals.textContent = count; elements.pendingWithdrawalCountBadge.textContent = count; elements.pendingWithdrawalCountBadge.style.display = count > 0 ? 'inline-block' : 'none'; } else { console.error("Err Pending Withdrawals:", results[4].reason); setError(elements.statPendingWithdrawals); elements.pendingWithdrawalCountBadge.textContent = 'Err'; elements.pendingWithdrawalCountBadge.style.display = 'inline-block'; if (results[4].reason?.message?.includes("index")) showStatus(elements.dashboardStatus, "CRITICAL: Pending withdrawal query fail. Add '.indexOn': 'status' to '/withdrawals' rules.", "danger", false); else showStatus(elements.dashboardStatus, `Err Pending Withdrawals: ${results[4].reason?.message}`, "warning"); } if (results[5].status === 'fulfilled') elements.statCompletedWithdrawals.textContent = results[5].value.exists() ? results[5].value.size : 0; else { console.error("Err Completed Withdrawals:", results[5].reason); setError(elements.statCompletedWithdrawals); if (results[5].reason?.message?.includes("index")) showStatus(elements.dashboardStatus, "WARNING: Completed withdrawal query fail. Add '.indexOn': 'status' to '/withdrawals' rules.", "warning", false); } if (results[6].status === 'fulfilled') elements.statRejectedWithdrawals.textContent = results[6].value.exists() ? results[6].value.size : 0; else { console.error("Err Rejected Withdrawals:", results[6].reason); setError(elements.statRejectedWithdrawals); if (results[6].reason?.message?.includes("index")) showStatus(elements.dashboardStatus, "WARNING: Rejected withdrawal query fail. Add '.indexOn': 'status' to '/withdrawals' rules.", "warning", false); } renderNewUserChart(); console.log("Dashboard stats loading complete.", errorsFound ? "Errors occurred." : ""); }
         async function loadGames() { if (!db || !isDesignatedAdmin(currentAdminUser)) return; const gamesRef = ref(db, 'games'); elements.gamesTableBody.innerHTML = tableLoadingPlaceholderHtml(4); gameDataCache = {}; clearStatus(elements.gamesStatus); try { const snapshot = await get(gamesRef); let tableHtml = ''; if (snapshot.exists()) { snapshot.forEach(childSnapshot => { const gameId = childSnapshot.key; const game = childSnapshot.val(); if (game && game.name) { gameDataCache[gameId] = game.name; tableHtml += `<tr><td><img src="${sanitizeHTML(game.imageUrl || 'https://via.placeholder.com/60x40/1E293B/94A3B8?text=N/A')}" alt="${sanitizeHTML(game.name)}" class="preview-img"></td><td>${sanitizeHTML(game.name)}</td><td><small class="text-muted">${sanitizeHTML(gameId)}</small> <i class="bi bi-clipboard copy-btn ms-1" data-target="td:nth-child(3) > small" title="Copy Game ID"></i></td><td class="action-buttons"><button class="btn btn-sm btn-info btn-edit-game" data-id="${sanitizeHTML(gameId)}" title="Edit Game"><i class="bi bi-pencil-square"></i></button><button class="btn btn-sm btn-danger btn-delete-game" data-id="${sanitizeHTML(gameId)}" title="Delete Game"><i class="bi bi-trash"></i></button></td></tr>`; } else { console.warn("Skipping invalid game data:", gameId, game); } }); } elements.gamesTableBody.innerHTML = tableHtml || `<tr><td colspan="4" class="text-center p-3 text-muted">No games found. Add one using the button above.</td></tr>`; if (elements.dashboardSection?.classList.contains('active')) { elements.statTotalGames.textContent = Object.keys(gameDataCache).length; } } catch (error) { console.error("Error loading games:", error); elements.gamesTableBody.innerHTML = `<tr><td colspan="4" class="text-center p-3 text-danger">Error loading games: ${error.message}. Check console & Rules.</td></tr>`; showStatus(elements.gamesStatus, `Error loading games: ${error.message}. Check Rules.`, 'danger', false); if (elements.dashboardSection?.classList.contains('active')) elements.statTotalGames.textContent = 'Error'; } }
 
         async function loadPromotions() {
@@ -2787,6 +2791,7 @@
                                 <div class="user-card-header">
                                     <h5 class="user-name">${sanitizeHTML(user.displayName || 'N/A')}</h5>
                                     <p class="user-email">${sanitizeHTML(user.email)}</p>
+                                    ${ (user.mobileNumber || user.phone || user.mobile) ? `<p class="user-mobile text-muted small mb-0">${sanitizeHTML(user.mobileNumber || user.phone || user.mobile)}</p>` : "" }
                                 </div>
                                 <div class="user-card-body">
                                     <div class="user-card-info-row">
@@ -2974,6 +2979,7 @@ async function loadNewUsers() {
                     const displayName = sanitizeHTML(user.displayName || 'N/A');
                     const email = sanitizeHTML(user.email || 'N/A');
                     const uid = sanitizeHTML(user.uid || '');
+                    const mobileText = sanitizeHTML(user.mobileNumber || user.phone || user.mobile || 'N/A');
 
                     let createdText = 'N/A';
                     if (user.createdAt) {
@@ -2993,7 +2999,7 @@ async function loadNewUsers() {
                             <td>${displayName}</td>
                             <td>${createdText}</td>
                             <td>${email}</td>
-                            <td>${uid}</td>
+                            <td>${mobileText}</td>
                         </tr>
                     `;
                 });
@@ -3007,7 +3013,7 @@ async function loadNewUsers() {
                                     <th>Name</th>
                                     <th>Registered (Date & Time)</th>
                                     <th>Email</th>
-                                    <th>UID</th>
+                                    <th>Mobile</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -3119,6 +3125,7 @@ async function loadNewUsers() {
                                     <div class="withdrawal-card-user">
                                         <p class="name">${sanitizeHTML(user.displayName)}</p>
                                         <p class="email">${sanitizeHTML(user.email)}</p>
+                                        ${ user.mobileNumber ? `<p class="mobile text-muted small mb-0">${sanitizeHTML(user.mobileNumber)}</p>` : "" }
                                     </div>
                                     <div class="withdrawal-card-amount">${formatCurrency(w.amount)}</div>
                                 </div>
@@ -3393,6 +3400,7 @@ async function loadNewUsers() {
                                 <div class="deposit-card-user">
                                     <span class="name">${sanitizeHTML(user.displayName)}</span>
                                     <span class="email">${sanitizeHTML(user.email)}</span>
+                                    ${ user.mobileNumber ? `<span class="mobile text-muted small d-block">${sanitizeHTML(user.mobileNumber)}</span>` : "" }
                                 </div>
                                 <div class="deposit-card-amount">₹${d.amount}</div>
                             </div>
@@ -3570,6 +3578,7 @@ async function loadNewUsers() {
                             <div class="deposit-card-user">
                                 <span class="name">${sanitizeHTML(user.displayName)}</span>
                                 <span class="email">${sanitizeHTML(user.email)}</span>
+                                ${ user.mobileNumber ? `<span class="mobile text-muted small d-block">${sanitizeHTML(user.mobileNumber)}</span>` : "" }
                             </div>
                             <div class="deposit-card-amount">${formatCurrency(d.amount || 0)}</div>
                         </div>
@@ -4839,7 +4848,8 @@ async function deleteTournament(tournamentId) { if (!db || !tournamentId || !isD
             }
         }
 
-        async function openUserModal(userId) { if (!db || !userId || !isDesignatedAdmin(currentAdminUser)) return; showLoader(true); clearStatus(elements.balanceUpdateStatus); elements.updateBalanceForm.reset(); elements.userDetailReferredBy.textContent = "N/A"; elements.userDetailReferredCount.textContent = "N/A"; try { let user; if (fullUserDataCache[userId] && fullUserDataCache[userId].status !== 'error' && fullUserDataCache[userId].status !== 'deleted') { user = fullUserDataCache[userId]; } else { const snapshot = await get(ref(db, `users/${userId}`)); if (!snapshot.exists()) throw new Error(`User ${userId} not found.`); user = snapshot.val(); user.uid = userId; fullUserDataCache[userId] = user; } elements.userModalTitle.textContent = `User: ${sanitizeHTML(user.displayName || 'N/A')}`; elements.userDetailUid.textContent = userId; elements.userDetailEmail.textContent = sanitizeHTML(user.email || 'N/A'); elements.userDetailName.textContent = sanitizeHTML(user.displayName || 'N/A'); elements.userDetailCreatedAt.textContent = formatDate(user.createdAt); elements.userDetailDepositBalance.textContent = formatCurrency(user.depositBalance); elements.userDetailWinning.textContent = formatCurrency(user.winningCash); elements.userDetailBonus.textContent = formatCurrency(user.bonusCash); elements.editUserUid.value = userId; elements.userDetailReferralCode.textContent = user.referralCode || 'N/A'; const status = user.status || 'active'; elements.userDetailStatus.textContent = status.charAt(0).toUpperCase() + status.slice(1); elements.userDetailStatus.className = `fw-bold text-${status === 'active' ? 'success' : 'danger'}`; elements.userBlockBtn.textContent = status === 'active' ? 'Block User' : 'Unblock User'; elements.userBlockBtn.className = `btn btn-sm ${status === 'active' ? 'btn-danger' : 'btn-success'}`; elements.userBlockBtn.dataset.id = userId; elements.userBlockBtn.dataset.action = status === 'active' ? 'block' : 'unblock'; elements.userDeleteBtn.dataset.id = userId; getModalInstance(elements.userModalEl)?.show(); } catch (error) { console.error("Error opening user modal:", error); showStatus(elements.usersStatus, `Error loading user: ${error.message}`, "danger", false); } finally { showLoader(false); } }
+        async function openUserModal(userId) { if (!db || !userId || !isDesignatedAdmin(currentAdminUser)) return; showLoader(true); clearStatus(elements.balanceUpdateStatus); elements.updateBalanceForm.reset(); elements.userDetailReferredBy.textContent = "N/A"; elements.userDetailReferredCount.textContent = "N/A"; try { let user; if (fullUserDataCache[userId] && fullUserDataCache[userId].status !== 'error' && fullUserDataCache[userId].status !== 'deleted') { user = fullUserDataCache[userId]; } else { const snapshot = await get(ref(db, `users/${userId}`)); if (!snapshot.exists()) throw new Error(`User ${userId} not found.`); user = snapshot.val(); user.uid = userId; fullUserDataCache[userId] = user; } elements.userModalTitle.textContent = `User: ${sanitizeHTML(user.displayName || 'N/A')}`; elements.userDetailUid.textContent = userId; elements.userDetailEmail.textContent = sanitizeHTML(user.email || 'N/A');
+        if (elements.userDetailMobile) { elements.userDetailMobile.textContent = sanitizeHTML(user.mobileNumber || user.phone || user.mobile || 'N/A'); } elements.userDetailName.textContent = sanitizeHTML(user.displayName || 'N/A'); elements.userDetailCreatedAt.textContent = formatDate(user.createdAt); elements.userDetailDepositBalance.textContent = formatCurrency(user.depositBalance); elements.userDetailWinning.textContent = formatCurrency(user.winningCash); elements.userDetailBonus.textContent = formatCurrency(user.bonusCash); elements.editUserUid.value = userId; elements.userDetailReferralCode.textContent = user.referralCode || 'N/A'; const status = user.status || 'active'; elements.userDetailStatus.textContent = status.charAt(0).toUpperCase() + status.slice(1); elements.userDetailStatus.className = `fw-bold text-${status === 'active' ? 'success' : 'danger'}`; elements.userBlockBtn.textContent = status === 'active' ? 'Block User' : 'Unblock User'; elements.userBlockBtn.className = `btn btn-sm ${status === 'active' ? 'btn-danger' : 'btn-success'}`; elements.userBlockBtn.dataset.id = userId; elements.userBlockBtn.dataset.action = status === 'active' ? 'block' : 'unblock'; elements.userDeleteBtn.dataset.id = userId; getModalInstance(elements.userModalEl)?.show(); } catch (error) { console.error("Error opening user modal:", error); showStatus(elements.usersStatus, `Error loading user: ${error.message}`, "danger", false); } finally { showLoader(false); } }
 
         async function openRegisteredPlayersModal(tournamentId, tournamentName) {
             if (!db || !tournamentId || !isDesignatedAdmin(currentAdminUser)) return;
@@ -4905,7 +4915,7 @@ results.forEach(res => {
                     tableHtml += ''
                         + '<tr>'
                         + '<td><div>' + sanitizeHTML(user.displayName || 'N/A') + '</div><small class="text-muted">' + sanitizeHTML(user.email || 'N/A') + '</small></td>'
-                        + '<td>' + player1Html + '</td>'
+                        + '<td>'+ (res.slotNumber||'N/A') +'</td>' + '<td>' + player1Html + '</td>'
                         + teammatesHtml
                         + '<td>' + formatDate(joinedAt) + '</td>'
                         + '</tr>';
