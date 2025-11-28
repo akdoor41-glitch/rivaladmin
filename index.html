@@ -930,7 +930,9 @@
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="users-section"><i class="bi bi-people"></i> Users</a> </li>
                     <li class="nav-item"><a class="nav-link" href="#" data-section="new-users-section"><i class="bi bi-person-plus-fill"></i> New Users</a></li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="user-analytics-section"><i class="bi bi-pie-chart-fill"></i> User Analytics</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="#" data-section="player-history-section"><i class="bi bi-people"></i> Player History <span class="badge bg-warning ms-1" id="playerHistoryNotificationBadge" style="display: none;">0</span></a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="notifications-section"><i class="bi bi-bell"></i> Notifications</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="#" data-section="user-notifications-section"><i class="bi bi-person-lines-fill"></i> User Notifications</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="transactions-section"><i class="bi bi-receipt"></i> Transactions</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="withdrawals-section"><i class="bi bi-cash-coin"></i> Withdrawals <span class="badge bg-danger ms-1" id="pendingWithdrawalCountBadge" style="display: none;">0</span></a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="deposit-section">
@@ -1292,6 +1294,21 @@
                     </div>
                 </div>
 
+                <div class="row mb-3">
+                    <div class="col-md-6"></div>
+                    <div class="col-md-6 d-flex justify-content-md-end">
+                        <div class="input-group input-group-sm" style="max-width: 320px;">
+                            <span class="input-group-text bg-dark border-secondary text-secondary">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input type="text"
+                                   id="newUsersSearchInput"
+                                   class="form-control form-control-sm bg-dark border-secondary text-white"
+                                   placeholder="Search by name, email or mobile">
+                        </div>
+                    </div>
+                </div>
+
                 <div id="newUsersStatus" class="mb-3"></div>
 
                 <div id="new-users-section-container"></div>
@@ -1334,6 +1351,31 @@
                  </div>
             </section>
 
+            <section id="player-history-section" class="section">
+                <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                    <h2>Player History</h2>
+                    <div class="d-flex flex-wrap gap-2">
+                        <div class="btn-group btn-group-sm" id="playerHistoryRangeFilters" role="group" aria-label="Time range">
+                            <button type="button" class="btn btn-outline-light active" data-range="all">All time</button>
+                            <button type="button" class="btn btn-outline-light" data-range="24h">Last 24 hrs</button>
+                            <button type="button" class="btn btn-outline-light" data-range="7d">Last 7 days</button>
+                        </div>
+                        <div class="btn-group btn-group-sm" id="playerHistoryTypeFilters" role="group" aria-label="Player type">
+                            <button type="button" class="btn btn-outline-light active" data-type="all">All Players</button>
+                            <button type="button" class="btn btn-outline-light" data-type="active">Active Players</button>
+                            <button type="button" class="btn btn-outline-light" data-type="latest">Latest</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="playerHistoryStatus" class="mb-2"></div>
+
+                <div id="playerHistoryContainer" class="table-responsive">
+                    <p class="text-muted">Loading player history...</p>
+                </div>
+            </section>
+
+
             <section id="notifications-section" class="section">
                 <h2>Send Notifications</h2>
                 <div class="card mb-4">
@@ -1367,7 +1409,22 @@
                 </div>
             </section>
 
-            
+
+            <section id="user-notifications-section" class="section">
+                <h2>User Notifications</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <p class="text-muted small mb-3">
+                            These are notifications you have sent individually to specific users.
+                        </p>
+                        <div id="userNotificationsHistory" class="table-responsive">
+                            <p class="text-muted">Loading user notifications...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
             <section id="transactions-section" class="section">
                 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                     <h2>User Transactions Summary</h2>
@@ -1831,7 +1888,7 @@
     <div class="modal fade" id="promotionModal" tabindex="-1"> <div class="modal-dialog"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="promotionModalTitle">Add New Promotion</h5> <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button> </div> <div class="modal-body"> <form id="promotionForm"> <input type="hidden" id="promotionEditId"> <div class="mb-3"> <label for="promoImageUrl" class="form-label">Image URL</label> <input type="url" class="form-control" id="promoImageUrl" required> <small class="text-muted">Direct image URL (e.g., from ImgBB).</small> </div> <div class="mb-3"> <label for="promoImageFile" class="form-label">Upload New Image (Optional - Overwrites URL)</label> <input class="form-control" type="file" id="promoImageFile" accept="image/*"> <div class="imgbb-upload-status mt-2"></div> </div> <div class="mb-3"> <label for="promoLink" class="form-label">Link (Optional)</label> <input type="url" class="form-control" id="promoLink"> </div> <div id="promotionStatus" class="mt-2"></div></form> </div> <div class="modal-footer"> <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> <button type="button" class="btn btn-primary" id="savePromotionBtn">Save Promotion</button> </div> </div> </div> </div>
     <div class="modal fade" id="addTournamentModal" tabindex="-1"> <div class="modal-dialog modal-lg"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="tournamentModalTitle">Add New Tournament</h5> <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button> </div> <div class="modal-body"> <form id="tournamentForm"> <input type="hidden" id="tournamentEditId"> <div class="row"> <div class="col-md-6 mb-3"> <label for="tournamentGame" class="form-label">Game</label> <select class="form-select" id="tournamentGame" required></select> </div> <div class="col-md-6 mb-3"> <label for="tournamentName" class="form-label">Tournament Name</label> <input type="text" class="form-control" id="tournamentName" required> </div> <div class="col-md-6 mb-3"> <label for="tournamentStartTime" class="form-label">Start Date & Time</label> <input type="datetime-local" class="form-control" id="tournamentStartTime" required> </div> <div class="col-md-6 mb-3"> <label for="tournamentStatus" class="form-label">Status</label> <select class="form-select" id="tournamentStatus" required> <option value="upcoming">Upcoming</option> <option value="ongoing">Ongoing</option> <option value="completed">Completed</option> <option value="result">Result</option> <option value="cancelled">Cancelled</option> </select> </div> <div class="col-md-4 mb-3"> <label for="tournamentEntryFee" class="form-label">Entry Fee (₹)</label> <input type="number" class="form-control" id="tournamentEntryFee" min="0" value="0" required step="any"> </div> <div class="col-md-4 mb-3"> <label for="tournamentPrizePool" class="form-label">Total Prize Pool (₹)</label> <input type="number" class="form-control" id="tournamentPrizePool" min="0" value="0" step="any"> </div> <div class="col-md-4 mb-3"> <label for="tournamentPerKill" class="form-label">Per Kill Prize (₹)</label> <input type="number" class="form-control" id="tournamentPerKill" min="0" value="0" step="any"> </div> <div class="col-md-4 mb-3"> <label for="tournamentMaxPlayers" class="form-label">Max Players (0 for Unlimited)</label> <input type="number" class="form-control" id="tournamentMaxPlayers" min="0" value="0" required> </div><div class="col-md-4 mb-3"> <label for="tournamentMode" class="form-label">Mode</label> <select class="form-select" id="tournamentMode"><option value="Solo">Solo</option><option value="Duo">Duo</option><option value="Squad">Squad</option></select> </div> <div class="col-md-4 mb-3"> <label for="tournamentTags" class="form-label">Tags (comma-separated)</label> <input type="text" class="form-control" id="tournamentTags" placeholder="e.g., Erangel, TPP"> </div>
                             <div class="col-12 mb-3"> <label for="tournamentBannerUrl" class="form-label">Banner URL (16:9)</label> <input type="url" class="form-control" id="tournamentBannerUrl" placeholder="https://example.com/banner.jpg"> </div>
-                            <div class="col-12 mb-3"> <label for="tournamentDescription" class="form-label">Description / Rules</label> <textarea class="form-control" id="tournamentDescription" rows="4"></textarea> </div> <div class="col-md-6 mb-3"> <label for="tournamentRoomId" class="form-label">Room ID</label> <input type="text" class="form-control" id="tournamentRoomId"> </div> <div class="col-md-6 mb-3"> <label for="tournamentRoomPassword" class="form-label">Room Password</label> <input type="text" class="form-control" id="tournamentRoomPassword"> </div> <div class="form-check mb-3 ms-2"> <input class="form-check-input" type="checkbox" id="tournamentShowIdPass"> <label class="form-check-label" for="tournamentShowIdPass"> Show ID/Pass?</label> </div> </div> <div id="addTournamentStatus" class="mt-2"></div></form> </div> <div class="modal-footer"> <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> <button type="button" class="btn btn-primary" id="saveTournamentBtn">Save Tournament</button> </div> </div> </div> </div>
+                            <div class="col-12 mb-3"> <label for="tournamentDescription" class="form-label">Description / Rules</label> <textarea class="form-control" id="tournamentDescription" rows="4"></textarea> </div> <div class="col-12 mb-3"><div class="card bg-dark border-secondary"><div class="card-body"><h5 class="card-title mb-3">Send Notification to Registered Players</h5><div class="mb-2"><label for="tournamentNotifTitle" class="form-label">Title</label><input type="text" class="form-control" id="tournamentNotifTitle" placeholder="Title for registered players"></div><div class="mb-2"><label for="tournamentNotifMessage" class="form-label">Message</label><textarea class="form-control" id="tournamentNotifMessage" rows="3" placeholder="Message for registered players"></textarea></div><div class="mb-2"><label for="tournamentNotifImageUrl" class="form-label">Image URL (Optional)</label><input type="url" class="form-control" id="tournamentNotifImageUrl" placeholder="https://example.com/image.png"></div><button type="button" class="btn btn-warning" id="sendTournamentNotificationBtn">Send Notification to Registered Players</button><div id="tournamentNotificationStatus" class="mt-2 small"></div></div></div></div> <div class="col-md-6 mb-3"> <label for="tournamentRoomId" class="form-label">Room ID</label> <input type="text" class="form-control" id="tournamentRoomId"> </div> <div class="col-md-6 mb-3"> <label for="tournamentRoomPassword" class="form-label">Room Password</label> <input type="text" class="form-control" id="tournamentRoomPassword"> </div> <div class="form-check mb-3 ms-2"> <input class="form-check-input" type="checkbox" id="tournamentShowIdPass"> <label class="form-check-label" for="tournamentShowIdPass"> Show ID/Pass?</label> </div> </div> <div id="addTournamentStatus" class="mt-2"></div></form> </div> <div class="modal-footer"> <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> <button type="button" class="btn btn-primary" id="saveTournamentBtn">Save Tournament</button> </div> </div> </div> </div>
     <div class="modal fade" id="userModal" tabindex="-1"> <div class="modal-dialog modal-lg modal-dialog-scrollable"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="userModalTitle">User Details</h5> <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button> </div> <div class="modal-body"> <div class="row"> <div class="col-md-6"> <h5>User Info</h5> <p><strong>UID:</strong> <small id="userDetailUid" class="text-muted user-uid-copy"></small> <i class="bi bi-clipboard copy-btn ms-1" data-target="#userDetailUid" title="Copy UID"></i></p> <p><strong>Email:</strong> <span id="userDetailEmail"></span></p> <p><strong>Name:</strong> <span id="userDetailName"></span></p> <p><strong>Created At:</strong> <span id="userDetailCreatedAt">N/A</span></p> <hr> <h5>Wallet</h5> <p>Deposit Balance: <span id="userDetailDepositBalance">₹0.00</span></p> <p>Winning Cash: <span id="userDetailWinning">₹0.00</span></p> <p>Bonus Cash: <span id="userDetailBonus">₹0.00</span></p> <hr> <h5>Referral Info</h5> <p><strong>Referral Code:</strong> <span id="userDetailReferralCode" class="text-info">N/A</span> <i class="bi bi-clipboard copy-btn ms-1" data-target="#userDetailReferralCode" title="Copy Code"></i></p> <p><strong>Referred By:</strong> <span id="userDetailReferredBy">N/A</span></p> <p><strong>Users Referred:</strong> <span id="userDetailReferredCount">N/A</span></p> </div> <div class="col-md-6"> <h5>Update Balance (Caution!)</h5> <form id="updateBalanceForm"> <input type="hidden" id="editUserUid"> <div class="row"> <div class="col-md-6 mb-3"> <label for="balanceUpdateAmount" class="form-label">Amount (+/-)</label> <input type="number" step="any" class="form-control" id="balanceUpdateAmount" placeholder="e.g., 50 or -20" required> </div> <div class="col-md-6 mb-3"> <label for="balanceUpdateType" class="form-label">Balance Type</label> <select id="balanceUpdateType" class="form-select" required> <option value="">--Select--</option> <option value="depositBalance">Deposit Balance</option> <option value="winningCash">Winning Cash</option> <option value="bonusCash">Bonus Cash</option> </select> </div> </div> <div class="mb-3"> <label for="balanceUpdateReason" class="form-label">Reason</label> <input type="text" class="form-control" id="balanceUpdateReason" placeholder="Manual Deposit, Correction etc." required> </div> <button type="submit" class="btn btn-warning">Update Balance</button> <div id="balanceUpdateStatus" class="mt-2"></div> </form> <hr> <h5>Status & Actions</h5> <p>Current Status: <span id="userDetailStatus" class="fw-bold"></span></p> <button class="btn btn-sm mb-2" id="userBlockBtn"></button> <button class="btn btn-sm btn-danger mb-2" id="userDeleteBtn"><i class="bi bi-trash"></i> Delete User (DB Only)</button> <hr>
                          <h5>Send Notification (Individual)</h5>
                          <form id="individualNotificationForm">
@@ -1944,6 +2001,7 @@
 <th>Player 3</th>
 <th>Player 4</th>
 <th>Joined At</th>
+<th>Actions</th>
 </tr>
 </thead>
                             <tbody id="registeredPlayersTableBody"></tbody>
@@ -2139,6 +2197,11 @@
              tournamentTagsInput: getElement('tournamentTags'),
              tournamentBannerUrlInput: getElement('tournamentBannerUrl'),
              tournamentDescriptionInput: getElement('tournamentDescription'),
+             tournamentNotifTitleInput: getElement('tournamentNotifTitle'),
+             tournamentNotifMessageInput: getElement('tournamentNotifMessage'),
+             tournamentNotifImageUrlInput: getElement('tournamentNotifImageUrl'),
+             tournamentNotificationStatus: getElement('tournamentNotificationStatus'),
+             sendTournamentNotificationBtn: getElement('sendTournamentNotificationBtn'),
              tournamentRoomIdInput: getElement('tournamentRoomId'),
              tournamentRoomPasswordInput: getElement('tournamentRoomPassword'),
              tournamentShowIdPassCheckbox: getElement('tournamentShowIdPass'),
@@ -2264,6 +2327,7 @@
              globalNotifImageUrlInput: getElement('globalNotifImageUrl'),
              globalNotificationStatus: getElement('globalNotificationStatus'),
              globalNotificationsHistory: getElement('globalNotificationsHistory'),
+             userNotificationsHistory: getElement('userNotificationsHistory'),
              individualNotificationForm: getElement('individualNotificationForm'),
              individualNotifTitleInput: getElement('individualNotifTitle'),
              individualNotifMessageInput: getElement('individualNotifMessage'),
@@ -2282,9 +2346,19 @@
              autoRankLeaderboardBtn: getElement('autoRankLeaderboardBtn'),
              leaderboardUserSearchInput: getElement('leaderboardUserSearchInput'),
              userAnalyticsSection: getElement('user-analytics-section'),
+             playerHistorySection: getElement('player-history-section'),
+             playerHistoryStatus: getElement('playerHistoryStatus'),
+             playerHistoryContainer: getElement('playerHistoryContainer'),
+             playerHistoryRangeFilters: getElement('playerHistoryRangeFilters'),
+             playerHistoryTypeFilters: getElement('playerHistoryTypeFilters'),
+             playerHistoryNotificationBadge: getElement('playerHistoryNotificationBadge'),
+             playerHistoryDetailsModalEl: getElement('playerHistoryDetailsModal'),
+             playerHistoryDetailsBody: getElement('playerHistoryDetailsBody'),
              topSpendersContainer: getElement('topSpendersContainer'),
              mostActiveContainer: getElement('mostActiveContainer'),
              inactiveUsersContainer: getElement('inactiveUsersContainer'),
+             newUsersSectionContainer: getElement('new-users-section-container'),
+             newUsersSearchInput: getElement('newUsersSearchInput'),
              themeSection: getElement('theme-section'),
              themeSettingsForm: getElement('themeSettingsForm'),
              themeStatus: getElement('themeStatus'),
@@ -2548,9 +2622,13 @@
                  case 'settings-section': loadSettings(); break;
                  case 'theme-section': loadThemeSettings(); break;
                  case 'notifications-section': loadGlobalNotificationHistory(); break;
+                 case 'user-notifications-section': loadUserNotificationsHistory(); break;
                  case 'tournament-management-section': populateTournamentManagementSelector(); break;
                  case 'leaderboard-mgt-section': loadLeaderboardManagementData(); break;
                  case 'user-analytics-section': loadUserAnalyticsData(); break;
+                 case 'player-history-section':
+                    loadPlayerHistory();
+                    break;
                  case 'transactions-section': loadTransactionsSectionData(); break;
                  default: console.warn("Unknown section requested:", sectionId); showStatus(elements.dashboardStatus, `Unknown section requested: ${sectionId}`, "warning");
              }
@@ -2791,7 +2869,7 @@
                                 <div class="user-card-header">
                                     <h5 class="user-name">${sanitizeHTML(user.displayName || 'N/A')}</h5>
                                     <p class="user-email">${sanitizeHTML(user.email)}</p>
-                                    ${ (user.mobileNumber || user.phone || user.mobile) ? `<p class="user-mobile text-muted small mb-0">${sanitizeHTML(user.mobileNumber || user.phone || user.mobile)}</p>` : "" }
+                                    ${ (user.mobileNumber || user.phone || user.mobile) ? `<p class="user-mobile">${sanitizeHTML(user.mobileNumber || user.phone || user.mobile)}</p>` : "" }
                                 </div>
                                 <div class="user-card-body">
                                     <div class="user-card-info-row">
@@ -3838,6 +3916,102 @@ async function loadReferrals(status = 'pending') {
         async function saveGame() { if (!db || !isDesignatedAdmin(currentAdminUser)) return; const gameId = elements.gameEditId.value; const isEditing = !!gameId; const name = elements.gameNameInput.value.trim(); const imageUrlInput = elements.gameImageUrlInput.value.trim(); const imageFile = elements.gameImageFileInput.files[0]; const statusEl = elements.gameStatus; const imgbbStatusEl = elements.gameForm?.querySelector('.imgbb-upload-status'); clearStatus(statusEl); if (imgbbStatusEl) { imgbbStatusEl.textContent = ''; imgbbStatusEl.style.display = 'none'; } if (!name) { showStatus(statusEl, "Game Name is required.", "warning"); return; } if (!imageUrlInput && !imageFile && !isEditing) { showStatus(statusEl, "Image URL or File Upload required for new game.", "warning"); return; } if (!imageUrlInput && !imageFile && isEditing) { showStatus(statusEl, "Image URL cannot be empty when editing.", "warning"); return; } showLoader(true); elements.saveGameBtn.disabled = true; let finalImageUrl = imageUrlInput; try { if (imageFile) { finalImageUrl = await uploadToImgBB(imageFile, imgbbStatusEl); } if (!finalImageUrl) { throw new Error("Image URL is missing after potential upload."); } const gameData = { name: name, imageUrl: finalImageUrl }; if (isEditing) { gameData.updatedAt = serverTimestamp(); const gameRef = ref(db, `games/${gameId}`); await update(gameRef, gameData); console.log("Game updated successfully:", gameId); showStatus(elements.gamesStatus, "Game updated successfully!", "success", 3000); } else { gameData.createdAt = serverTimestamp(); const newGameRef = push(ref(db, 'games')); await set(newGameRef, gameData); console.log("Game added successfully, key:", newGameRef.key); showStatus(elements.gamesStatus, "Game added successfully!", "success", 3000); } elements.gameForm.reset(); elements.gameEditId.value = ''; if (imgbbStatusEl) { imgbbStatusEl.textContent = ''; imgbbStatusEl.style.display = 'none'; } getModalInstance(elements.gameModalEl)?.hide(); loadGames(); } catch (error) { console.error("Error saving game:", error); showStatus(statusEl, `Error saving game: ${error.message}. Check console & Rules.`, "danger", false); if (imgbbStatusEl && !imgbbStatusEl.textContent.includes('Error')) { imgbbStatusEl.style.display = 'none'; } } finally { showLoader(false); elements.saveGameBtn.disabled = false; } }
         async function savePromotion() { if (!db || !isDesignatedAdmin(currentAdminUser)) return; const promoId = elements.promotionEditId.value; const isEditing = !!promoId; const promoLink = elements.promoLinkInput.value.trim(); const imageUrlInput = elements.promoImageUrlInput.value.trim(); const imageFile = elements.promoImageFileInput.files[0]; const statusEl = elements.promotionStatus; const imgbbStatusEl = elements.promotionForm?.querySelector('.imgbb-upload-status'); clearStatus(statusEl); if (imgbbStatusEl) { imgbbStatusEl.textContent = ''; imgbbStatusEl.style.display = 'none'; } if (!imageUrlInput && !imageFile && !isEditing) { showStatus(statusEl, "Image URL or File Upload required for new promotion.", "warning"); return; } if (!imageUrlInput && !imageFile && isEditing) { showStatus(statusEl, "Image URL cannot be empty when editing.", "warning"); return; } showLoader(true); elements.savePromotionBtn.disabled = true; let finalImageUrl = imageUrlInput; try { if (imageFile) { finalImageUrl = await uploadToImgBB(imageFile, imgbbStatusEl); } if (!finalImageUrl) { throw new Error("Image URL is missing after potential upload."); } const promoData = { imageUrl: finalImageUrl, link: promoLink || null }; if (isEditing) { promoData.updatedAt = serverTimestamp(); const promoRef = ref(db, `promotions/${promoId}`); await update(promoRef, promoData); console.log("Promotion updated successfully:", promoId); showStatus(elements.promotionsStatus, "Promotion updated successfully!", "success", 3000); } else { promoData.createdAt = serverTimestamp(); const newPromoRef = push(ref(db, 'promotions')); await set(newPromoRef, promoData); console.log("Promotion added successfully, key:", newPromoRef.key); showStatus(elements.promotionsStatus, "Promotion added successfully!", "success", 3000); } elements.promotionForm.reset(); elements.promotionEditId.value = ''; if (imgbbStatusEl) { imgbbStatusEl.textContent = ''; imgbbStatusEl.style.display = 'none'; } getModalInstance(elements.promotionModalEl)?.hide(); loadPromotions(); } catch (error) { console.error("Error saving promotion:", error); showStatus(statusEl, `Error saving promotion: ${error.message}. Check console & Rules.`, "danger", false); if (imgbbStatusEl && !imgbbStatusEl.textContent.includes('Error')) { imgbbStatusEl.style.display = 'none'; } } finally { showLoader(false); elements.savePromotionBtn.disabled = false; } }
 
+        
+        async function processTournamentCancellationRefund(tournamentId, existingTournament) {
+            if (!db || !isDesignatedAdmin(currentAdminUser)) return;
+            try {
+                const registeredPlayers = existingTournament && existingTournament.registeredPlayers ? existingTournament.registeredPlayers : {};
+                const playerIds = Object.keys(registeredPlayers || {});
+                const entryFee = Number(existingTournament && existingTournament.entryFee != null ? existingTournament.entryFee : 0);
+
+                // If nothing to refund, just mark as processed and exit
+                if (!playerIds.length || !entryFee || entryFee <= 0) {
+                    console.log(`No registered players or zero entry fee for tournament ${tournamentId}, skipping refunds.`);
+                    await update(ref(db, `tournaments/${tournamentId}`), {
+                        cancellationRefundProcessed: true
+                    });
+                    return;
+                }
+
+                // Fetch users in parallel
+                const userSnapshots = await Promise.all(
+                    playerIds.map(uid => get(ref(db, `users/${uid}`)))
+                );
+
+                const updates = {};
+
+                userSnapshots.forEach((snap, index) => {
+                    if (!snap.exists()) return;
+                    const uid = playerIds[index];
+                    const user = snap.val() || {};
+                    const regData = registeredPlayers[uid] || {};
+
+                    // Determine refund amount: prefer per-player stored amount, else use tournament entryFee
+                    let refundAmount = 0;
+                    if (typeof regData.entryFee === 'number') refundAmount = regData.entryFee;
+                    else if (typeof regData.entryFeePaid === 'number') refundAmount = regData.entryFeePaid;
+                    else refundAmount = entryFee;
+
+                    if (!refundAmount || refundAmount <= 0) return;
+
+                    // Try to respect how the user originally paid if that info exists
+                    let balanceTypeRaw = regData.balanceType || regData.usedBalanceType || regData.entryBalanceType || 'depositBalance';
+                    let balanceType = balanceTypeRaw;
+
+                    // Normalise possible balance type values so refunds go back to the same wallet
+                    if (balanceType === 'deposit' || balanceType === 'deposit_balance') balanceType = 'depositBalance';
+                    else if (balanceType === 'winning' || balanceType === 'win' || balanceType === 'winning_balance') balanceType = 'winningCash';
+                    else if (balanceType === 'bonus' || balanceType === 'bonus_balance') balanceType = 'bonusCash';
+
+
+                    let depositBalance = Number(user.depositBalance || 0);
+                    let winningCash = Number(user.winningCash || 0);
+                    let bonusCash = Number(user.bonusCash || 0);
+
+                    if (balanceType === 'winningCash') {
+                        winningCash += refundAmount;
+                    } else if (balanceType === 'bonusCash') {
+                        bonusCash += refundAmount;
+                    } else {
+                        // Default: refund into deposit balance
+                        balanceType = 'depositBalance';
+                        depositBalance += refundAmount;
+                    }
+
+                    updates[`users/${uid}/depositBalance`] = depositBalance;
+                    updates[`users/${uid}/winningCash`] = winningCash;
+                    updates[`users/${uid}/bonusCash`] = bonusCash;
+
+                    const newTxKey = push(ref(db, `transactions/${uid}`)).key;
+                    const balanceAfter =
+                        balanceType === 'winningCash' ? winningCash :
+                        balanceType === 'bonusCash' ? bonusCash :
+                        depositBalance;
+
+                    updates[`transactions/${uid}/${newTxKey}`] = {
+                        type: 'tournament_cancelled_refund',
+                        amount: refundAmount,
+                        description: 'Tournament cancelled',
+                        timestamp: serverTimestamp(),
+                        tournamentId: tournamentId,
+                        adminUid: currentAdminUser ? currentAdminUser.uid : null,
+                        balanceType: balanceType,
+                        balanceAfter: balanceAfter
+                    };
+                });
+
+                updates[`tournaments/${tournamentId}/cancellationRefundProcessed`] = true;
+
+                await update(ref(db), updates);
+                console.log(`Tournament ${tournamentId}: cancellation refunds processed for ${Object.keys(registeredPlayers || {}).length} players.`);
+            } catch (error) {
+                console.error(`Error processing cancellation refunds for tournament ${tournamentId}:`, error);
+                if (elements && elements.tournamentsStatus) {
+                    showStatus(elements.tournamentsStatus, `Error refunding cancelled tournament entries: ${error.message}`, 'danger', false);
+                }
+            }
+        }
+
         async function saveTournament(event) {
             event.preventDefault();
             if (!db || !isDesignatedAdmin(currentAdminUser)) return;
@@ -3885,6 +4059,10 @@ async function loadReferrals(status = 'pending') {
                     const existingSnap = await get(tRef);
                     const existingTournament = existingSnap.exists() ? existingSnap.val() : {};
 
+                    const previousStatus = existingTournament.status || 'upcoming';
+                    const alreadyRefunded = !!existingTournament.cancellationRefundProcessed;
+                    const newStatus = tournamentData.status;
+
                     if ((existingTournament.status === 'result' || existingTournament.status === 'completed') && tournamentData.status === 'upcoming') {
                         tournamentData.winningsCredited = null;
                         tournamentData.registeredPlayers = null;
@@ -3896,6 +4074,11 @@ async function loadReferrals(status = 'pending') {
                     }
 
                     await update(tRef, tournamentData);
+
+                    if (previousStatus !== 'cancelled' && newStatus === 'cancelled' && !alreadyRefunded) {
+                        await processTournamentCancellationRefund(currentEditingTournamentId, existingTournament);
+                    }
+
                     console.log("Tournament updated:", currentEditingTournamentId);
                     showStatus(elements.tournamentsStatus, "Tournament updated successfully!", "success", 3000);
                 } else {
@@ -3946,7 +4129,27 @@ document.addEventListener("click",(e)=>{
 });
 
 
-async function deleteTournament(tournamentId) { if (!db || !tournamentId || !isDesignatedAdmin(currentAdminUser)) return; if (!confirm(`DELETE Tournament ID: ${tournamentId}? Cannot be undone.`)) return; showLoader(true); const statusEl = elements.tournamentsStatus; clearStatus(statusEl); try { await remove(ref(db, `tournaments/${tournamentId}`)); console.log("Tournament deleted:", tournamentId); showStatus(statusEl, "Tournament deleted.", "success", 3000); loadTournaments(); loadDashboardStats(); } catch (error) { console.error("Error deleting tournament:", error); showStatus(statusEl, `Error: ${error.message}. Check Rules.`, "danger", false); } finally { showLoader(false); } }
+async function deleteTournament(tournamentId) { if (!db || !tournamentId || !isDesignatedAdmin(currentAdminUser)) return; if (!confirm(`DELETE Tournament ID: ${tournamentId}? Cannot be undone.`)) return; showLoader(true); const statusEl = elements.tournamentsStatus; clearStatus(statusEl); try { // Delete tournament-specific notifications (if any)
+                try {
+                    const notifMapSnap = await get(ref(db, `tournamentNotifications/${tournamentId}`));
+                    if (notifMapSnap.exists()) {
+                        const mappings = notifMapSnap.val() || {};
+                        const removalPromises = [];
+                        Object.values(mappings).forEach(entry => {
+                            if (entry && entry.userId && entry.notificationKey) {
+                                removalPromises.push(remove(ref(db, `users/${entry.userId}/notifications/${entry.notificationKey}`)));
+                            }
+                        });
+                        if (removalPromises.length) {
+                            await Promise.all(removalPromises);
+                        }
+                        await remove(ref(db, `tournamentNotifications/${tournamentId}`));
+                    }
+                } catch (err) {
+                    console.warn('Error cleaning tournament notifications for', tournamentId, err);
+                }
+
+                await remove(ref(db, `tournaments/${tournamentId}`)); console.log("Tournament deleted:", tournamentId); showStatus(statusEl, "Tournament deleted.", "success", 3000); loadTournaments(); loadDashboardStats(); } catch (error) { console.error("Error deleting tournament:", error); showStatus(statusEl, `Error: ${error.message}. Check Rules.`, "danger", false); } finally { showLoader(false); } }
 
         async function saveNewUser() {
             if (!auth || !db || !isDesignatedAdmin(currentAdminUser)) return;
@@ -4740,6 +4943,13 @@ async function deleteTournament(tournamentId) { if (!db || !tournamentId || !isD
             const rfKey = 'pendingReferralsCount';
             dbListeners[rfKey] = onValue(pendingRfQuery, (snapshot) => { const count = snapshot.exists() ? snapshot.size : 0; if (elements.pendingReferralCountBadge) { elements.pendingReferralCountBadge.textContent = count; elements.pendingReferralCountBadge.style.display = count > 0 ? 'inline-block' : 'none';} });
 
+                        // Realtime badge for Player History (new tournament joins)
+            const tournamentsRef = ref(db, 'tournaments');
+            const phKey = 'playerHistoryNewRegistrations';
+            dbListeners[phKey] = onValue(tournamentsRef, (snapshot) => {
+                updatePlayerHistoryBadgeFromSnapshot(snapshot);
+            });
+
             const supportChatsRef = ref(db, 'liveSupportChats');
             const scKey = 'liveSupportCount';
             dbListeners[scKey] = onValue(supportChatsRef, (snapshot) => {
@@ -4789,6 +4999,7 @@ async function deleteTournament(tournamentId) { if (!db || !tournamentId || !isD
                         case 'liveChat': if(currentChattingUserId) q = ref(db, `liveSupportChats/${currentChattingUserId}`); break;
                         case 'liveSupportCount': q = ref(db, 'liveSupportChats'); break;
                         case 'promoCodes': q = ref(db, 'promoCodes'); break; // New
+                        case 'playerHistoryNewRegistrations': q = ref(db, 'tournaments'); break;
                         default: console.warn("Unknown listener key:", key);
                     }
                     if(q && typeof dbListeners[key] === 'function') {
@@ -4918,6 +5129,7 @@ results.forEach(res => {
                         + '<td>'+ (res.slotNumber||'N/A') +'</td>' + '<td>' + player1Html + '</td>'
                         + teammatesHtml
                         + '<td>' + formatDate(joinedAt) + '</td>'
+                        + '<td><button class="btn btn-sm btn-outline-danger btn-remove-registered-player" data-user-id="' + (user.uid || '') + '" data-tournament-id="' + tournamentId + '"><i class="bi bi-trash-fill me-1"></i> Remove</button></td>'
                         + '</tr>';
 
                     currentPlayersListForPdf.push({
@@ -4946,7 +5158,111 @@ results.forEach(res => {
         }
 
 
-        async function getLogoBase64() {
+        
+        async function removeRegisteredPlayerFromTournament(tournamentId, userId) {
+            if (!db || !isDesignatedAdmin(currentAdminUser) || !tournamentId || !userId) return;
+
+            showConfirmationModal(
+                "Remove Player",
+                "Are you sure you want to remove this player from the tournament? Their entry fee will be returned.",
+                async () => {
+                    try {
+                        showLoader(true);
+
+                        const tRef = ref(db, `tournaments/${tournamentId}`);
+                        const tSnap = await get(tRef);
+                        if (!tSnap.exists()) {
+                            alert("Tournament not found.");
+                            return;
+                        }
+                        const t = tSnap.val() || {};
+                        const regs = t.registeredPlayers || {};
+                        const regData = regs[userId];
+                        if (!regData) {
+                            alert("Player is not registered in this tournament.");
+                            return;
+                        }
+
+                        const defaultEntryFee = Number(t.entryFee || 0);
+                        let refundAmount = 0;
+                        if (typeof regData.entryFee === 'number') refundAmount = regData.entryFee;
+                        else if (typeof regData.entryFeePaid === 'number') refundAmount = regData.entryFeePaid;
+                        else refundAmount = defaultEntryFee;
+
+                        const updates = {};
+
+                        if (refundAmount && refundAmount > 0) {
+                            const userRef = ref(db, `users/${userId}`);
+                            const userSnap = await get(userRef);
+                            if (!userSnap.exists()) {
+                                console.warn("User not found for refund", userId);
+                            } else {
+                                const user = userSnap.val() || {};
+
+                                let balanceTypeRaw = regData.balanceType || regData.usedBalanceType || regData.entryBalanceType || 'depositBalance';
+                    let balanceType = balanceTypeRaw;
+
+                    // Normalise possible balance type values so refunds go back to the same wallet
+                    if (balanceType === 'deposit' || balanceType === 'deposit_balance') balanceType = 'depositBalance';
+                    else if (balanceType === 'winning' || balanceType === 'win' || balanceType === 'winning_balance') balanceType = 'winningCash';
+                    else if (balanceType === 'bonus' || balanceType === 'bonus_balance') balanceType = 'bonusCash';
+
+
+                                let depositBalance = Number(user.depositBalance || 0);
+                                let winningCash = Number(user.winningCash || 0);
+                                let bonusCash = Number(user.bonusCash || 0);
+
+                                if (balanceType === 'winningCash') {
+                                    winningCash += refundAmount;
+                                } else if (balanceType === 'bonusCash') {
+                                    bonusCash += refundAmount;
+                                } else {
+                                    balanceType = 'depositBalance';
+                                    depositBalance += refundAmount;
+                                }
+
+                                updates[`users/${userId}/depositBalance`] = depositBalance;
+                                updates[`users/${userId}/winningCash`] = winningCash;
+                                updates[`users/${userId}/bonusCash`] = bonusCash;
+
+                                const newTxKey = push(ref(db, `transactions/${userId}`)).key;
+                                const balanceAfter =
+                                    balanceType === 'winningCash' ? winningCash :
+                                    balanceType === 'bonusCash' ? bonusCash :
+                                    depositBalance;
+
+                                updates[`transactions/${userId}/${newTxKey}`] = {
+                                    type: 'tournament_entry_refund',
+                                    amount: refundAmount,
+                                    description: 'Entry Fee Returned',
+                                    timestamp: serverTimestamp(),
+                                    tournamentId: tournamentId,
+                                    adminUid: currentAdminUser ? currentAdminUser.uid : null,
+                                    balanceType: balanceType,
+                                    balanceAfter: balanceAfter
+                                };
+                            }
+                        }
+
+                        // Remove player from registeredPlayers
+                        updates[`tournaments/${tournamentId}/registeredPlayers/${userId}`] = null;
+
+                        await update(ref(db), updates);
+                        console.log(`Player ${userId} removed from tournament ${tournamentId}. Refund:`, refundAmount);
+
+                        // Reload the registered players list in modal
+                        openRegisteredPlayersModal(tournamentId, t.name || "Tournament");
+                    } catch (error) {
+                        console.error("Error removing registered player:", error);
+                        showStatus(elements.registeredPlayersStatus, `Error removing player: ${error.message}`, "danger", false);
+                    } finally {
+                        showLoader(false);
+                    }
+                }
+            );
+        }
+
+async function getLogoBase64() {
             const logoUrl = appSettings.logoUrl;
             if (!logoUrl) return null;
 
@@ -4967,7 +5283,34 @@ results.forEach(res => {
             }
         }
 
-        async function downloadUsersAsPDF() {
+        // Dedicated click handler for Remove buttons in Registered Players modal
+        document.body.addEventListener('click', (event) => {
+            const btn = event.target.closest('.btn-remove-registered-player');
+            if (!btn) return;
+            event.preventDefault();
+            const tournamentId = btn.dataset.tournamentId || '';
+            const userId = btn.dataset.userId || btn.dataset.id || '';
+            if (!tournamentId || !userId) {
+                console.warn('Missing IDs for remove button', btn.dataset);
+                return;
+            }
+            removeRegisteredPlayerFromTournament(tournamentId, userId);
+        });
+
+
+        
+        // Player History "See Details" button handler
+        document.body.addEventListener('click', (event) => {
+            const detailsBtn = event.target.closest('.player-history-details-btn');
+            if (!detailsBtn) return;
+            event.preventDefault();
+            const userId = detailsBtn.dataset.userId || '';
+            if (userId) {
+                openPlayerHistoryDetailsModal(userId);
+            }
+        });
+
+async function downloadUsersAsPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
 
@@ -5144,6 +5487,78 @@ results.forEach(res => {
             }
         }
 
+
+        async function sendTournamentNotificationToRegisteredPlayers() {
+            if (!db || !isDesignatedAdmin(currentAdminUser)) return;
+            const statusEl = elements.tournamentNotificationStatus;
+            if (!statusEl) return;
+            clearStatus(statusEl);
+
+            const tournamentId = currentEditingTournamentId || elements.tournamentEditId.value;
+            if (!tournamentId) {
+                showStatus(statusEl, "Open a tournament in Edit mode to send notifications.", "warning");
+                return;
+            }
+
+            const title = (elements.tournamentNotifTitleInput?.value || '').trim();
+            const message = (elements.tournamentNotifMessageInput?.value || '').trim();
+            const imageUrl = (elements.tournamentNotifImageUrlInput?.value || '').trim();
+
+            if (!title || !message) {
+                showStatus(statusEl, "Title and Message are required.", "warning");
+                return;
+            }
+
+            showLoader(true);
+            try {
+                const regSnap = await get(ref(db, `tournaments/${tournamentId}/registeredPlayers`));
+                if (!regSnap.exists()) {
+                    showStatus(statusEl, "No registered players to notify for this tournament.", "warning");
+                    return;
+                }
+
+                const regPlayers = regSnap.val() || {};
+                const userIds = Object.keys(regPlayers).filter(uid => !!uid);
+                if (!userIds.length) {
+                    showStatus(statusEl, "No registered players to notify for this tournament.", "warning");
+                    return;
+                }
+
+                const baseNotification = {
+                    title,
+                    message,
+                    imageUrl: imageUrl || null,
+                    tournamentId,
+                    type: 'tournament',
+                    timestamp: serverTimestamp()
+                };
+
+                const tournamentNotifRootRef = ref(db, `tournamentNotifications/${tournamentId}`);
+                let count = 0;
+
+                for (const uid of userIds) {
+                    const userNotifRef = push(ref(db, `users/${uid}/notifications`));
+                    await set(userNotifRef, baseNotification);
+                    const mapRef = push(tournamentNotifRootRef);
+                    await set(mapRef, {
+                        userId: uid,
+                        notificationKey: userNotifRef.key
+                    });
+                    count++;
+                }
+
+                showStatus(statusEl, `Notification sent to ${count} registered player(s).`, "success");
+                if (elements.tournamentNotifTitleInput) elements.tournamentNotifTitleInput.value = '';
+                if (elements.tournamentNotifMessageInput) elements.tournamentNotifMessageInput.value = '';
+                if (elements.tournamentNotifImageUrlInput) elements.tournamentNotifImageUrlInput.value = '';
+            } catch (error) {
+                console.error("Error sending tournament notification:", error);
+                showStatus(statusEl, `Error: ${error.message}`, "danger", false);
+            } finally {
+                showLoader(false);
+            }
+        }
+
         async function loadGlobalNotificationHistory() {
             const historyEl = elements.globalNotificationsHistory;
             if (!historyEl) return;
@@ -5166,7 +5581,15 @@ results.forEach(res => {
 
                 let tableHtml = `
                     <table class="table table-dark table-hover mb-0">
-                        <thead><tr><th>Sent At</th><th>Title</th><th>Message</th><th>Image</th></tr></thead>
+                        <thead>
+                            <tr>
+                                <th>Sent At</th>
+                                <th>Title</th>
+                                <th>Message</th>
+                                <th>Image</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
                         <tbody>`;
 
                 notifications.forEach(notif => {
@@ -5175,6 +5598,14 @@ results.forEach(res => {
                         <td>${sanitizeHTML(notif.title)}</td>
                         <td style="white-space: pre-wrap; word-break: break-word; min-width: 250px;">${sanitizeHTML(notif.message)}</td>
                         <td>${notif.imageUrl ? `<a href="${sanitizeHTML(notif.imageUrl)}" target="_blank">View</a>` : '<span class="text-muted">None</span>'}</td>
+                        <td class="text-nowrap">
+                            <button class="btn btn-sm btn-outline-info btn-edit-notification" data-id="${notif.id}" title="Edit Notification">
+                                <i class="bi bi-pencil-fill me-1"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger btn-delete-notification" data-id="${notif.id}" title="Delete Notification">
+                                <i class="bi bi-trash-fill me-1"></i> Delete
+                            </button>
+                        </td>
                     </tr>`;
                 });
 
@@ -5186,7 +5617,243 @@ results.forEach(res => {
             }
         }
 
-        async function populateTournamentManagementSelector() {
+
+        async function editGlobalNotification(notifId) {
+            if (!db || !isDesignatedAdmin(currentAdminUser) || !notifId) return;
+            try {
+                showLoader(true);
+                const notifRef = ref(db, `notifications/${notifId}`);
+                const snapshot = await get(notifRef);
+                if (!snapshot.exists()) {
+                    alert("Notification not found.");
+                    return;
+                }
+                const data = snapshot.val() || {};
+
+                const newTitle = prompt("Edit notification title:", data.title || '');
+                if (newTitle === null) return;
+
+                const newMessage = prompt("Edit notification message:", data.message || '');
+                if (newMessage === null) return;
+
+                const newImageUrl = prompt("Edit image URL (optional):", data.imageUrl || '');
+                if (newImageUrl === null) return;
+
+                const updates = {
+                    title: newTitle.trim(),
+                    message: newMessage.trim(),
+                    imageUrl: newImageUrl.trim() ? newImageUrl.trim() : null,
+                    updatedAt: serverTimestamp()
+                };
+
+                await update(notifRef, updates);
+                showStatus(elements.globalNotificationStatus, "Notification updated successfully!", "success", 3000);
+                loadGlobalNotificationHistory();
+            } catch (error) {
+                console.error("Error editing notification:", error);
+                showStatus(elements.globalNotificationStatus, `Error updating notification: ${error.message}`, "danger", false);
+            } finally {
+                showLoader(false);
+            }
+        }
+
+        function deleteGlobalNotification(notifId) {
+            if (!db || !isDesignatedAdmin(currentAdminUser) || !notifId) return;
+
+            const rowButton = document.querySelector(`button.btn-delete-notification[data-id="${notifId}"]`);
+            const row = rowButton ? rowButton.closest('tr') : null;
+            const titleCell = row ? row.querySelector('td:nth-child(2)') : null;
+            const notifTitle = titleCell ? titleCell.textContent.trim() : '';
+
+            const message = notifTitle
+                ? `Are you sure you want to delete the notification "\${notifTitle}\"? This will remove it from the history list. Users who already received it will still see it in their app.`
+                : "Are you sure you want to delete this notification from history? Users who already received it will still see it in their app.";
+
+            showConfirmationModal(
+                "Delete Notification",
+                message,
+                async () => {
+                    try {
+                        showLoader(true);
+                        await remove(ref(db, `notifications/${notifId}`));
+                        showStatus(elements.globalNotificationStatus, "Notification deleted from history.", "success", 3000);
+                        loadGlobalNotificationHistory();
+                    } catch (error) {
+                        console.error("Error deleting notification:", error);
+                        showStatus(elements.globalNotificationStatus, `Error deleting notification: ${error.message}`, "danger", false);
+                    } finally {
+                        showLoader(false);
+                    }
+                }
+            );
+        }
+
+        
+
+        async function loadUserNotificationsHistory() {
+            const historyEl = elements.userNotificationsHistory;
+            if (!historyEl) return;
+            historyEl.innerHTML = tableLoadingPlaceholderHtml(6);
+
+            try {
+                const usersRef = ref(db, 'users');
+                const snapshot = await get(usersRef);
+
+                if (!snapshot.exists()) {
+                    historyEl.innerHTML = '<p class="text-center text-muted p-3">No users found in database.</p>';
+                    return;
+                }
+
+                const records = [];
+                snapshot.forEach(userSnap => {
+                    const userId = userSnap.key;
+                    const userData = userSnap.val() || {};
+                    const notifsSnap = userSnap.child && userSnap.child('notifications');
+
+                    if (!notifsSnap || !notifsSnap.exists()) return;
+
+                    notifsSnap.forEach(notifSnap => {
+                        const notifData = notifSnap.val() || {};
+                        records.push({
+                            id: notifSnap.key,
+                            userId,
+                            userName: userData.displayName || 'N/A',
+                            userEmail: userData.email || 'N/A',
+                            title: notifData.title || '',
+                            message: notifData.message || '',
+                            imageUrl: notifData.imageUrl || null,
+                            timestamp: notifData.timestamp || 0
+                        });
+                    });
+                });
+
+                if (!records.length) {
+                    historyEl.innerHTML = '<p class="text-center text-muted p-3">No individual notifications sent yet.</p>';
+                    return;
+                }
+
+                records.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+                let tableHtml = `
+                    <table class="table table-dark table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Sent At</th>
+                                <th>User</th>
+                                <th>Email</th>
+                                <th>Title</th>
+                                <th>Message</th>
+                                <th>Image</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+
+                records.forEach(rec => {
+                    tableHtml += `<tr>
+                        <td>${formatDate(rec.timestamp)}</td>
+                        <td>${sanitizeHTML(rec.userName)}</td>
+                        <td>${sanitizeHTML(rec.userEmail)}</td>
+                        <td>${sanitizeHTML(rec.title)}</td>
+                        <td style="white-space: pre-wrap; word-break: break-word; min-width: 220px;">${sanitizeHTML(rec.message)}</td>
+                        <td>${rec.imageUrl ? `<a href="${sanitizeHTML(rec.imageUrl)}" target="_blank">View</a>` : '<span class="text-muted">None</span>'}</td>
+                        <td class="text-nowrap">
+                            <button class="btn btn-sm btn-outline-info btn-edit-user-notification"
+                                    data-id="${rec.id}"
+                                    data-user-id="${rec.userId}"
+                                    title="Edit Notification">
+                                <i class="bi bi-pencil-fill me-1"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger btn-delete-user-notification"
+                                    data-id="${rec.id}"
+                                    data-user-id="${rec.userId}"
+                                    title="Delete Notification">
+                                <i class="bi bi-trash-fill me-1"></i> Delete
+                            </button>
+                        </td>
+                    </tr>`;
+                });
+
+                tableHtml += `</tbody></table>`;
+                historyEl.innerHTML = tableHtml;
+            } catch (error) {
+                console.error("Error loading user notifications:", error);
+                historyEl.innerHTML = `<p class="text-danger text-center p-3">Error loading user notifications: ${error.message}</p>`;
+            }
+        }
+
+        async function editUserNotification(userId, notifId) {
+            if (!db || !isDesignatedAdmin(currentAdminUser) || !userId || !notifId) return;
+
+            try {
+                showLoader(true);
+                const notifRef = ref(db, `users/${userId}/notifications/${notifId}`);
+                const snapshot = await get(notifRef);
+                if (!snapshot.exists()) {
+                    alert("Notification not found.");
+                    return;
+                }
+                const data = snapshot.val() || {};
+
+                const newTitle = prompt("Edit notification title:", data.title || '');
+                if (newTitle === null) return;
+
+                const newMessage = prompt("Edit notification message:", data.message || '');
+                if (newMessage === null) return;
+
+                const newImageUrl = prompt("Edit image URL (optional):", data.imageUrl || '');
+                if (newImageUrl === null) return;
+
+                const updates = {
+                    title: newTitle.trim(),
+                    message: newMessage.trim(),
+                    imageUrl: newImageUrl.trim() ? newImageUrl.trim() : null,
+                    updatedAt: serverTimestamp()
+                };
+
+                await update(notifRef, updates);
+                showStatus(elements.individualNotificationStatus, "User notification updated successfully!", "success", 3000);
+                loadUserNotificationsHistory();
+            } catch (error) {
+                console.error("Error editing user notification:", error);
+                showStatus(elements.individualNotificationStatus, `Error updating user notification: ${error.message}`, "danger", false);
+            } finally {
+                showLoader(false);
+            }
+        }
+
+        function deleteUserNotification(userId, notifId) {
+            if (!db || !isDesignatedAdmin(currentAdminUser) || !userId || !notifId) return;
+
+            const rowButton = document.querySelector(`button.btn-delete-user-notification[data-id="${notifId}"][data-user-id="${userId}"]`);
+            const row = rowButton ? rowButton.closest('tr') : null;
+            const titleCell = row ? row.querySelector('td:nth-child(4)') : null;
+            const title = titleCell ? titleCell.textContent.trim() : '';
+
+            const message = title
+                ? `Are you sure you want to delete the notification "${title}" for this user?`
+                : "Are you sure you want to delete this user notification?";
+
+            showConfirmationModal(
+                "Delete User Notification",
+                message,
+                async () => {
+                    try {
+                        showLoader(true);
+                        await remove(ref(db, `users/${userId}/notifications/${notifId}`));
+                        showStatus(elements.individualNotificationStatus, "User notification deleted.", "success", 3000);
+                        loadUserNotificationsHistory();
+                    } catch (error) {
+                        console.error("Error deleting user notification:", error);
+                        showStatus(elements.individualNotificationStatus, `Error deleting user notification: ${error.message}`, "danger", false);
+                    } finally {
+                        showLoader(false);
+                    }
+                }
+            );
+        }
+
+async function populateTournamentManagementSelector() {
             const selectEl = elements.tmsTournamentSelect;
             selectEl.innerHTML = '<option value="">Loading tournaments...</option>';
             elements.tmsPlayerListContainer.style.display = 'none';
@@ -5733,6 +6400,307 @@ results.forEach(res => {
                  }
             } catch(e) { elements.inactiveUsersContainer.innerHTML = `<p class="text-danger">Error: ${e.message}</p>`; }
 
+        }
+
+
+        // Player History notification tracking (sidebar badge + last-seen time)
+        const PLAYER_HISTORY_LAST_SEEN_KEY = 'admin_playerHistoryLastSeen';
+
+        function getPlayerHistoryLastSeenTimestamp() {
+            if (typeof window === 'undefined' || !window.localStorage) return 0;
+            const raw = window.localStorage.getItem(PLAYER_HISTORY_LAST_SEEN_KEY);
+            if (!raw) return 0;
+            const n = parseInt(raw, 10);
+            return Number.isNaN(n) ? 0 : n;
+        }
+
+        function setPlayerHistoryLastSeenTimestamp(ts) {
+            if (typeof window === 'undefined' || !window.localStorage) return;
+            const value = ts && !Number.isNaN(Number(ts)) ? Number(ts) : Date.now();
+            window.localStorage.setItem(PLAYER_HISTORY_LAST_SEEN_KEY, String(value));
+        }
+
+        function updatePlayerHistoryBadgeFromSnapshot(snapshot) {
+            if (!elements.playerHistoryNotificationBadge) return;
+            const badge = elements.playerHistoryNotificationBadge;
+
+            if (!snapshot || !snapshot.exists()) {
+                badge.style.display = 'none';
+                badge.textContent = '0';
+                return;
+            }
+
+            const lastSeen = getPlayerHistoryLastSeenTimestamp();
+            let newTournamentCount = 0;
+
+            snapshot.forEach(tSnap => {
+                const t = tSnap.val() || {};
+                const status = (t.status || '').toLowerCase();
+                // Only care about upcoming / ongoing tournaments
+                if (status !== 'upcoming' && status !== 'ongoing') return;
+
+                const reg = t.registeredPlayers || {};
+                let hasNew = false;
+
+                Object.keys(reg).forEach(uid => {
+                    if (hasNew) return;
+                    const r = reg[uid] || {};
+                    const joinedAt = Number(r.joinedAt || 0);
+                    if (joinedAt && joinedAt > lastSeen) {
+                        hasNew = true;
+                    }
+                });
+
+                if (hasNew) newTournamentCount++;
+            });
+
+            if (newTournamentCount > 0) {
+                badge.style.display = 'inline-block';
+                badge.textContent = String(newTournamentCount);
+            } else {
+                badge.style.display = 'none';
+                badge.textContent = '0';
+            }
+        }
+
+        // Player History state
+        let playerHistoryRange = 'all'; // 'all', '24h', '7d'
+        let playerHistoryType = 'all';  // 'all', 'active'
+        let playerHistoryPlayersCache = [];
+
+        
+        function applyPlayerHistoryFilters() {
+            if (!elements.playerHistoryContainer) return;
+            const tableBody = elements.playerHistoryContainer.querySelector('tbody');
+            if (!tableBody) return;
+
+            const rows = Array.from(tableBody.querySelectorAll('tr.player-history-row'));
+            if (!rows.length) return;
+
+            const now = Date.now();
+            const dayMs = 24 * 60 * 60 * 1000;
+
+            rows.forEach(row => {
+                const startTime = parseInt(row.dataset.startTime || '0', 10);
+                const status = row.dataset.matchStatus || '';
+                let visible = true;
+
+                // Time range filter
+                if (playerHistoryRange === '24h') {
+                    visible = visible && (startTime && (now - startTime <= dayMs));
+                } else if (playerHistoryRange === '7d') {
+                    visible = visible && (startTime && (now - startTime <= 7 * dayMs));
+                }
+
+                // Active players filter (only matches with upcoming/ongoing status)
+                if (playerHistoryType === 'active') {
+                    visible = visible && (status === 'upcoming' || status === 'ongoing');
+                }
+
+                row.style.display = visible ? '' : 'none';
+            });
+
+            // "Latest" filter: sort visible rows by latest join time
+            if (playerHistoryType === 'latest') {
+                const visibleRows = rows.filter(r => r.style.display !== 'none');
+                visibleRows.sort((a, b) => {
+                    const aj = parseInt(a.dataset.joinedAt || '0', 10);
+                    const bj = parseInt(b.dataset.joinedAt || '0', 10);
+                    return bj - aj;
+                });
+                visibleRows.forEach(r => tableBody.appendChild(r));
+            }
+        }
+
+
+        async function loadPlayerHistory() {
+            if (!db || !isDesignatedAdmin(currentAdminUser)) return;
+            if (!elements.playerHistoryContainer) return;
+
+            elements.playerHistoryContainer.innerHTML = tableLoadingPlaceholderHtml(6);
+            clearStatus(elements.playerHistoryStatus);
+
+            try {
+                const tournamentsSnap = await get(ref(db, 'tournaments'));
+                if (!tournamentsSnap.exists()) {
+                    elements.playerHistoryContainer.innerHTML = '<p class="text-center text-muted p-3">No tournaments found.</p>';
+                    playerHistoryPlayersCache = [];
+                    return;
+                }
+
+                const playerMap = {};
+
+                tournamentsSnap.forEach(tSnap => {
+                    const tId = tSnap.key;
+                    const t = tSnap.val() || {};
+                    const status = (t.status || '').toLowerCase();
+                    const startTime = t.startTime || 0;
+                    const gameName = (gameDataCache[t.gameId] && gameDataCache[t.gameId].name) || 'Unknown Game';
+                    const tournamentName = t.name || 'Tournament';
+
+                    const reg = t.registeredPlayers || {};
+                    Object.keys(reg).forEach(uid => {
+                        const r = reg[uid] || {};
+
+                        if (!playerMap[uid]) {
+                            playerMap[uid] = {
+                                uid,
+                                username: r.username || r.gameUid || 'N/A',
+                                gameUid: r.gameUid || 'N/A',
+                                tournaments: []
+                            };
+                        }
+
+                        playerMap[uid].tournaments.push({
+                            tournamentId: tId,
+                            tournamentName,
+                            gameName,
+                            slotNumber: r.slotNumber || 'N/A',
+                            status,
+                            startTime,
+                            joinedAt: r.joinedAt || 0
+                        });
+                    });
+                });
+
+                const players = Object.values(playerMap);
+                let latestJoinedAt = 0;
+
+                if (!players.length) {
+                    elements.playerHistoryContainer.innerHTML = '<p class="text-center text-muted p-3">No players have joined any tournaments yet.</p>';
+                    playerHistoryPlayersCache = [];
+                    return;
+                }
+
+                players.forEach(p => {
+                    p.tournaments.sort(
+                        (a, b) =>
+                            (b.startTime || 0) - (a.startTime || 0) ||
+                            (b.joinedAt || 0) - (a.joinedAt || 0)
+                    );
+                    p.latest = p.tournaments[0];
+                    if (p.latest && p.latest.joinedAt && p.latest.joinedAt > latestJoinedAt) {
+                        latestJoinedAt = p.latest.joinedAt;
+                    }
+                });
+
+                players.sort((a, b) => {
+                    const diff = b.tournaments.length - a.tournaments.length;
+                    if (diff !== 0) return diff;
+                    const aTime = (a.latest && a.latest.startTime) || 0;
+                    const bTime = (b.latest && b.latest.startTime) || 0;
+                    return bTime - aTime;
+                });
+
+                playerHistoryPlayersCache = players;
+
+                let tableHtml = `
+                    <table class="table table-dark table-hover table-sm align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Player</th>
+                                <th>Game UID</th>
+                                <th>Tournaments</th>
+                                <th>Game / Details</th>
+                                <th>Last Match Time</th>
+                                <th>Last Status</th>
+                                <th>Join Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                players.forEach(p => {
+                    const latest = p.latest || {};
+                    const statusRaw = (latest.status || '').toLowerCase();
+                    const statusLabel =
+                        statusRaw === 'upcoming' || statusRaw === 'ongoing' ? 'Upcoming' :
+                        (statusRaw === 'result' || statusRaw === 'completed') ? 'Completed' :
+                        statusRaw === 'cancelled' ? 'Cancelled' :
+                        latest.status || 'Unknown';
+
+                    tableHtml += `
+                        <tr class="player-history-row"
+                            data-start-time="${latest.startTime || 0}"
+                            data-match-status="${statusRaw}"
+                            data-user-id="${p.uid}"
+                            data-joined-at="${latest.joinedAt || 0}">
+                            <td>${sanitizeHTML(p.username)}</td>
+                            <td>${sanitizeHTML(p.gameUid)}</td>
+                            <td>${p.tournaments.length}</td>
+                            <td>
+                                ${sanitizeHTML(latest.gameName || 'Multiple Games')}
+                                <div class="mt-1">
+                                    <button type="button"
+                                        class="btn btn-sm btn-outline-info player-history-details-btn"
+                                        data-user-id="${p.uid}">
+                                        See Details
+                                    </button>
+                                </div>
+                            </td>
+                            <td>${formatDate(latest.startTime)}</td>
+                            <td>${sanitizeHTML(statusLabel)}</td>
+                            <td>${latest.joinedAt ? formatDate(latest.joinedAt) : "-"}</td>
+                        </tr>
+                    `;
+                });
+
+                tableHtml += '</tbody></table>';
+                elements.playerHistoryContainer.innerHTML = tableHtml;
+
+                // Mark everything currently visible in Player History as "seen"
+                const tsToSave = latestJoinedAt || Date.now();
+                setPlayerHistoryLastSeenTimestamp(tsToSave);
+
+                // When admin is viewing Player History, clear the sidebar bubble
+                if (elements.playerHistoryNotificationBadge) {
+                    elements.playerHistoryNotificationBadge.style.display = 'none';
+                    elements.playerHistoryNotificationBadge.textContent = '0';
+                }
+
+                applyPlayerHistoryFilters();
+            } catch (e) {
+                console.error("Error loading player history:", e);
+                elements.playerHistoryContainer.innerHTML = `<p class="text-danger text-center p-3">Error: ${e.message}</p>`;
+            }
+        }
+
+        function openPlayerHistoryDetailsModal(userId) {
+            if (!elements.playerHistoryDetailsModalEl || !elements.playerHistoryDetailsBody) return;
+            const player = (playerHistoryPlayersCache || []).find(p => p.uid === userId);
+            if (!player) return;
+
+            let html = `
+                <div class="mb-2">
+                  <strong>Player:</strong> ${sanitizeHTML(player.username)}<br>
+                  <strong>Game UID:</strong> ${sanitizeHTML(player.gameUid)}<br>
+                  <strong>Total Tournaments Joined:</strong> ${player.tournaments.length}
+                </div>
+                <hr/>
+            `;
+
+            player.tournaments.forEach((t, index) => {
+                const statusRaw = (t.status || '').toLowerCase();
+                const statusLabel =
+                    statusRaw === 'upcoming' || statusRaw === 'ongoing' ? 'Upcoming' :
+                    (statusRaw === 'result' || statusRaw === 'completed') ? 'Completed' :
+                    statusRaw === 'cancelled' ? 'Cancelled' :
+                    t.status || 'Unknown';
+
+                html += `
+                    <div class="mb-3">
+                        <div><strong>${index + 1}. ${sanitizeHTML(t.tournamentName)}</strong></div>
+                        <div>Game: ${sanitizeHTML(t.gameName || 'Unknown Game')}</div>
+                        <div>Slot: ${sanitizeHTML(String(t.slotNumber))}</div>
+                        <div>Match Time: ${formatDate(t.startTime)}</div>
+                        <div>Status: ${sanitizeHTML(statusLabel)}</div>
+                    </div>
+                    <hr/>
+                `;
+            });
+
+            elements.playerHistoryDetailsBody.innerHTML = html;
+            getModalInstance(elements.playerHistoryDetailsModalEl)?.show();
         }
 
         async function loadTransactionsSectionData() {
@@ -6401,6 +7369,7 @@ results.forEach(res => {
             elements.saveGameBtn?.addEventListener('click', saveGame);
             elements.savePromotionBtn?.addEventListener('click', savePromotion);
             elements.saveTournamentBtn?.addEventListener('click', saveTournament);
+            elements.sendTournamentNotificationBtn?.addEventListener('click', sendTournamentNotificationToRegisteredPlayers);
             elements.saveNewUserBtn?.addEventListener('click', saveNewUser);
             elements.appSettingsForm?.addEventListener('submit', saveSettings);
             elements.updateBalanceForm?.addEventListener('submit', updateUserBalance);
@@ -6409,6 +7378,30 @@ results.forEach(res => {
             elements.addNewTournamentBtn?.addEventListener('click', () => { currentEditingTournamentId = null; elements.tournamentForm?.reset(); if(elements.tournamentModalTitle) elements.tournamentModalTitle.textContent = "Add New Tournament"; clearStatus(elements.addTournamentStatus); populateGameSelect(); });
             elements.userBlockBtn?.addEventListener('click', toggleUserBlock);
             elements.userDeleteBtn?.addEventListener('click', (e) => { const userId = e.target.closest('button')?.dataset.id; if (userId) deleteUser(userId); });
+
+
+            // Player History filters
+            if (elements.playerHistoryRangeFilters) {
+                elements.playerHistoryRangeFilters.addEventListener('click', (e) => {
+                    const btn = e.target.closest('button[data-range]');
+                    if (!btn) return;
+                    elements.playerHistoryRangeFilters.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    playerHistoryRange = btn.dataset.range || 'all';
+                    applyPlayerHistoryFilters();
+                });
+            }
+
+            if (elements.playerHistoryTypeFilters) {
+                elements.playerHistoryTypeFilters.addEventListener('click', (e) => {
+                    const btn = e.target.closest('button[data-type]');
+                    if (!btn) return;
+                    elements.playerHistoryTypeFilters.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    playerHistoryType = btn.dataset.type || 'all';
+                    applyPlayerHistoryFilters();
+                });
+            }
 
             getElement('withdrawalFilters')?.addEventListener('click', (e) => {
                 const btn = e.target.closest('.filter-btn');
@@ -6435,6 +7428,10 @@ results.forEach(res => {
             elements.approveWithdrawalBtn?.addEventListener('click', processWithdrawalAction);
             elements.rejectWithdrawalBtn?.addEventListener('click', processWithdrawalAction);
             elements.userSearchInput?.addEventListener('input', filterUsers);
+
+            if (elements.newUsersSearchInput) {
+                elements.newUsersSearchInput.addEventListener('input', filterNewUsers);
+            }
 
             elements.usersSectionContainer?.addEventListener('click', (event) => {
                 const card = event.target.closest('.user-card');
@@ -6690,6 +7687,11 @@ results.forEach(res => {
                      else if (actionButton.classList.contains('btn-view-user')) openUserModal(targetId);
                      else if (actionButton.classList.contains('btn-delete-user')) deleteUser(targetId);
                      else if (actionButton.classList.contains('btn-view-registered')) openRegisteredPlayersModal(targetId, actionButton.dataset.name);
+                     else if (actionButton.classList.contains('btn-edit-notification')) editGlobalNotification(targetId);
+                     else if (actionButton.classList.contains('btn-delete-notification')) deleteGlobalNotification(targetId);
+                     else if (actionButton.classList.contains('btn-edit-user-notification')) editUserNotification(actionButton.dataset.userId || actionButton.dataset.userId || '', targetId);
+                     else if (actionButton.classList.contains('btn-delete-user-notification')) deleteUserNotification(actionButton.dataset.userId || actionButton.dataset.userId || '', targetId);
+                     else if (actionButton.classList.contains('btn-remove-registered-player')) removeRegisteredPlayerFromTournament(actionButton.dataset.tournamentId || '', actionButton.dataset.userId || '');
                      return;
                  }
                  if (copyIcon) { copyToClipboard(copyIcon.dataset.target); return; }
@@ -6732,6 +7734,33 @@ results.forEach(res => {
                     card.style.display = '';
                 } else {
                     card.style.display = 'none';
+                }
+            });
+        }
+
+
+        function filterNewUsers() {
+            if (!elements.newUsersSearchInput) return;
+            const searchTerm = elements.newUsersSearchInput.value.toLowerCase().trim();
+
+            const container = elements.newUsersSectionContainer || document.getElementById('new-users-section-container');
+            if (!container) return;
+
+            // Prefer rows with .new-user-row class, fallback to all tbody > tr
+            let rows = container.querySelectorAll('tr.new-user-row');
+            if (!rows.length) {
+                rows = container.querySelectorAll('tbody tr');
+            }
+
+            rows.forEach(row => {
+                const name = ((row.dataset && row.dataset.name) || row.querySelector('td:nth-child(2)')?.textContent || '').toLowerCase();
+                const email = ((row.dataset && row.dataset.email) || row.querySelector('td:nth-child(4)')?.textContent || '').toLowerCase();
+                const mobile = ((row.dataset && row.dataset.mobile) || row.querySelector('td:nth-child(5)')?.textContent || '').toLowerCase();
+
+                if (!searchTerm || name.includes(searchTerm) || email.includes(searchTerm) || mobile.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
                 }
             });
         }
@@ -7770,7 +8799,31 @@ function downloadPageSnapshot() {
 document.addEventListener("DOMContentLoaded",()=>{
     document.getElementById("snapshotPageBtn").onclick=downloadPageSnapshot;
 });
+
+
+
 </script>
+
+
+    <!-- Player History Details Modal -->
+    <div class="modal fade" id="playerHistoryDetailsModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content bg-dark text-light">
+          <div class="modal-header border-secondary">
+            <h5 class="modal-title">Player Tournament History</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div id="playerHistoryDetailsBody">
+              <!-- Filled dynamically -->
+            </div>
+          </div>
+          <div class="modal-footer border-secondary">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
 </body>
 </html>
