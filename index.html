@@ -6210,26 +6210,44 @@ async function populateTournamentManagementSelector() {
                         // - Otherwise (solo/duo), show player1/game UID as before.
                         let displayUnderGameUid = '';
                         try {
-                            if (tournament && Number(tournament.maxPlayers) >= 5) {
-                                const team = playerRegData.teammates || [];
-                                const p5 = team[3]; // teammate index 3 corresponds to Player5
-                                if (p5 && (p5.username || p5.uid)) {
-                                    displayUnderGameUid = sanitizeHTML(p5.username || p5.uid);
-                                } else {
-                                    // fallback to original sources
-                                    displayUnderGameUid = sanitizeHTML(playerRegData.username || playerRegData.player1Name || playerRegData.ingameName || playerRegData.playerName || user.displayName || playerRegData.gameUid || user.gameUid || 'N/A');
-                                }
+                            const team = playerRegData.teammates || [];
+                            const p5 = team[3]; // teammate index 3 corresponds to Player5 (Team Name)
+                            if (p5 && (p5.username || p5.uid)) {
+                                // Squad -> Team Name from Player5 username/uid
+                                displayUnderGameUid = sanitizeHTML(p5.username || p5.uid);
+                            } else if (playerRegData.teamName) {
+                                // Fallback explicit teamName field if present
+                                displayUnderGameUid = sanitizeHTML(playerRegData.teamName);
                             } else {
-                                displayUnderGameUid = sanitizeHTML(playerRegData.player1Name || playerRegData.ingameName || playerRegData.playerName || user.displayName || playerRegData.gameUid || user.gameUid || 'N/A');
+                                // Solo/Duo or missing team object -> Captain / Player1 style name first
+                                displayUnderGameUid = sanitizeHTML(
+                                    playerRegData.player1Name ||
+                                    playerRegData.ingameName ||
+                                    playerRegData.playerName ||
+                                    playerRegData.username ||
+                                    user.displayName ||
+                                    playerRegData.gameUid ||
+                                    user.gameUid ||
+                                    'N/A'
+                                );
                             }
                         } catch (e) {
-                            displayUnderGameUid = sanitizeHTML(playerRegData.player1Name || playerRegData.ingameName || playerRegData.playerName || user.displayName || playerRegData.gameUid || user.gameUid || 'N/A');
+                            displayUnderGameUid = sanitizeHTML(
+                                playerRegData.player1Name ||
+                                playerRegData.ingameName ||
+                                playerRegData.playerName ||
+                                playerRegData.username ||
+                                user.displayName ||
+                                playerRegData.gameUid ||
+                                user.gameUid ||
+                                'N/A'
+                            );
                         }
 
                         tableHtml += ''
-                            + '<tr data-uid="'+uid+'" data-per-kill-prize="'+perKillPrize+'">'
+                            + '<tr data-uid="'+uid+'" data-per-kill-prize="'+perKillPrize+'" data-display-name="'+displayUnderGameUid.replace(/"/g,'&quot;')+'">'
                             + '<td>' + sanitizeHTML(user.displayName || 'N/A') + '</td>'
-                            + '<td><small class="text-muted">' + displayUnderGameUid + '</small></td>'
+                            + '<td>' + displayUnderGameUid + '</td>'
                             + '<td>' + formatCurrency(perKillPrize) + '</td>'
                             + '<td><input type="number" class="form-control kills-input" min="0" value="0" ' + (tournament.winningsCredited ? 'disabled' : '') + '></td>'
                             + '<td><input type="number" class="form-control extra-amount-input" min="0" value="0" step="any" ' + (tournament.winningsCredited ? 'disabled' : '') + '></td>'
@@ -6260,10 +6278,11 @@ async function populateTournamentManagementSelector() {
             }
         }
 
-        async function creditAllWinnings() {
+        
+async function creditAllWinnings() {
             const tournamentId = elements.tmsTournamentSelect.value;
             const selectedOption = elements.tmsTournamentSelect.options[elements.tmsTournamentSelect.selectedIndex];
-            const tournamentName = selectedOption.dataset.name;
+            const tournamentName = selectedOption ? (selectedOption.dataset.name || 'Tournament') : 'Tournament';
 
             if (!tournamentId) {
                 showStatus(elements.tmsStatus, "Please select a tournament first.", "warning");
@@ -6277,101 +6296,119 @@ async function populateTournamentManagementSelector() {
             elements.creditWinningsBtn.disabled = true;
             clearStatus(elements.tmsStatus);
 
-            const playerRows = elements.tmsPlayerListTableBody.querySelectorAll('tr[data-uid]');
-            const updates = {};
-            let totalCredited = 0;
-            let playersCredited = 0;
+            try {
+                const playerRows = elements.tmsPlayerListTableBody.querySelectorAll('tr[data-uid]');
+                const updates = {};
+                let totalCredited = 0;
+                let playersCredited = 0;
 
-            const userIdsToUpdate = Array.from(playerRows).map(row => row.dataset.uid);
+                const userIdsToUpdate = Array.from(playerRows).map(row => row.dataset.uid);
+                const userRefPromises = userIdsToUpdate.map(uid => get(ref(db, `users/${uid}`)));
+                const userSnapshots = await Promise.all(userRefPromises);
+                const freshUserData = {};
+                userSnapshots.forEach(snap => {
+                    if (snap.exists()) {
+                        freshUserData[snap.key] = snap.val();
+                    }
+                });
 
-            const userRefPromises = userIdsToUpdate.map(uid => get(ref(db, `users/${uid}`)));
-            const userSnapshots = await Promise.all(userRefPromises);
-            const freshUserData = {};
-            userSnapshots.forEach(snap => {
-                if(snap.exists()) {
-                    freshUserData[snap.key] = snap.val();
-                }
-            });
+                const resultsSummary = [];
 
-            playerRows.forEach(row => {
-                const uid = row.dataset.uid;
-                const user = freshUserData[uid];
-                if (!user) {
-                    console.warn(`Skipping user ${uid}, data not found.`);
-                    return;
-                }
+                playerRows.forEach(row => {
+                    const uid = row.dataset.uid;
+                    const user = freshUserData[uid];
+                    if (!user) {
+                        console.warn(`Skipping user ${uid}, data not found.`);
+                        return;
+                    }
 
-                const perKillPrize = parseFloat(row.dataset.perKillPrize || 0);
-                const kills = parseInt(row.querySelector('.kills-input')?.value || 0);
-                const extraAmount = parseFloat(row.querySelector('.extra-amount-input')?.value || 0);
-                const rank = parseInt(row.querySelector('.rank-input')?.value) || 0;
-                const totalPrize = (kills * perKillPrize) + extraAmount;
+                    const perKillPrize = parseFloat(row.dataset.perKillPrize || 0);
+                    const kills = parseInt(row.querySelector('.kills-input')?.value || 0);
+                    const extraAmount = parseFloat(row.querySelector('.extra-amount-input')?.value || 0);
+                    const rankInput = parseInt(row.querySelector('.rank-input')?.value) || 0;
+                    const totalPrize = (kills * perKillPrize) + extraAmount;
 
-                const newMatchHistoryKey = push(ref(db, `users/${uid}/matchHistory`)).key;
-                const matchHistory = {
-                    tournamentId: tournamentId,
-                    tournamentName: tournamentName,
-                    rank: rank,
-                    kills: kills,
-                    earnings: totalPrize,
-                    date: serverTimestamp()
-                };
-                updates[`users/${uid}/matchHistory/${newMatchHistoryKey}`] = matchHistory;
+                    const displayName = row.dataset.displayName || user.displayName || 'Player';
 
-                updates[`users/${uid}/totalMatches`] = (user.totalMatches || 0) + 1;
-                updates[`users/${uid}/totalKills`] = (user.totalKills || 0) + kills;
-
-                if(rank === 1) {
-                   updates[`users/${uid}/wonMatches`] = (user.wonMatches || 0) + 1;
-                }
-
-                if (uid && totalPrize > 0) {
-                    const newWinningCash = (user.winningCash || 0) + totalPrize;
-                    const newTotalEarnings = (user.totalEarnings || 0) + totalPrize;
-
-                    updates[`users/${uid}/winningCash`] = newWinningCash;
-                    updates[`users/${uid}/totalEarnings`] = newTotalEarnings;
-
-                    const newTxKey = push(ref(db, `transactions/${uid}`)).key;
-                    updates[`transactions/${uid}/${newTxKey}`] = {
-                        type: 'tournament_winnings',
-                        amount: totalPrize,
-                        description: `Winnings: ${kills} Kills + ${formatCurrency(extraAmount)} in ${tournamentName}`,
-                        details: { kills, perKillPrize, extraAmount, rank },
-                        timestamp: serverTimestamp(),
+                    const newMatchHistoryKey = push(ref(db, `users/${uid}/matchHistory`)).key;
+                    updates[`users/${uid}/matchHistory/${newMatchHistoryKey}`] = {
                         tournamentId: tournamentId,
-                        adminUid: currentAdminUser.uid
+                        tournamentName: tournamentName,
+                        rank: rankInput,
+                        kills: kills,
+                        earnings: totalPrize,
+                        date: serverTimestamp()
                     };
-                    totalCredited += totalPrize;
-                    playersCredited++;
+
+                    updates[`users/${uid}/totalMatches`] = (user.totalMatches || 0) + 1;
+                    updates[`users/${uid}/totalKills`] = (user.totalKills || 0) + kills;
+
+                    if (rankInput === 1) {
+                        updates[`users/${uid}/wonMatches`] = (user.wonMatches || 0) + 1;
+                    }
+
+                    if (uid && totalPrize > 0) {
+                        const newWinningCash = (user.winningCash || 0) + totalPrize;
+                        const newTotalEarnings = (user.totalEarnings || 0) + totalPrize;
+
+                        updates[`users/${uid}/winningCash`] = newWinningCash;
+                        updates[`users/${uid}/totalEarnings`] = newTotalEarnings;
+
+                        const newTxKey = push(ref(db, `transactions/${uid}`)).key;
+                        updates[`transactions/${uid}/${newTxKey}`] = {
+                            type: 'tournament_winnings',
+                            amount: totalPrize,
+                            description: `Winnings: ${kills} Kills + ${formatCurrency(extraAmount)} in ${tournamentName}`,
+                            details: { kills, perKillPrize, extraAmount, rank: rankInput },
+                            timestamp: serverTimestamp(),
+                            tournamentId: tournamentId,
+                            adminUid: currentAdminUser.uid
+                        };
+
+                        totalCredited += totalPrize;
+                        playersCredited++;
+                    }
+
+                    resultsSummary.push({
+                        uid: uid,
+                        name: displayName,
+                        kills: kills,
+                        prize: totalPrize,
+                        rank: rankInput || 0
+                    });
+
+                    updates[`users/${uid}/joinedTournaments/${tournamentId}`] = null;
+                });
+
+                if (resultsSummary.length > 0) {
+                    resultsSummary.sort((a, b) => (b.prize || 0) - (a.prize || 0));
+                    resultsSummary.forEach((r, idx) => {
+                        r.rank = idx + 1;
+                    });
+                    updates[`tournaments/${tournamentId}/resultsSummary`] = resultsSummary;
                 }
 
-                updates[`users/${uid}/joinedTournaments/${tournamentId}`] = null;
-            });
+                if (Object.keys(updates).length > 0) {
+                    updates[`tournaments/${tournamentId}/winningsCredited`] = true;
+                    updates[`tournaments/${tournamentId}/status`] = 'result';
+                    updates[`tournaments/${tournamentId}/registeredPlayers`] = null;
 
-            if (Object.keys(updates).length > 0) {
-                updates[`tournaments/${tournamentId}/winningsCredited`] = true;
-                updates[`tournaments/${tournamentId}/status`] = 'result';
-                updates[`tournaments/${tournamentId}/registeredPlayers`] = null;
-
-                try {
                     await update(ref(db), updates);
                     showStatus(elements.tmsStatus, `Successfully credited ${formatCurrency(totalCredited)} to ${playersCredited} players and updated stats.`, "success");
                     loadPlayersForManagement(tournamentId);
-                } catch (error) {
-                    console.error("Error crediting winnings:", error);
-                    showStatus(elements.tmsStatus, `Critical Error: Failed to credit winnings. ${error.message}`, "danger", false);
-                    elements.creditWinningsBtn.disabled = false;
+                } else {
+                    showStatus(elements.tmsStatus, "No winnings or stats to update. All values are zero or blank.", "info");
                 }
-            } else {
-                 showStatus(elements.tmsStatus, "No winnings or stats to update. All values are zero or blank.", "info");
-                 elements.creditWinningsBtn.disabled = false;
+
+            } catch (error) {
+                console.error("Error crediting winnings:", error);
+                showStatus(elements.tmsStatus, `Critical Error: Failed to credit winnings. ${error.message}`, "danger", false);
+            } finally {
+                showLoader(false);
+                elements.creditWinningsBtn.disabled = false;
             }
-
-            showLoader(false);
         }
-
-        async function loadLeaderboardManagementData() {
+async function loadLeaderboardManagementData() {
             if (!db || !isDesignatedAdmin(currentAdminUser)) return;
             const tableBody = elements.leaderboardMgtTableBody;
             const statusEl = elements.leaderboardMgtStatus;
@@ -7400,9 +7437,10 @@ async function populateTournamentManagementSelector() {
         }
 
         // FEATURE 1: New function to credit winnings after review
-        async function creditReviewedWinnings(tournamentId) {
+        
+async function creditReviewedWinnings(tournamentId) {
             const selectedOption = elements.tmsTournamentSelect.options[elements.tmsTournamentSelect.selectedIndex];
-            const tournamentName = selectedOption.dataset.name;
+            const tournamentName = selectedOption ? (selectedOption.dataset.name || 'Tournament') : 'Tournament';
 
             if (!confirm(`Are you sure you want to credit these reviewed winnings for "${tournamentName}"? This cannot be undone.`)) {
                 return;
@@ -7417,25 +7455,31 @@ async function populateTournamentManagementSelector() {
                 const resultsSnap = await get(resultsRef);
 
                 if (!resultsSnap.exists()) {
-                    throw new Error("Could not find submitted results to process.");
+                    showStatus(elements.reviewResultsStatus, "No reviewed results found to credit.", 'warning', false);
+                    showLoader(false);
+                    elements.confirmCreditWinningsBtn.disabled = false;
+                    return;
                 }
+
                 const resultsData = resultsSnap.val();
-                
+                const userIds = Object.keys(resultsData);
+
                 const updates = {};
                 let totalCredited = 0;
                 let playersCredited = 0;
-                
-                const userIds = Object.keys(resultsData);
+
                 const userPromises = userIds.map(uid => get(ref(db, `users/${uid}`)));
                 const userSnapshots = await Promise.all(userPromises);
-                
+
                 const userDataMap = new Map();
                 userSnapshots.forEach(snap => {
                     if (snap.exists()) {
                         userDataMap.set(snap.key, snap.val());
                     }
                 });
-                
+
+                const resultsSummary = [];
+
                 for (const uid of userIds) {
                     const result = resultsData[uid];
                     const user = userDataMap.get(uid);
@@ -7444,7 +7488,7 @@ async function populateTournamentManagementSelector() {
                         console.warn(`Skipping winnings for deleted user: ${uid}`);
                         continue;
                     }
-                    
+
                     const newMatchHistoryKey = push(ref(db, `users/${uid}/matchHistory`)).key;
                     updates[`users/${uid}/matchHistory/${newMatchHistoryKey}`] = {
                         tournamentId: tournamentId,
@@ -7461,13 +7505,16 @@ async function populateTournamentManagementSelector() {
                     if (result.rank === 1) {
                         updates[`users/${uid}/wonMatches`] = (user.wonMatches || 0) + 1;
                     }
-                    
+
                     if (result.prize > 0) {
-                        updates[`users/${uid}/winningCash`] = (user.winningCash || 0) + result.prize;
-                        updates[`users/${uid}/totalEarnings`] = (user.totalEarnings || 0) + result.prize;
-                        
-                        const newTxKey = push(ref(db, `transactions/${uid}`)).key;
-                        updates[`transactions/${uid}/${newTxKey}`] = {
+                        const newWinningCash = (user.winningCash || 0) + result.prize;
+                        const newTotalEarnings = (user.totalEarnings || 0) + result.prize;
+
+                        updates[`users/${uid}/winningCash`] = newWinningCash;
+                        updates[`users/${uid}/totalEarnings`] = newTotalEarnings;
+
+                        const txKey = push(ref(db, `transactions/${uid}`)).key;
+                        updates[`transactions/${uid}/${txKey}`] = {
                             type: 'tournament_winnings',
                             amount: result.prize,
                             description: `Winnings from ${tournamentName}`,
@@ -7476,22 +7523,37 @@ async function populateTournamentManagementSelector() {
                             tournamentId: tournamentId,
                             adminUid: currentAdminUser.uid
                         };
+
                         totalCredited += result.prize;
                         playersCredited++;
                     }
+
+                    resultsSummary.push({
+                        uid: uid,
+                        name: result.name || user.displayName || 'Player',
+                        kills: result.kills || 0,
+                        prize: result.prize || 0,
+                        rank: result.rank || 0
+                    });
+                }
+
+                if (resultsSummary.length > 0) {
+                    resultsSummary.sort((a, b) => (b.prize || 0) - (a.prize || 0));
+                    resultsSummary.forEach((r, idx) => { r.rank = idx + 1; });
+                    updates[`tournaments/${tournamentId}/resultsSummary`] = resultsSummary;
                 }
 
                 updates[`tournaments/${tournamentId}/winningsCredited`] = true;
                 updates[`tournaments/${tournamentId}/status`] = 'result';
-                updates[`tournaments/${tournamentId}/playerResults`] = null; // Clear submitted results
-                updates[`tournaments/${tournamentId}/registeredPlayers`] = null; // Clear registered players
+                updates[`tournaments/${tournamentId}/playerResults`] = null;
+                updates[`tournaments/${tournamentId}/registeredPlayers`] = null;
 
                 await update(ref(db), updates);
 
                 showStatus(elements.tmsStatus, `Successfully credited ${formatCurrency(totalCredited)} to ${playersCredited} players.`, "success");
                 getModalInstance(elements.reviewResultsModalEl)?.hide();
-                populateTournamentManagementSelector(); // Refresh the dropdown
-                elements.tmsPlayerListContainer.style.display = 'none'; // Hide manual entry table
+                populateTournamentManagementSelector();
+                elements.tmsPlayerListContainer.style.display = 'none';
                 elements.reviewResultsBtn.style.display = 'none';
 
             } catch (error) {
@@ -7502,10 +7564,7 @@ async function populateTournamentManagementSelector() {
                 elements.confirmCreditWinningsBtn.disabled = false;
             }
         }
-
-
-        
-        // Tournament search filter: filters tournament cards by name (case-insensitive)
+// Tournament search filter: filters tournament cards by name (case-insensitive)
         function filterTournaments() {
             try {
                 const inputEl = elements.tournamentSearchInput;
