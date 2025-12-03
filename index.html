@@ -2867,12 +2867,12 @@
                             const playersDisplay = `${registeredCount}${maxPlayers}`;
 
                             cardsHtml += `
-                                <div class="tournament-card">
-                                    <div class="tournament-card-header">
+                                <div class="tournament-card" data-id="${t.id}">
+                                    <div class="tournament-card-header" data-id="${t.id}">
                                         <h5>${sanitizeHTML(t.name)}</h5>
                                         <p>${gameName}</p>
                                     </div>
-                                    <div class="tournament-card-body">
+                                    <div class="tournament-card-body" data-id="${t.id}">
                                         <div class="info-grid">
                                             <div class="info-item">
                                                 <span class="info-label">Entry Fee</span>
@@ -2896,7 +2896,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tournament-card-footer">
+                                    <div class="tournament-card-footer" data-id="${t.id}">
                                         <button class="btn btn-sm btn-outline-info btn-edit-tournament" data-id="${sanitizeHTML(tournamentId)}" title="Edit Tournament">
                                             <i class="bi bi-pencil-fill me-1"></i> Edit
                                         </button>
@@ -9122,5 +9122,141 @@ document.addEventListener("DOMContentLoaded",()=>{
       </div>
     </div>
 
+
+<script>
+// ========== Inline Start Time editing for tournament cards ==========(injected)
+// This script enables clicking the Start Time field on a tournament card to edit it inline.
+// It saves to DB using the existing `update(ref(db, ...))` Firebase pattern if available.
+// If your project uses a different save method, edit saveStartTimeToDb accordingly.
+
+(function enableInlineStartTimeEditing(){
+  function displayToDatetimeLocal(displayText) {
+    const d = new Date(displayText);
+    if(!isNaN(d)) {
+      const off = d.getTimezoneOffset() * 60000;
+      const local = new Date(d - off);
+      return local.toISOString().slice(0,16);
+    }
+    return '';
+  }
+
+  async function saveStartTimeToDb(tournamentId, newIsoLocal) {
+    try {
+      if(!tournamentId) throw new Error('Missing tournament id');
+      const localDate = new Date(newIsoLocal);
+      const timestampMs = localDate.getTime();
+      if (typeof update === 'function' && typeof ref === 'function' && typeof db !== 'undefined') {
+        await update(ref(db, `tournaments/${tournamentId}`), { startTime: timestampMs });
+      } else if (typeof fetch === 'function') {
+        // fallback: try REST PUT (adjust URL as necessary)
+        try {
+          await fetch('/api/tournaments/' + encodeURIComponent(tournamentId), {
+            method: 'PUT',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ startTime: timestampMs })
+          });
+        } catch(e){ console.warn('REST save failed', e); }
+      } else {
+        console.warn('No known DB save method available in this scope. Adapt saveStartTimeToDb.');
+      }
+      return { ok:true };
+    } catch(e){
+      console.error('Failed to save startTime', e);
+      return { ok:false, error: e };
+    }
+  }
+
+  const container = document.getElementById('tournaments-card-container') || document.body;
+  container.addEventListener('click', function(evt){
+    const infoItem = evt.target.closest('.info-item');
+    if(!infoItem) return;
+    const labelEl = infoItem.querySelector('.info-label');
+    if(!labelEl || !/start\s*time/i.test(labelEl.textContent || '')) return;
+
+    const card = evt.target.closest('.tournament-card');
+    if(!card) return;
+
+    if(card.querySelector('.inline-starttime-input')) return;
+
+    const currentValEl = infoItem.querySelector('.info-value') || infoItem;
+    if(!currentValEl) return;
+
+    const origHtml = currentValEl.innerHTML;
+    let tournamentId = card.getAttribute('data-id') || card.dataset.id || null;
+    if(!tournamentId) {
+      const titleEl = card.querySelector('.card-title, .tournament-title, h3, .title');
+      if(titleEl){
+        const m = (titleEl.textContent||'').match(/#([A-Za-z0-9_-]+)/);
+        if(m) tournamentId = m[1];
+      }
+      if(!tournamentId){
+        const g = card.querySelector('.game-uid');
+        if(g) tournamentId = g.textContent.trim();
+      }
+    }
+
+    const input = document.createElement('input');
+    input.type = 'datetime-local';
+    input.className = 'form-control inline-starttime-input';
+    input.style.maxWidth = '280px';
+    input.style.display = 'inline-block';
+    input.value = '';
+
+    const displayed = currentValEl.textContent.trim();
+    const parsed = displayToDatetimeLocal(displayed);
+    if(parsed) input.value = parsed;
+
+    currentValEl.innerHTML = '';
+    currentValEl.appendChild(input);
+    input.focus();
+
+    const hint = document.createElement('small');
+    hint.className = 'text-muted d-block mt-1';
+    hint.textContent = 'Press Enter to save or Esc to cancel';
+    currentValEl.appendChild(hint);
+
+    const finish = async (save) => {
+      input.removeEventListener('keydown', onKeydown);
+      input.removeEventListener('blur', onBlur);
+
+      if(save) {
+        const newIso = input.value;
+        if(!newIso) { currentValEl.innerHTML = origHtml; return; }
+        const res = await saveStartTimeToDb(tournamentId, newIso);
+        if(res.ok) {
+          try {
+            if(typeof formatDate === 'function') {
+              const ms = (new Date(newIso)).getTime();
+              currentValEl.textContent = formatDate(ms, true);
+            } else {
+              currentValEl.textContent = new Date(newIso).toLocaleString();
+            }
+          } catch(e){
+            currentValEl.textContent = new Date(newIso).toLocaleString();
+          }
+        } else {
+          currentValEl.innerHTML = origHtml;
+          alert('Failed to save date/time: ' + (res.error && res.error.message ? res.error.message : 'unknown'));
+        }
+      } else {
+        currentValEl.innerHTML = origHtml;
+      }
+    };
+
+    const onKeydown = (e) => {
+      if(e.key === 'Enter') { e.preventDefault(); finish(true); }
+      else if(e.key === 'Escape') { e.preventDefault(); finish(false); }
+    };
+    const onBlur = (e) => {
+      setTimeout(()=> { if(document.activeElement !== input) finish(true); }, 150);
+    };
+
+    input.addEventListener('keydown', onKeydown);
+    input.addEventListener('blur', onBlur);
+  });
+
+})(); // enableInlineStartTimeEditing
+// =====================================================================
+</script>
 </body>
 </html>
