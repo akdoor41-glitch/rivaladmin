@@ -2261,6 +2261,7 @@
              setupPasswordInput: getElement('setupPassword'),
              setupStatus: getElement('adminSetupStatus'),
              adminUserEmailDisplay: getElement('adminUserEmailShort'),
+             enableNotificationsBtn: getElement('enableNotificationsBtn'),
              adminLogoutBtn: getElement('adminLogoutBtnHeader'),
              sidebar: getElement('adminSidebar'),
              sidebarLinks: querySelAll('#adminSidebar .nav-link'),
@@ -5176,7 +5177,6 @@ async function deleteTournament(tournamentId) { if (!db || !tournamentId || !isD
         }
 
         function setupRealtimeAdminListeners() {
-
             if (!db || !currentAdminUser || !isDesignatedAdmin(currentAdminUser)) return;
             detachAllAdminListeners();
             const pendingWdQuery = query(ref(db, 'withdrawals'), orderByChild('status'), equalTo('pending'));
@@ -7797,6 +7797,15 @@ async function creditReviewedWinnings(tournamentId) {
 
         async function initializeAdminEventListeners() {
             console.log("Initializing Admin Event Listeners...");
+
+            if (elements.enableNotificationsBtn) {
+                elements.enableNotificationsBtn.addEventListener('click', async () => {
+                    console.log('Enable Notifications button clicked');
+                    await initBrowserNotifications();
+                });
+            }
+
+            console.log("Initializing Admin Event Listeners...");
             if (!auth || !db) { console.error("Cannot init listeners: Firebase not ready."); return; }
 
             const setupPasswordToggle = document.getElementById('toggleSetupPassword');
@@ -7959,6 +7968,18 @@ async function creditReviewedWinnings(tournamentId) {
                 document.querySelectorAll('.promotion-card.selected').forEach(c => c.classList.remove('selected'));
                 card.classList.add('selected');
             });
+
+                        if (elements.enableNotificationsBtn) {
+                elements.enableNotificationsBtn.addEventListener('click', async () => {
+                    await initBrowserNotifications();
+                    if (browserNotificationsEnabled) {
+                        elements.enableNotificationsBtn.innerHTML = '<i class="bi bi-bell-fill"></i><span class="d-none d-sm-inline ms-1">Notifications ON</span>';
+                        elements.enableNotificationsBtn.classList.remove('btn-outline-warning');
+                        elements.enableNotificationsBtn.classList.add('btn-success');
+                        elements.enableNotificationsBtn.disabled = true;
+                    }
+                });
+            }
 
             elements.globalNotificationForm?.addEventListener('submit', sendGlobalNotification);
             elements.individualNotificationForm?.addEventListener('submit', sendIndividualNotification);
@@ -9306,22 +9327,6 @@ document.addEventListener("DOMContentLoaded",()=>{
 });
 
 
-
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const enableBtn = document.getElementById("enableNotificationsBtn");
-            if (enableBtn) {
-                enableBtn.addEventListener("click", async () => {
-                    await initBrowserNotifications();
-                    if (browserNotificationsEnabled) {
-                        enableBtn.innerHTML = '<i class="bi bi-bell-fill"></i><span class="d-none d-sm-inline ms-1">Notifications ON</span>';
-                        enableBtn.classList.remove('btn-outline-warning');
-                        enableBtn.classList.add('btn-success');
-                        enableBtn.disabled = true;
-                    }
-                });
-            }
-        });
 
 </script>
 
