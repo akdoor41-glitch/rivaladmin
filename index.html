@@ -777,7 +777,53 @@
             border: 1px solid var(--border-color);
             cursor: pointer;
         }
-    </style>
+    
+        /* === Admin small popup notifications === */
+        #adminNotificationsWrapper {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .admin-notification-popup {
+            min-width: 260px;
+            max-width: 320px;
+            background: rgba(17, 24, 39, 0.95);
+            color: #f9fafb;
+            border-radius: 10px;
+            padding: 10px 14px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+            font-size: 13px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transform: translateX(120%);
+            opacity: 0;
+            transition: transform 0.25s ease-out, opacity 0.25s ease-out;
+            border-left: 4px solid #facc15;
+        }
+        .admin-notification-popup.deposit {
+            border-left-color: #22c55e;
+        }
+        .admin-notification-popup.withdrawal {
+            border-left-color: #3b82f6;
+        }
+        .admin-notification-popup-title {
+            font-weight: 600;
+            font-size: 13px;
+        }
+        .admin-notification-popup-body {
+            font-size: 12px;
+            color: #d1d5db;
+        }
+        .admin-notification-popup.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+</style>
 
 <style>
 #newUsersTableBody td small.text-muted {
@@ -798,6 +844,10 @@
 
 </head>
 <body>
+
+    <!-- Admin Notifications Wrapper -->
+    <div id="adminNotificationsWrapper"></div>
+
 
     <div id="adminLoader">
         <div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>
@@ -904,6 +954,10 @@
             </div>
             <div class="header-right">
                 <span class="admin-email-header" id="adminUserEmailShort"></span>
+                <button class="btn btn-sm btn-outline-warning" id="enableNotificationsBtn" title="Enable Browser Notifications">
+                    <i class="bi bi-bell"></i>
+                    <span class="d-none d-sm-inline ms-1">Enable Notifs</span>
+                </button>
                 <button class="btn btn-sm btn-outline-danger" id="adminLogoutBtnHeader" title="Logout">
                     <i class="bi bi-box-arrow-right"></i>
                     <span class="d-none d-sm-inline ms-1">Logout</span>
@@ -5022,15 +5076,169 @@ async function deleteTournament(tournamentId) { if (!db || !tournamentId || !isD
             }
         }
 
+        
+        // === Admin Realtime Notification Helpers ===
+        let lastPendingWithdrawalsCount = 0;
+        let lastPendingDepositsCount = 0;
+        let withdrawalsInitialized = false;
+        let depositsInitialized = false;
+
+        // Browser (system) notifications
+        let browserNotificationsEnabled = false;
+
+        async function initBrowserNotifications() {
+            try {
+                if (!("Notification" in window)) {
+                    console.warn("This browser does not support notifications.");
+                    alert("Aapke browser me notification support nahi hai.");
+                    return;
+                }
+
+                if (Notification.permission === "granted") {
+                    browserNotificationsEnabled = true;
+                    return;
+                }
+
+                if (Notification.permission !== "denied") {
+                    const permission = await Notification.requestPermission();
+                    if (permission === "granted") {
+                        browserNotificationsEnabled = true;
+                        alert("Notifications enabled! Ab nayi request pe notification aayega.");
+                    } else {
+                        alert("Aapne notification allow nahi kiya.");
+                    }
+                } else {
+                    alert("Aapne pehle notification block kar diye the. Browser settings me jaake allow karo.");
+                }
+            } catch (err) {
+                console.error("Notification init error:", err);
+            }
+        }
+
+        function sendBrowserNotification(title, body) {
+            try {
+                if (!("Notification" in window)) return;
+                if (Notification.permission !== "granted") return;
+
+                const n = new Notification(title, {
+                    body: body,
+                    // icon: "https://your-domain.com/logo.png",
+                    vibrate: [200, 100, 200],
+                    tag: "admin-wallet-notif"
+                });
+
+                n.onclick = () => {
+                    try { window.focus(); } catch (e) {}
+                };
+            } catch (err) {
+                console.error("sendBrowserNotification error:", err);
+            }
+        }
+
+        // Small in-page popup notification
+        function showAdminNotification(kind, bodyText) {
+            try {
+                const wrapper = document.getElementById('adminNotificationsWrapper');
+                if (!wrapper) {
+                    alert(bodyText);
+                    return;
+                }
+
+                const div = document.createElement('div');
+                div.className = 'admin-notification-popup ' + (kind === 'deposit' ? 'deposit' : 'withdrawal');
+
+                const title =
+                    kind === 'deposit'
+                        ? 'New Deposit Request'
+                        : 'New Withdrawal Request';
+
+                div.innerHTML = `
+                    <div class="admin-notification-popup-title">${sanitizeHTML(title)}</div>
+                    <div class="admin-notification-popup-body">${sanitizeHTML(bodyText)}</div>
+                `;
+
+                wrapper.appendChild(div);
+
+                requestAnimationFrame(() => {
+                    div.classList.add('show');
+                });
+
+                setTimeout(() => {
+                    div.classList.remove('show');
+                }, 4000);
+
+                setTimeout(() => {
+                    div.remove();
+                }, 4500);
+            } catch (e) {
+                console.warn('Admin notification error:', e);
+            }
+        }
+
         function setupRealtimeAdminListeners() {
+
             if (!db || !currentAdminUser || !isDesignatedAdmin(currentAdminUser)) return;
             detachAllAdminListeners();
             const pendingWdQuery = query(ref(db, 'withdrawals'), orderByChild('status'), equalTo('pending'));
             const wdKey = 'pendingWithdrawalsCount';
-            dbListeners[wdKey] = onValue(pendingWdQuery, (snapshot) => { const count = snapshot.exists() ? snapshot.size : 0; if (elements.pendingWithdrawalCountBadge) { elements.pendingWithdrawalCountBadge.textContent = count; elements.pendingWithdrawalCountBadge.style.display = count > 0 ? 'inline-block' : 'none'; } if (elements.dashboardSection?.classList.contains('active') && elements.statPendingWithdrawals) elements.statPendingWithdrawals.textContent = count; });
+            dbListeners[wdKey] = onValue(pendingWdQuery, (snapshot) => {
+            const count = snapshot.exists() ? snapshot.size : 0;
+
+            if (!withdrawalsInitialized) {
+                withdrawalsInitialized = true;
+                lastPendingWithdrawalsCount = count;
+            } else if (count > lastPendingWithdrawalsCount) {
+                const diff = count - lastPendingWithdrawalsCount;
+                const msg =
+                    diff === 1
+                        ? `1 new withdrawal request received. Total pending: ${count}.`
+                        : `${diff} new withdrawal requests received. Total pending: ${count}.`;
+
+                showAdminNotification('withdrawal', msg);
+                sendBrowserNotification('New Withdrawal Request', msg);
+
+                lastPendingWithdrawalsCount = count;
+            } else {
+                lastPendingWithdrawalsCount = count;
+            }
+
+            if (elements.pendingWithdrawalCountBadge) {
+                elements.pendingWithdrawalCountBadge.textContent = count;
+                elements.pendingWithdrawalCountBadge.style.display = count > 0 ? 'inline-block' : 'none';
+            }
+            if (elements.dashboardSection?.classList.contains('active') && elements.statPendingWithdrawals) {
+                elements.statPendingWithdrawals.textContent = count;
+            }
+        });
             const pendingDpQuery = query(ref(db, 'deposits'), orderByChild('status'), equalTo('pending'));
             const dpKey = 'pendingDepositsCount';
-            dbListeners[dpKey] = onValue(pendingDpQuery, (snapshot) => { const count = snapshot.exists() ? snapshot.size : 0; if (elements.pendingDepositCountBadge) { elements.pendingDepositCountBadge.textContent = count; elements.pendingDepositCountBadge.style.display = count > 0 ? 'inline-block' : 'none';} });
+            dbListeners[dpKey] = onValue(pendingDpQuery, (snapshot) => {
+            const count = snapshot.exists() ? snapshot.size : 0;
+
+            if (!depositsInitialized) {
+                depositsInitialized = true;
+                lastPendingDepositsCount = count;
+            } else if (count > lastPendingDepositsCount) {
+                const diff = count - lastPendingDepositsCount;
+                const msg =
+                    diff === 1
+                        ? `1 new deposit request received. Total pending: ${count}.`
+                        : `${diff} new deposit requests received. Total pending: ${count}.`;
+
+                showAdminNotification('deposit', msg);
+                sendBrowserNotification('New Deposit Request', msg);
+
+                lastPendingDepositsCount = count;
+            } else {
+                lastPendingDepositsCount = count;
+            }
+
+            if (elements.pendingDepositCountBadge) {
+                elements.pendingDepositCountBadge.textContent = count;
+                elements.pendingDepositCountBadge.style.display =
+                    count > 0 ? 'inline-block' : 'none';
+            }
+        });
             const pendingRfQuery = query(ref(db, 'pendingReferrals'), orderByChild('status'), equalTo('pending'));
             const rfKey = 'pendingReferralsCount';
             dbListeners[rfKey] = onValue(pendingRfQuery, (snapshot) => { const count = snapshot.exists() ? snapshot.size : 0; if (elements.pendingReferralCountBadge) { elements.pendingReferralCountBadge.textContent = count; elements.pendingReferralCountBadge.style.display = count > 0 ? 'inline-block' : 'none';} });
@@ -9098,6 +9306,22 @@ document.addEventListener("DOMContentLoaded",()=>{
 });
 
 
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const enableBtn = document.getElementById("enableNotificationsBtn");
+            if (enableBtn) {
+                enableBtn.addEventListener("click", async () => {
+                    await initBrowserNotifications();
+                    if (browserNotificationsEnabled) {
+                        enableBtn.innerHTML = '<i class="bi bi-bell-fill"></i><span class="d-none d-sm-inline ms-1">Notifications ON</span>';
+                        enableBtn.classList.remove('btn-outline-warning');
+                        enableBtn.classList.add('btn-success');
+                        enableBtn.disabled = true;
+                    }
+                });
+            }
+        });
 
 </script>
 
