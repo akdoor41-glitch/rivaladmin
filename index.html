@@ -5105,6 +5105,8 @@ async function deleteTournament(tournamentId) { if (!db || !tournamentId || !isD
                     if (permission === "granted") {
                         browserNotificationsEnabled = true;
                         alert("Notifications enabled! Ab nayi request pe notification aayega.");
+                        // send test notification so admin can confirm
+                        sendBrowserNotification('Notifications Enabled', 'Test notification from admin panel.');
                     } else {
                         alert("Aapne notification allow nahi kiya.");
                     }
@@ -5187,6 +5189,11 @@ async function deleteTournament(tournamentId) { if (!db || !tournamentId || !isD
             if (!withdrawalsInitialized) {
                 withdrawalsInitialized = true;
                 lastPendingWithdrawalsCount = count;
+                if (count > 0) {
+                    const msg = `You have ${count} pending withdrawal request(s).`;
+                    showAdminNotification('withdrawal', msg);
+                    sendBrowserNotification('Pending Withdrawals', msg);
+                }
             } else if (count > lastPendingWithdrawalsCount) {
                 const diff = count - lastPendingWithdrawalsCount;
                 const msg =
@@ -5218,6 +5225,11 @@ async function deleteTournament(tournamentId) { if (!db || !tournamentId || !isD
             if (!depositsInitialized) {
                 depositsInitialized = true;
                 lastPendingDepositsCount = count;
+                if (count > 0) {
+                    const msg = `You have ${count} pending deposit request(s).`;
+                    showAdminNotification('deposit', msg);
+                    sendBrowserNotification('Pending Deposits', msg);
+                }
             } else if (count > lastPendingDepositsCount) {
                 const diff = count - lastPendingDepositsCount;
                 const msg =
