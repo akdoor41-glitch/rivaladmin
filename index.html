@@ -777,53 +777,7 @@
             border: 1px solid var(--border-color);
             cursor: pointer;
         }
-    
-        /* === Admin small popup notifications === */
-        #adminNotificationsWrapper {
-            position: fixed;
-            top: 70px;
-            right: 20px;
-            z-index: 3000;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .admin-notification-popup {
-            min-width: 260px;
-            max-width: 320px;
-            background: rgba(17, 24, 39, 0.95);
-            color: #f9fafb;
-            border-radius: 10px;
-            padding: 10px 14px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-            font-size: 13px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            transform: translateX(120%);
-            opacity: 0;
-            transition: transform 0.25s ease-out, opacity 0.25s ease-out;
-            border-left: 4px solid #facc15;
-        }
-        .admin-notification-popup.deposit {
-            border-left-color: #22c55e;
-        }
-        .admin-notification-popup.withdrawal {
-            border-left-color: #3b82f6;
-        }
-        .admin-notification-popup-title {
-            font-weight: 600;
-            font-size: 13px;
-        }
-        .admin-notification-popup-body {
-            font-size: 12px;
-            color: #d1d5db;
-        }
-        .admin-notification-popup.show {
-            transform: translateX(0);
-            opacity: 1;
-        }
-</style>
+    </style>
 
 <style>
 #newUsersTableBody td small.text-muted {
@@ -844,10 +798,6 @@
 
 </head>
 <body>
-
-    <!-- Admin Notifications Wrapper -->
-    <div id="adminNotificationsWrapper"></div>
-
 
     <div id="adminLoader">
         <div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>
@@ -954,10 +904,6 @@
             </div>
             <div class="header-right">
                 <span class="admin-email-header" id="adminUserEmailShort"></span>
-                <button class="btn btn-sm btn-outline-warning" id="enableNotificationsBtn" title="Enable Browser Notifications">
-                    <i class="bi bi-bell"></i>
-                    <span class="d-none d-sm-inline ms-1">Enable Notifs</span>
-                </button>
                 <button class="btn btn-sm btn-outline-danger" id="adminLogoutBtnHeader" title="Logout">
                     <i class="bi bi-box-arrow-right"></i>
                     <span class="d-none d-sm-inline ms-1">Logout</span>
@@ -2261,7 +2207,6 @@
              setupPasswordInput: getElement('setupPassword'),
              setupStatus: getElement('adminSetupStatus'),
              adminUserEmailDisplay: getElement('adminUserEmailShort'),
-             enableNotificationsBtn: getElement('enableNotificationsBtn'),
              adminLogoutBtn: getElement('adminLogoutBtnHeader'),
              sidebar: getElement('adminSidebar'),
              sidebarLinks: querySelAll('#adminSidebar .nav-link'),
@@ -5077,180 +5022,15 @@ async function deleteTournament(tournamentId) { if (!db || !tournamentId || !isD
             }
         }
 
-        
-        // === Admin Realtime Notification Helpers ===
-        let lastPendingWithdrawalsCount = 0;
-        let lastPendingDepositsCount = 0;
-        let withdrawalsInitialized = false;
-        let depositsInitialized = false;
-
-        // Browser (system) notifications
-        let browserNotificationsEnabled = false;
-
-        async function initBrowserNotifications() {
-            try {
-                if (!("Notification" in window)) {
-                    console.warn("This browser does not support notifications.");
-                    alert("Aapke browser me notification support nahi hai.");
-                    return;
-                }
-
-                if (Notification.permission === "granted") {
-                    browserNotificationsEnabled = true;
-                    return;
-                }
-
-                if (Notification.permission !== "denied") {
-                    const permission = await Notification.requestPermission();
-                    if (permission === "granted") {
-                        browserNotificationsEnabled = true;
-                        alert("Notifications enabled! Ab nayi request pe notification aayega.");
-                        // send test notification so admin can confirm
-                        sendBrowserNotification('Notifications Enabled', 'Test notification from admin panel.');
-                    } else {
-                        alert("Aapne notification allow nahi kiya.");
-                    }
-                } else {
-                    alert("Aapne pehle notification block kar diye the. Browser settings me jaake allow karo.");
-                }
-            } catch (err) {
-                console.error("Notification init error:", err);
-            }
-        }
-
-        function sendBrowserNotification(title, body) {
-            try {
-                if (!("Notification" in window)) return;
-                if (Notification.permission !== "granted") return;
-
-                const n = new Notification(title, {
-                    body: body,
-                    // icon: "https://your-domain.com/logo.png",
-                    vibrate: [200, 100, 200],
-                    tag: "admin-wallet-notif"
-                });
-
-                n.onclick = () => {
-                    try { window.focus(); } catch (e) {}
-                };
-            } catch (err) {
-                console.error("sendBrowserNotification error:", err);
-            }
-        }
-
-        // Small in-page popup notification
-        function showAdminNotification(kind, bodyText) {
-            try {
-                const wrapper = document.getElementById('adminNotificationsWrapper');
-                if (!wrapper) {
-                    alert(bodyText);
-                    return;
-                }
-
-                const div = document.createElement('div');
-                div.className = 'admin-notification-popup ' + (kind === 'deposit' ? 'deposit' : 'withdrawal');
-
-                const title =
-                    kind === 'deposit'
-                        ? 'New Deposit Request'
-                        : 'New Withdrawal Request';
-
-                div.innerHTML = `
-                    <div class="admin-notification-popup-title">${sanitizeHTML(title)}</div>
-                    <div class="admin-notification-popup-body">${sanitizeHTML(bodyText)}</div>
-                `;
-
-                wrapper.appendChild(div);
-
-                requestAnimationFrame(() => {
-                    div.classList.add('show');
-                });
-
-                setTimeout(() => {
-                    div.classList.remove('show');
-                }, 4000);
-
-                setTimeout(() => {
-                    div.remove();
-                }, 4500);
-            } catch (e) {
-                console.warn('Admin notification error:', e);
-            }
-        }
-
         function setupRealtimeAdminListeners() {
             if (!db || !currentAdminUser || !isDesignatedAdmin(currentAdminUser)) return;
             detachAllAdminListeners();
             const pendingWdQuery = query(ref(db, 'withdrawals'), orderByChild('status'), equalTo('pending'));
             const wdKey = 'pendingWithdrawalsCount';
-            dbListeners[wdKey] = onValue(pendingWdQuery, (snapshot) => {
-            const count = snapshot.exists() ? snapshot.size : 0;
-
-            if (!withdrawalsInitialized) {
-                withdrawalsInitialized = true;
-                lastPendingWithdrawalsCount = count;
-                if (count > 0) {
-                    const msg = `You have ${count} pending withdrawal request(s).`;
-                    showAdminNotification('withdrawal', msg);
-                    sendBrowserNotification('Pending Withdrawals', msg);
-                }
-            } else if (count > lastPendingWithdrawalsCount) {
-                const diff = count - lastPendingWithdrawalsCount;
-                const msg =
-                    diff === 1
-                        ? `1 new withdrawal request received. Total pending: ${count}.`
-                        : `${diff} new withdrawal requests received. Total pending: ${count}.`;
-
-                showAdminNotification('withdrawal', msg);
-                sendBrowserNotification('New Withdrawal Request', msg);
-
-                lastPendingWithdrawalsCount = count;
-            } else {
-                lastPendingWithdrawalsCount = count;
-            }
-
-            if (elements.pendingWithdrawalCountBadge) {
-                elements.pendingWithdrawalCountBadge.textContent = count;
-                elements.pendingWithdrawalCountBadge.style.display = count > 0 ? 'inline-block' : 'none';
-            }
-            if (elements.dashboardSection?.classList.contains('active') && elements.statPendingWithdrawals) {
-                elements.statPendingWithdrawals.textContent = count;
-            }
-        });
+            dbListeners[wdKey] = onValue(pendingWdQuery, (snapshot) => { const count = snapshot.exists() ? snapshot.size : 0; if (elements.pendingWithdrawalCountBadge) { elements.pendingWithdrawalCountBadge.textContent = count; elements.pendingWithdrawalCountBadge.style.display = count > 0 ? 'inline-block' : 'none'; } if (elements.dashboardSection?.classList.contains('active') && elements.statPendingWithdrawals) elements.statPendingWithdrawals.textContent = count; });
             const pendingDpQuery = query(ref(db, 'deposits'), orderByChild('status'), equalTo('pending'));
             const dpKey = 'pendingDepositsCount';
-            dbListeners[dpKey] = onValue(pendingDpQuery, (snapshot) => {
-            const count = snapshot.exists() ? snapshot.size : 0;
-
-            if (!depositsInitialized) {
-                depositsInitialized = true;
-                lastPendingDepositsCount = count;
-                if (count > 0) {
-                    const msg = `You have ${count} pending deposit request(s).`;
-                    showAdminNotification('deposit', msg);
-                    sendBrowserNotification('Pending Deposits', msg);
-                }
-            } else if (count > lastPendingDepositsCount) {
-                const diff = count - lastPendingDepositsCount;
-                const msg =
-                    diff === 1
-                        ? `1 new deposit request received. Total pending: ${count}.`
-                        : `${diff} new deposit requests received. Total pending: ${count}.`;
-
-                showAdminNotification('deposit', msg);
-                sendBrowserNotification('New Deposit Request', msg);
-
-                lastPendingDepositsCount = count;
-            } else {
-                lastPendingDepositsCount = count;
-            }
-
-            if (elements.pendingDepositCountBadge) {
-                elements.pendingDepositCountBadge.textContent = count;
-                elements.pendingDepositCountBadge.style.display =
-                    count > 0 ? 'inline-block' : 'none';
-            }
-        });
+            dbListeners[dpKey] = onValue(pendingDpQuery, (snapshot) => { const count = snapshot.exists() ? snapshot.size : 0; if (elements.pendingDepositCountBadge) { elements.pendingDepositCountBadge.textContent = count; elements.pendingDepositCountBadge.style.display = count > 0 ? 'inline-block' : 'none';} });
             const pendingRfQuery = query(ref(db, 'pendingReferrals'), orderByChild('status'), equalTo('pending'));
             const rfKey = 'pendingReferralsCount';
             dbListeners[rfKey] = onValue(pendingRfQuery, (snapshot) => { const count = snapshot.exists() ? snapshot.size : 0; if (elements.pendingReferralCountBadge) { elements.pendingReferralCountBadge.textContent = count; elements.pendingReferralCountBadge.style.display = count > 0 ? 'inline-block' : 'none';} });
@@ -7809,15 +7589,6 @@ async function creditReviewedWinnings(tournamentId) {
 
         async function initializeAdminEventListeners() {
             console.log("Initializing Admin Event Listeners...");
-
-            if (elements.enableNotificationsBtn) {
-                elements.enableNotificationsBtn.addEventListener('click', async () => {
-                    console.log('Enable Notifications button clicked');
-                    await initBrowserNotifications();
-                });
-            }
-
-            console.log("Initializing Admin Event Listeners...");
             if (!auth || !db) { console.error("Cannot init listeners: Firebase not ready."); return; }
 
             const setupPasswordToggle = document.getElementById('toggleSetupPassword');
@@ -7980,18 +7751,6 @@ async function creditReviewedWinnings(tournamentId) {
                 document.querySelectorAll('.promotion-card.selected').forEach(c => c.classList.remove('selected'));
                 card.classList.add('selected');
             });
-
-                        if (elements.enableNotificationsBtn) {
-                elements.enableNotificationsBtn.addEventListener('click', async () => {
-                    await initBrowserNotifications();
-                    if (browserNotificationsEnabled) {
-                        elements.enableNotificationsBtn.innerHTML = '<i class="bi bi-bell-fill"></i><span class="d-none d-sm-inline ms-1">Notifications ON</span>';
-                        elements.enableNotificationsBtn.classList.remove('btn-outline-warning');
-                        elements.enableNotificationsBtn.classList.add('btn-success');
-                        elements.enableNotificationsBtn.disabled = true;
-                    }
-                });
-            }
 
             elements.globalNotificationForm?.addEventListener('submit', sendGlobalNotification);
             elements.individualNotificationForm?.addEventListener('submit', sendIndividualNotification);
@@ -8605,6 +8364,24 @@ function applyGameFilter(gameId) {
   });
 }
 
+
+// Safety: ensure the requested custom filters appear in the select even if gameDataCache is empty
+(function ensureCustomFiltersPresent(){
+  const select = document.getElementById('filterGameSelect');
+  if(!select) return;
+  const wanted = ['LW 2vs2','CS 2vs2','CS 4vs4'];
+  wanted.forEach(name => {
+    const found = Array.from(select.options).some(o => (o.textContent || '').toString().trim().toLowerCase() === name.toLowerCase());
+    if(!found){
+      const opt = document.createElement('option');
+      opt.value = name.toLowerCase();
+      opt.textContent = name;
+      // insert near the top (after the default option)
+      if(select.options.length > 0) select.insertBefore(opt, select.options[1] || null);
+      else select.appendChild(opt);
+    }
+  });
+})();\n
 function setupGameFilter() {
   const select = document.getElementById('filterGameSelect');
   const clearBtn = document.getElementById('clearGameFilterBtn');
@@ -8647,7 +8424,7 @@ if (document.readyState === 'loading') {
 <script>
 (function(){
   // static fallback list (from your screenshots)
-  const staticGames = [
+    const staticGames = [
     {id: 'clash_squad', name: 'CLASH SQUAD'},
     {id: 'e_sports', name: 'E-SPORTS'},
     {id: 'ff_full_map', name: 'FF FULL MAP'},
@@ -8656,7 +8433,11 @@ if (document.readyState === 'loading') {
     {id: 'giveaways', name: 'GIVEAWAYS'},
     {id: 'lone_wolf', name: 'LONE WOLF'},
     {id: 'only_kills', name: 'ONLY KILLS'},
-    {id: 'survival', name: 'SURVIVAL'}
+    {id: 'survival', name: 'SURVIVAL'},
+    // User-requested custom filters:
+    {id: 'lw_2vs2', name: 'LW 2vs2'},
+    {id: 'cs_2vs2', name: 'CS 2vs2'},
+    {id: 'cs_4vs4', name: 'CS 4vs4'}
   ];
 
   function ensureOptions() {
@@ -9363,5 +9144,458 @@ document.addEventListener("DOMContentLoaded",()=>{
       </div>
     </div>
 
+
+<!-- START: Added by ChatGPT — extra game filter options + generic client-side filtering -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Add extra options to the game select dropdown
+  const extraGameModes = [
+    { id: "LW2V2", name: "LW 2vs2" },
+    { id: "CS2V2", name: "CS 2vs2" },
+    { id: "CS4V4", name: "CS 4vs4" }
+  ];
+  const filterSelect = document.getElementById("filterGameSelect");
+  if (filterSelect) {
+    extraGameModes.forEach(mode => {
+      // don't duplicate if already present
+      const exists = Array.from(filterSelect.options).some(o => o.textContent.trim().toLowerCase() === mode.name.toLowerCase());
+      if (!exists) {
+        const opt = document.createElement("option");
+        opt.value = mode.name.toLowerCase();
+        opt.textContent = mode.name;
+        filterSelect.appendChild(opt);
+      }
+    });
+  }
+
+  // Generic filtering routine for tournament cards.
+  function applyGameFilter() {
+    const v = (filterSelect && filterSelect.value) ? filterSelect.value.toLowerCase().trim() : "";
+    const container = document.getElementById("tournaments-card-container");
+    if (!container) return;
+    const cards = container.querySelectorAll(".tournament-card");
+    cards.forEach(card => {
+      // Prefer data-game attribute if present, fallback to header text
+      const dataGame = (card.getAttribute("data-game") || "").toLowerCase();
+      const headerText = (card.querySelector(".tournament-card-header h5")?.textContent || card.textContent || "").toLowerCase();
+      const combined = (dataGame + " " + headerText).trim();
+      if (!v) {
+        card.style.display = ""; // show
+      } else {
+        // match if selected value appears in the card's game info
+        if (combined.includes(v)) {
+          card.style.display = "";
+        } else {
+          card.style.display = "none";
+        }
+      }
+    });
+  }
+
+  // Hook up change + clear button
+  if (filterSelect) filterSelect.addEventListener("change", applyGameFilter);
+  const clearBtn = document.getElementById("clearGameFilterBtn");
+  if (clearBtn) {
+    clearBtn.addEventListener("click", function() {
+      if (filterSelect) filterSelect.value = "";
+      applyGameFilter();
+    });
+  }
+
+  // If site has an existing function to re-render/filter tournaments, try to call it too.
+  // This makes the change compatible with different implementations.
+  function tryCallExistingFilter() {
+    try {
+      if (typeof window.applyTournamentFilters === "function") {
+        window.applyTournamentFilters();
+      } else if (typeof window.renderTournaments === "function") {
+        window.renderTournaments();
+      }
+    } catch (e) {
+      // ignore
+      console.warn("No existing tournament filter hook found or it failed:", e);
+    }
+  }
+  if (filterSelect) filterSelect.addEventListener("change", tryCallExistingFilter);
+  if (clearBtn) clearBtn.addEventListener("click", tryCallExistingFilter);
+
+  // Run once on load to ensure existing cards respect the new filter (if any)
+  applyGameFilter();
+});
+</script>
+<!-- END: Added by ChatGPT -->
+
+<!-- START: ChatGPT improved game filter (robust matching & diagnostics) -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const filterSelect = document.getElementById("filterGameSelect");
+  const clearBtn = document.getElementById("clearGameFilterBtn");
+  const container = document.getElementById("tournaments-card-container");
+
+  function normalize(s){
+    if(!s && s!== "") return "";
+    return s.toString().toLowerCase().replace(/\s+/g,' ').trim();
+  }
+
+  function cardTextContent(card){
+    // Collect likely places where game info may be present inside a tournament card
+    let parts = [];
+    // data attributes
+    if(card.dataset){
+      for(const k in card.dataset){
+        parts.push(card.dataset[k]);
+      }
+    }
+    // header/title
+    const h = card.querySelector(".tournament-card-header h5");
+    if(h) parts.push(h.textContent);
+    // any subtitle or small text
+    const subs = card.querySelectorAll(".tournament-card-header p, .info-label, .info-value, .game-name, .badge, .tournament-meta");
+    subs.forEach(el => parts.push(el.textContent));
+    // whole text fallback
+    parts.push(card.innerText || card.textContent || "");
+    return normalize(parts.join(" "));
+  }
+
+  function applyGameFilter(){
+    if(!container) return;
+    const val = filterSelect ? normalize(filterSelect.value) : "";
+    const cards = Array.from(container.querySelectorAll(".tournament-card"));
+    let matchedCount = 0;
+    cards.forEach(card => {
+      try {
+        const text = cardTextContent(card);
+        // If no filter, show all
+        if(!val){
+          card.style.display = "";
+          card.classList.remove("chatgpt-nomatch","chatgpt-match");
+          matchedCount++;
+          return;
+        }
+        // Strict contains match
+        const isMatch = text.includes(val);
+        // Also support acronym matching e.g., 'ff' matches 'free fire'
+        const acronyms = {
+          'ff': 'free fire',
+          'lw':'lone wolf',
+          'cs':'clash squad'
+        };
+        let altMatch = false;
+        Object.keys(acronyms).forEach(a=>{
+          if(val === a && text.includes(acronyms[a])) altMatch = true;
+        });
+        if(isMatch || altMatch){
+          card.style.display = "";
+          card.classList.add("chatgpt-match");
+          card.classList.remove("chatgpt-nomatch");
+          matchedCount++;
+        } else {
+          card.style.display = "none";
+          card.classList.add("chatgpt-nomatch");
+          card.classList.remove("chatgpt-match");
+        }
+      } catch (e){
+        console.error("Filter error for card:", e);
+      }
+    });
+
+    // Visual feedback: if nothing matched, show a console warning and briefly highlight container
+    if(matchedCount === 0){
+      console.warn("No tournament cards matched game filter:", filterSelect ? filterSelect.value : "(no select)");
+      if(container){
+        container.style.animation = "chatgpt-shake 0.4s";
+        setTimeout(()=>{ container.style.animation = ""; }, 450);
+      }
+    } else {
+      // Scroll to first visible match
+      const first = container.querySelector(".tournament-card:not([style*='display: none'])");
+      if(first){
+        first.scrollIntoView({behavior: "smooth", block: "start"});
+      }
+    }
+  }
+
+  // Add minimal styles for visual debug
+  const style = document.createElement('style');
+  style.textContent = `
+    .chatgpt-match { outline: 3px solid rgba(96,165,250,0.12); }
+    .chatgpt-nomatch { opacity: 0.35; }
+    @keyframes chatgpt-shake { 0% { transform: translateX(0);} 25% { transform: translateX(-8px);} 50% { transform: translateX(8px);} 75% { transform: translateX(-6px);} 100% { transform: translateX(0);} }
+  `;
+  document.head.appendChild(style);
+
+  // Ensure custom filters exist
+  (function ensureCustomFilters(){
+    if(!filterSelect) return;
+    const wanted = ['LW 2vs2','CS 2vs2','CS 4vs4'];
+    wanted.forEach(name => {
+      const found = Array.from(filterSelect.options).some(o => normalize(o.textContent) === normalize(name));
+      if(!found){
+        const opt = document.createElement('option');
+        opt.value = name.toLowerCase();
+        opt.textContent = name;
+        // insert after default option
+        if(filterSelect.options.length > 0) filterSelect.insertBefore(opt, filterSelect.options[1] || null);
+        else filterSelect.appendChild(opt);
+      }
+    });
+  })();
+
+  // Hook up events
+  if(filterSelect) filterSelect.addEventListener("change", applyGameFilter);
+  if(clearBtn) clearBtn.addEventListener("click", function(){
+    if(filterSelect) filterSelect.value = "";
+    applyGameFilter();
+  });
+
+  // Also run after a delay in case tournaments are rendered asynchronously later
+  applyGameFilter();
+  setTimeout(applyGameFilter, 800);
+  setTimeout(applyGameFilter, 2000);
+
+  // Expose for console debugging
+  window.__chatgpt_applyGameFilter = applyGameFilter;
+  window.__chatgpt_logCards = function(){
+    if(!container) return console.warn("no container");
+    const cards = container.querySelectorAll(".tournament-card");
+    const arr = [];
+    cards.forEach(c=>{
+      arr.push({
+        title: c.querySelector(".tournament-card-header h5") ? c.querySelector(".tournament-card-header h5").textContent.trim() : null,
+        data: c.dataset ? {...c.dataset} : null,
+        textSample: (c.innerText||"").slice(0,200)
+      });
+    });
+    console.table(arr);
+    return arr;
+  };
+});
+</script>
+<!-- END: ChatGPT improved game filter -->
+
+<!-- START: ChatGPT preserve game filter during edit/duplicate actions -->
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const SELECT_ID = 'filterGameSelect';
+  const STORAGE_KEY = 'tournament_game_filter_selected';
+
+  function saveFilter() {
+    try {
+      const sel = document.getElementById(SELECT_ID);
+      if(!sel) return;
+      sessionStorage.setItem(STORAGE_KEY, sel.value || '');
+    } catch(e) { console.warn('saveFilter error', e); }
+  }
+  function restoreFilter() {
+    try {
+      const sel = document.getElementById(SELECT_ID);
+      if(!sel) return;
+      const v = sessionStorage.getItem(STORAGE_KEY);
+      if(v !== null && v !== undefined && v !== '') {
+        // only restore if current select is empty or different
+        if(sel.value !== v) {
+          // try to set value if option exists; if not, try to find similar option by text
+          const opt = Array.from(sel.options).find(o => o.value === v);
+          if(opt) sel.value = v;
+          else {
+            const opt2 = Array.from(sel.options).find(o => (o.textContent||'').toLowerCase().trim() === (v||'').toLowerCase().trim());
+            if(opt2) sel.value = opt2.value;
+          }
+          // trigger change event to reapply filter if apply function exists
+          sel.dispatchEvent(new Event('change', { bubbles: true }));
+          if(typeof window.__chatgpt_applyGameFilter === 'function') window.__chatgpt_applyGameFilter();
+        }
+      }
+    } catch(e) { console.warn('restoreFilter error', e); }
+  }
+
+  // Save when user changes the select normally
+  const select = document.getElementById(SELECT_ID);
+  if(select) {
+    select.addEventListener('change', saveFilter);
+    // also save current on load
+    saveFilter();
+  }
+
+  // Intercept clicks on edit / duplicate / copy / clone buttons commonly used in UI.
+  // This will save the current filter before any script triggers a full rerender that resets the select.
+  const editSelectors = [
+    '[data-action="edit"]',
+    '[data-action="duplicate"]',
+    '[data-role="edit"]',
+    '.edit-btn', '.btn-edit', '.duplicate-btn', '.btn-duplicate', '.btn-clone', '.btn-copy'
+  ];
+  function shouldHandleClick(el) {
+    if(!el) return false;
+    try {
+      for(const sel of editSelectors) {
+        if(el.matches && el.matches(sel)) return true;
+      }
+    } catch(e){}
+    return false;
+  }
+  document.addEventListener('click', function(e){
+    const el = e.target.closest ? e.target.closest(editSelectors.join(',')) : null;
+    if(el) {
+      saveFilter();
+      // small delay to ensure save happens before other scripts run
+      setTimeout(saveFilter, 50);
+    }
+  }, true);
+
+  // If Bootstrap modals are used for editing, restore filter when modal is hidden
+  document.addEventListener('hidden.bs.modal', function(){
+    setTimeout(restoreFilter, 50);
+  });
+
+  // Observe changes to tournaments container - if options got reset by a re-render, try restore
+  const container = document.getElementById('tournaments-card-container');
+  if(container) {
+    const mo = new MutationObserver(function(mutations){
+      // On any childList change, attempt to restore filter after a short delay
+      let changed = mutations.some(m => m.addedNodes.length || m.removedNodes.length);
+      if(changed) {
+        setTimeout(restoreFilter, 60);
+      }
+    });
+    mo.observe(container, { childList: true, subtree: true });
+  }
+
+  // Also try restore when page becomes visible (in case the edit opened in a new tab or focus changed)
+  document.addEventListener('visibilitychange', function(){
+    if(document.visibilityState === 'visible') restoreFilter();
+  });
+
+  // Expose functions for manual control/debug
+  window.__chatgpt_saveTournamentFilter = saveFilter;
+  window.__chatgpt_restoreTournamentFilter = restoreFilter;
+
+  // initial restore
+  restoreFilter();
+});
+</script>
+<!-- END: ChatGPT preserve game filter -->
+
+<!-- START: ChatGPT force-restore-and-reapply on save/duplicate/edit -->
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const SELECT_ID = 'filterGameSelect';
+  const STORAGE_KEY = 'tournament_game_filter_selected';
+
+  function getSelect(){ return document.getElementById(SELECT_ID); }
+  function readStored(){ return sessionStorage.getItem(STORAGE_KEY) || ''; }
+  function writeStored(v){ try{ sessionStorage.setItem(STORAGE_KEY, v||''); }catch(e){} }
+
+  // Force-ensure option exists (create it if missing)
+  function ensureOptionExists(val) {
+    const sel = getSelect();
+    if(!sel || !val) return;
+    const want = val.toString().toLowerCase().trim();
+    const found = Array.from(sel.options).some(o => (o.value||'').toString().toLowerCase().trim() === want || (o.textContent||'').toString().toLowerCase().trim() === want);
+    if(!found){
+      const opt = document.createElement('option');
+      opt.value = val;
+      opt.textContent = val;
+      // add near top after default
+      if(sel.options.length>0) sel.insertBefore(opt, sel.options[1]||null);
+      else sel.appendChild(opt);
+    }
+  }
+
+  // Robust restore: set select to stored value (creating option if needed) and trigger change and apply
+  function robustRestore() {
+    const sel = getSelect();
+    if(!sel) return;
+    const stored = readStored();
+    if(!stored) return;
+    // ensure option exists by text or value
+    ensureOptionExists(stored);
+    // try match by value first, then by text
+    let matchedOpt = Array.from(sel.options).find(o => (o.value||'').toString().toLowerCase().trim() === (stored||'').toString().toLowerCase().trim());
+    if(!matchedOpt){
+      matchedOpt = Array.from(sel.options).find(o => (o.textContent||'').toString().toLowerCase().trim() === (stored||'').toString().toLowerCase().trim());
+    }
+    if(matchedOpt){
+      if(sel.value !== matchedOpt.value){
+        sel.value = matchedOpt.value;
+        sel.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    } else {
+      // as a fallback, set to stored raw value
+      sel.value = stored;
+      sel.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    // call apply filter if available
+    if(typeof window.__chatgpt_applyGameFilter === 'function') {
+      // run multiple times with short delays to handle race conditions
+      window.__chatgpt_applyGameFilter();
+      setTimeout(()=>{ window.__chatgpt_applyGameFilter(); }, 80);
+      setTimeout(()=>{ window.__chatgpt_applyGameFilter(); }, 220);
+    }
+  }
+
+  // Save on important UI events (edit/duplicate/save/clicks) before re-render
+  function bindSaveInterceptors(){
+    // generic click interceptors for known selectors
+    const selectors = ['[data-action="edit"]','[data-action="duplicate"]','[data-action="save"]','[data-role="edit"]','.edit-btn','.btn-edit','.duplicate-btn','.btn-duplicate','.btn-clone','.btn-copy','.save-btn','.btn-save','#saveTournamentBtn'];
+    document.addEventListener('click', function(e){
+      try{
+        const el = e.target.closest ? e.target.closest(selectors.join(',')) : null;
+        if(el){
+          // write current selection to sessionStorage immediately
+          const sel = getSelect();
+          if(sel) writeStored(sel.value || sel.options[sel.selectedIndex]?.text || '');
+          // small delay to ensure save occurs before other scripts
+          setTimeout(()=>{ writeStored(getSelect()?.value || getSelect()?.options[getSelect()?.selectedIndex]?.text || ''); }, 40);
+        }
+      }catch(err){}
+    }, true);
+
+    // Intercept form submit events (if any edit form exists)
+    document.addEventListener('submit', function(e){
+      try{
+        const form = e.target;
+        // heuristic: forms that contain "tournament" in id/name/class
+        const idn = (form.id||'') + ' ' + (form.name||'') + ' ' + (form.className||'');
+        if(/tournament/i.test(idn)){
+          const sel = getSelect();
+          if(sel) writeStored(sel.value || sel.options[sel.selectedIndex]?.text || '');
+        }
+      }catch(err){}
+    }, true);
+  }
+
+  // MutationObserver to detect re-renders and force restore/reapply
+  function bindObserver(){
+    const container = document.getElementById('tournaments-card-container') || document.querySelector('#tournaments-section') || document.body;
+    if(!container) return;
+    const mo = new MutationObserver(function(muts){
+      // If children changed or subtree changed, attempt to restore after short delays
+      let changed = muts.some(m=>m.addedNodes.length || m.removedNodes.length);
+      if(changed){
+        // call restore multiple times to overcome several render passes
+        setTimeout(robustRestore, 40);
+        setTimeout(robustRestore, 180);
+        setTimeout(robustRestore, 600);
+      }
+    });
+    mo.observe(container, { childList: true, subtree: true });
+  }
+
+  // Initialization
+  bindSaveInterceptors();
+  bindObserver();
+
+  // Also attempt to restore on page show/visibility and on load
+  document.addEventListener('visibilitychange', function(){ if(document.visibilityState === 'visible') robustRestore(); });
+  window.addEventListener('load', function(){ setTimeout(robustRestore, 80); });
+
+  // expose for debugging
+  window.__chatgpt_robustRestore = robustRestore;
+  window.__chatgpt_writeStored = writeStored;
+  window.__chatgpt_readStored = readStored;
+});
+</script>
+<!-- END: ChatGPT force-restore-and-reapply on save/duplicate/edit -->
 </body>
 </html>
