@@ -926,7 +926,8 @@
 
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="tournaments-section"><i class="bi bi-trophy"></i> Tournaments</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="tournament-management-section"><i class="bi bi-award-fill"></i> Tournament Mgt</a> </li>
-                    <li class="nav-item"> <a class="nav-link" href="#" data-section="leaderboard-mgt-section"><i class="bi bi-bar-chart-line-fill"></i> Leaderboard Mgt</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="#" data-section="leaderboard-mgt-section"><i class="bi bi-bar-chart-line-fill"></i> Leaderboard Mgt</a>
+<a class="nav-link" href="#" data-section="top-players-section"><i class="bi bi-trophy-fill"></i> Top Players</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="users-section"><i class="bi bi-people"></i> Users</a> </li>
                     <li class="nav-item"><a class="nav-link" href="#" data-section="new-users-section"><i class="bi bi-person-plus-fill"></i> New Users</a></li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="user-analytics-section"><i class="bi bi-pie-chart-fill"></i> User Analytics</a> </li>
@@ -1881,7 +1882,19 @@
                     </form>
                 </div>
             </section>
-        </main>
+        
+<section id="top-players-section" class="section">
+<h2 class="section-title">Weekly Top 50 Players</h2>
+<div class="card p-3">
+<button class="btn btn-warning mb-3" id="addPlayerBtn">+ Add Player</button>
+<table class="table table-dark table-hover">
+<thead><tr><th>Rank</th><th>Name</th><th>₹</th><th></th></tr></thead>
+<tbody id="adminLeaderboardBody"></tbody></table>
+<button class="btn btn-success mt-3" id="saveLeaderboardBtn">Save Leaderboard</button>
+</div>
+</section>
+
+</main>
     </div>
 
     <!-- Modals -->
@@ -2706,6 +2719,7 @@
                  case 'user-notifications-section': loadUserNotificationsHistory(); break;
                  case 'tournament-management-section': populateTournamentManagementSelector(); break;
                  case 'leaderboard-mgt-section': loadLeaderboardManagementData(); break;
+case 'top-players-section': loadTopPlayersAdmin(); break;
                  case 'user-analytics-section': loadUserAnalyticsData(); break;
                  case 'player-history-section':
                     loadPlayerHistory();
@@ -8017,6 +8031,55 @@ async function creditReviewedWinnings(tournamentId) {
              // FEATURE 1: Reset review results modal
              resetModal(elements.reviewResultsModalEl, null, elements.reviewResultsStatus, null, null, '', null);
              console.log("Admin Event Listeners Initialized.");
+
+// ================= TOP PLAYERS LEADERBOARD =================
+async function loadTopPlayersAdmin(){
+ const body=document.getElementById("adminLeaderboardBody");
+ if(!body) return;
+ body.innerHTML="";
+ try{
+  const snap=await get(ref(db,"weeklyLeaderboard"));
+  if(!snap.exists()) return;
+  const data=snap.val();
+  Object.keys(data).sort((a,b)=>a-b).forEach(rank=>{
+    addLeaderboardRow(rank,data[rank].name,data[rank].winnings);
+  });
+ }catch(err){ console.log("Leaderboard load error",err);}
+}
+
+function addLeaderboardRow(rank="",name="",win=""){
+ const body=document.getElementById("adminLeaderboardBody");
+ if(!body) return;
+ const tr=document.createElement("tr");
+ tr.innerHTML=`<td><input class="form-control rank" value="${rank}"></td>
+ <td><input class="form-control name" value="${name}"></td>
+ <td><input class="form-control win" value="${win}"></td>
+ <td><button class="btn btn-danger btn-sm delRow">X</button></td>`;
+ body.appendChild(tr);
+ tr.querySelector(".delRow").onclick=()=>tr.remove();
+}
+
+document.addEventListener("click",(e)=>{
+ if(e.target.id==="addPlayerBtn") addLeaderboardRow();
+});
+
+document.addEventListener("click",async(e)=>{
+ if(e.target.id==="saveLeaderboardBtn"){
+  const rows=document.querySelectorAll("#adminLeaderboardBody tr");
+  const updates={};
+  rows.forEach(row=>{
+   const rank=row.querySelector(".rank").value;
+   const name=row.querySelector(".name").value;
+   const win=row.querySelector(".win").value;
+   if(rank && name){
+     updates[`weeklyLeaderboard/${rank}`]={name:name,winnings:Number(win||0)};
+   }
+  });
+  await update(ref(db),updates);
+  alert("Leaderboard Saved ✅");
+ }
+});
+
         }
 
         function filterUsers() {
