@@ -926,14 +926,10 @@
 
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="tournaments-section"><i class="bi bi-trophy"></i> Tournaments</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="tournament-management-section"><i class="bi bi-award-fill"></i> Tournament Mgt</a> </li>
-                    <li class="nav-item"> <a class="nav-link" href="#" data-section="leaderboard-mgt-section"><i class="bi bi-bar-chart-line-fill"></i> Leaderboard Mgt</a>
-<a class="nav-link" href="#" data-section="top-players-section"><i class="bi bi-trophy-fill"></i> Top Players</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="#" data-section="leaderboard-mgt-section"><i class="bi bi-bar-chart-line-fill"></i> Leaderboard Mgt</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="users-section"><i class="bi bi-people"></i> Users</a> </li>
                     <li class="nav-item"><a class="nav-link" href="#" data-section="new-users-section"><i class="bi bi-person-plus-fill"></i> New Users</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="#" data-section="user-analytics-section"><i class="bi bi-pie-chart-fill"></i> User Analytics
-
-
-</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="#" data-section="user-analytics-section"><i class="bi bi-pie-chart-fill"></i> User Analytics</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="player-history-section"><i class="bi bi-people"></i> Player History <span class="badge bg-warning ms-1" id="playerHistoryNotificationBadge" style="display: none;">0</span></a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="notifications-section"><i class="bi bi-bell"></i> Notifications</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="user-notifications-section"><i class="bi bi-person-lines-fill"></i> User Notifications</a> </li>
@@ -958,6 +954,12 @@
                             <i class="bi bi-gift-fill"></i> User Code
                         </a>
                     </li>
+
+                    <li class="nav-item">
+  <a class="nav-link" href="#" data-section="total-amount-section">
+    <i class="bi bi-currency-rupee"></i> Total Amount
+  </a>
+</li>
                     <!-- ==================================================== -->
                     <!-- =================== END OF NEW LINK ================ -->
                     <!-- ==================================================== -->
@@ -1171,12 +1173,6 @@
 
             <section id="tournament-management-section" class="section">
                 <h2>Tournament Prize Management</h2>
-<div class="mb-3" style="max-width:420px;">
-  <div class="input-group">
-    <span class="input-group-text bg-transparent"><i class="bi bi-search"></i></span>
-    <input type="text" id="tmsSearchInput" class="form-control" placeholder="Search player / gmail / uid...">
-  </div>
-</div>
                 <div class="card">
                     <div class="card-body">
                         <!-- FEATURE 1: MODIFIED ROW -->
@@ -1293,7 +1289,7 @@
                     <h2>New Users</h2>
                     <div class="d-flex flex-column align-items-end gap-2">
                         <div class="btn-group btn-group-sm" id="newUsersFilterGroup" role="group" aria-label="New users time filters">
-                            <button type="button" class="btn btn-outline-light active" data-new-users-range="24h">1 hr</button><button id='ph24' class='btn btn-sm btn-outline-light'>Last 24 hrs</button>
+                            <button type="button" class="btn btn-outline-light active" data-new-users-range="24h">Last 24 hrs</button>
                             <button type="button" class="btn btn-outline-light" data-new-users-range="7d">Last 7 days</button>
                             <button type="button" class="btn btn-outline-light" data-new-users-range="30d">Last 30 days</button>
                             <button type="button" class="btn btn-outline-light" data-new-users-range="90d">Last 90 days</button>
@@ -1328,17 +1324,11 @@
 
              <section id="user-analytics-section" class="section">
                  <h2>User Analytics</h2>
-
-<div class="card mb-3 p-3" style="max-width:350px;">
-  <h5 class="mb-1">Total Active Users</h5>
-  <h2 id="totalUsersCount">Loading...</h2>
-</div>
-
                  <div class="row">
                      <div class="col-lg-4 mb-4">
                          <div class="card h-100">
                              <div class="card-body">
-                                 <h5 class="card-title">Top 50 Spenders</h5>
+                                 <h5 class="card-title">Top 10 Spenders</h5>
                                  <div class="table-responsive" id="topSpendersContainer">
                                       <p class="text-secondary">Loading data...</p>
                                  </div>
@@ -1348,7 +1338,7 @@
                      <div class="col-lg-4 mb-4">
                           <div class="card h-100">
                              <div class="card-body">
-                                 <h5 class="card-title">Top 50 Active Players</h5>
+                                 <h5 class="card-title">Top 10 Active Players</h5>
                                  <div class="table-responsive" id="mostActiveContainer">
                                       <p class="text-secondary">Loading data...</p>
                                  </div>
@@ -1371,23 +1361,10 @@
             <section id="player-history-section" class="section">
                 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                     <h2>Player History</h2>
-
-<!-- Player History Search -->
-<div style="max-width:420px; margin-bottom:12px;">
-  <div class="input-group">
-    <span class="input-group-text bg-transparent">
-      <i class="bi bi-search"></i>
-    </span>
-    <input type="text" id="playerHistorySearchInput"
-           class="form-control"
-           placeholder="Search player / gmail / game uid...">
-  </div>
-</div>
-
                     <div class="d-flex flex-wrap gap-2">
                         <div class="btn-group btn-group-sm" id="playerHistoryRangeFilters" role="group" aria-label="Time range">
                             <button type="button" class="btn btn-outline-light active" data-range="all">All time</button>
-                            <button type="button" class="btn btn-outline-light" data-range="24h">1 hr</button><button id='ph24' class='btn btn-sm btn-outline-light'>Last 24 hrs</button>
+                            <button type="button" class="btn btn-outline-light" data-range="24h">Last 24 hrs</button>
                             <button type="button" class="btn btn-outline-light" data-range="7d">Last 7 days</button>
                         </div>
                         <div class="btn-group btn-group-sm" id="playerHistoryTypeFilters" role="group" aria-label="Player type">
@@ -1659,20 +1636,7 @@
 
             <section id="live-support-section" class="section">
                 <div id="liveSupportStatus" class="mb-3"></div>
-                
-<!-- LIVE SUPPORT TOOLBAR -->
-<div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
-  
-<div class="input-group" style="max-width:350px;">
-  <span class="input-group-text bg-transparent"><i class="bi bi-search"></i></span>
-  <input type="text" id="chatSearchInput" class="form-control" placeholder="Search by name or email">
-</div>
-
-  <button id="clearAllChatsBtn" class="btn btn-danger btn-sm">
-      <i class="bi bi-trash3-fill"></i> Clear All Chats
-  </button>
-</div>
-<div id="liveSupportUserListContainer"></div>
+                <div id="liveSupportUserListContainer"></div>
                 <div id="liveSupportChatContainer" style="display: none;">
                     <div class="chat-header">
                         <button class="chat-back-button" id="liveSupportChatBackButton" title="Back to list">
@@ -1764,6 +1728,174 @@
                     </div>
                 </div>
             </section>
+
+
+
+
+
+
+
+<section id="total-amount-section" class="section">
+
+  <h2>Total Amount</h2>
+
+  <!-- SEARCH + FILTER BAR -->
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px;align-items:center">
+
+    <input id="withdrawSearch" class="form-control form-control-sm"
+           placeholder="Search user name or email..."
+           style="max-width:250px">
+
+    <button class="btn btn-sm btn-warning tf" data-t="24">24 Hrs</button>
+    <button class="btn btn-sm btn-warning tf" data-t="7">7 Days</button>
+    <button class="btn btn-sm btn-warning tf" data-t="30">30 Days</button>
+    <button class="btn btn-sm btn-warning tf" data-t="all">All Time</button>
+
+    <select id="statusFilter" class="form-select form-select-sm" style="max-width:150px;">
+      <option value="all">All Status</option>
+      <option value="completed">Completed</option>
+      <option value="rejected">Rejected</option>
+    </select>
+
+  </div>
+
+  <!-- TOTAL AMOUNT CARD -->
+  <div id="totalWithdrawAmount"
+       style="font-size:22px;font-weight:600;margin-bottom:20px;color:#facc15">
+  </div>
+
+  <!-- LIST -->
+  <div id="completedWithdrawalsContainer"></div>
+
+</section>
+<script type="module">
+import { ref, get } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+let allWithdrawals = [];
+let currentDays = "all";
+let currentStatus = "all";
+let searchText = "";
+
+/* 🔥 TIMESTAMP NORMALIZER */
+function getTime(w){
+  let t = w.requestTimestamp || w.timestamp || 0;
+  if(t < 1000000000000) t = t * 1000; // seconds → ms
+  return t;
+}
+
+async function loadCompletedWithdrawals(){
+  const db = window.db;
+  if(!db) return setTimeout(loadCompletedWithdrawals,1500);
+
+  const snap = await get(ref(db,'withdrawals'));
+
+  allWithdrawals = [];
+  if(snap.exists()){
+    snap.forEach(s=>{
+      const d = s.val() || {};
+      if(d.status !== "completed" && d.status !== "rejected") return;
+      allWithdrawals.push(d);
+    });
+  }
+
+  renderWithdrawals();
+}
+
+function renderWithdrawals(){
+  const container = document.getElementById("completedWithdrawalsContainer");
+  const totalBox = document.getElementById("totalWithdrawAmount");
+
+  let list = [...allWithdrawals];
+
+  /* 🔹 SORT newest first */
+  list.sort((a,b)=> getTime(b) - getTime(a));
+
+  /* ⏱️ REAL TIME FILTER (FINAL FIX) */
+  if(currentDays !== "all"){
+    const now = Date.now();
+    const limit = Number(currentDays) * 24 * 60 * 60 * 1000;
+
+    list = list.filter(w=>{
+      const t = getTime(w);
+      if(!t || t === 0) return false;   // skip invalid timestamps
+      return t >= (now - limit);        // only last timeframe
+    });
+  }
+
+  /* 📌 STATUS FILTER */
+  if(currentStatus !== "all"){
+    list = list.filter(w => w.status === currentStatus);
+  }
+
+  /* 🔎 SEARCH FILTER */
+  if(searchText){
+    const txt = searchText.toLowerCase();
+    list = list.filter(w =>
+      (w.userName || "").toLowerCase().includes(txt) ||
+      (w.email || "").toLowerCase().includes(txt) ||
+      (w.userId || "").toLowerCase().includes(txt)
+    );
+  }
+
+  /* 💰 TOTAL AMOUNT */
+  let totalAmount = 0;
+  list.forEach(w => totalAmount += Number(w.amount || 0));
+  totalBox.innerHTML = `Total Withdrawal Amount : ₹${totalAmount}`;
+
+  /* 🧾 RENDER LIST */
+  if(list.length === 0){
+    container.innerHTML = "<p>No withdrawals found</p>";
+    return;
+  }
+
+  let html = `<h2 style="margin-top:10px">Completed & Rejected Withdrawals</h2>`;
+
+  list.forEach(d=>{
+    const date = new Date(getTime(d)).toLocaleString();
+
+    html += `
+    <div style="border:1px solid #444;padding:12px;margin:12px 0;border-radius:10px">
+      <b>User:</b> ${d.userName || '-'} <br>
+      <b>Email:</b> ${d.userEmail || '-'} <br>
+      <b>Amount:</b> ₹${d.amount || 0} <br>
+      <b>Status:</b> ${d.status} <br>
+      <b>Method:</b> ${d.paymentMethod || d.methodDetails?.accountInfo || '-'} <br>
+      <b>Time:</b> ${date}
+    </div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+//// EVENTS ////
+
+document.querySelectorAll(".tf").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    currentDays = btn.dataset.t;
+    renderWithdrawals();
+  });
+});
+
+document.getElementById("statusFilter").addEventListener("change",(e)=>{
+  currentStatus = e.target.value;
+  renderWithdrawals();
+});
+
+document.getElementById("withdrawSearch").addEventListener("input",(e)=>{
+  searchText = e.target.value;
+  renderWithdrawals();
+});
+
+setTimeout(loadCompletedWithdrawals,2000);
+</script>
+
+
+
+
+
+
+
+
             <!-- ==================================================== -->
             <!-- ============= NEW PROMO CODE SECTION END ============= -->
             <!-- ==================================================== -->
@@ -1874,6 +2006,19 @@
                 </div>
             </section>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
             <section id="settings-section" class="section card">
                 <div class="card-body">
                     <h2 class="card-title">App Settings</h2>
@@ -1923,19 +2068,7 @@
                     </form>
                 </div>
             </section>
-        
-<section id="top-players-section" class="section">
-<h2 class="section-title">Weekly Top 50 Players</h2>
-<div class="card p-3">
-<button class="btn btn-warning mb-3" id="addPlayerBtn">+ Add Player</button>
-<table class="table table-dark table-hover">
-<thead><tr><th>Rank</th><th>Name</th><th>₹</th><th></th></tr></thead>
-<tbody id="adminLeaderboardBody"></tbody></table>
-<button class="btn btn-success mt-3" id="saveLeaderboardBtn">Save Leaderboard</button>
-</div>
-</section>
-
-</main>
+        </main>
     </div>
 
     <!-- Modals -->
@@ -2118,7 +2251,6 @@
                             <thead>
                                 <tr>
                                     <th>Player</th>
-<th>Gmail</th>
                                     <th>Kills</th>
                                     <th>Rank</th>
                                     <th>Calculated Prize</th>
@@ -2761,7 +2893,6 @@
                  case 'user-notifications-section': loadUserNotificationsHistory(); break;
                  case 'tournament-management-section': populateTournamentManagementSelector(); break;
                  case 'leaderboard-mgt-section': loadLeaderboardManagementData(); break;
-case 'top-players-section': loadTopPlayersAdmin(); break;
                  case 'user-analytics-section': loadUserAnalyticsData(); break;
                  case 'player-history-section':
                     loadPlayerHistory();
@@ -6870,19 +7001,17 @@ async function loadLeaderboardManagementData() {
                     const tournamentName = t.name || 'Tournament';
 
                     const reg = t.registeredPlayers || {};
-Object.keys(reg).forEach(uid => {
-    const r = reg[uid] || {};
+                    Object.keys(reg).forEach(uid => {
+                        const r = reg[uid] || {};
 
-    if (!playerMap[uid]) {
-        playerMap[uid] = {
-            uid,
-            username: r.username || r.gameUid || 'N/A',
-            gameUid: r.gameUid || 'N/A',
-            email: 'Loading...', // 🔥 email later fetch hoga users node se
-            tournaments: []
-        };
-    }
-
+                        if (!playerMap[uid]) {
+                            playerMap[uid] = {
+                                uid,
+                                username: r.username || r.gameUid || 'N/A',
+                                gameUid: r.gameUid || 'N/A',
+                                tournaments: []
+                            };
+                        }
 
                         playerMap[uid].tournaments.push({
                             tournamentId: tId,
@@ -6897,20 +7026,6 @@ Object.keys(reg).forEach(uid => {
                 });
 
                 const players = Object.values(playerMap);
-                // 🔥 Fetch REAL EMAILS from users node
-const userSnap = await get(ref(db, 'users'));
-if (userSnap.exists()) {
-    const usersData = userSnap.val();
-
-    players.forEach(p => {
-        if (usersData[p.uid] && usersData[p.uid].email) {
-            p.email = usersData[p.uid].email;
-        } else {
-            p.email = 'N/A';
-        }
-    });
-}
-
                 let latestJoinedAt = 0;
 
                 if (!players.length) {
@@ -6946,7 +7061,6 @@ if (userSnap.exists()) {
                         <thead>
                             <tr>
                                 <th>Player</th>
-<th>Gmail</th>
                                 <th>Game UID</th>
                                 <th>Tournaments</th>
                                 <th>Game / Details</th>
@@ -6968,16 +7082,14 @@ if (userSnap.exists()) {
                         latest.status || 'Unknown';
 
                     tableHtml += `
-    <tr class="player-history-row"
-        data-start-time="${latest.startTime || 0}"
-        data-match-status="${statusRaw}"
-        data-user-id="${p.uid}"
-        data-joined-at="${latest.joinedAt || 0}">
-        <td>${sanitizeHTML(p.username)}</td>
-        <td>${sanitizeHTML(p.email || 'N/A')}</td>  
-        <td>${sanitizeHTML(p.gameUid)}</td>
-        <td>${p.tournaments.length}</td>
-
+                        <tr class="player-history-row"
+                            data-start-time="${latest.startTime || 0}"
+                            data-match-status="${statusRaw}"
+                            data-user-id="${p.uid}"
+                            data-joined-at="${latest.joinedAt || 0}">
+                            <td>${sanitizeHTML(p.username)}</td>
+                            <td>${sanitizeHTML(p.gameUid)}</td>
+                            <td>${p.tournaments.length}</td>
                             <td>
                                 ${sanitizeHTML(latest.gameName || 'Multiple Games')}
                                 <div class="mt-1">
@@ -8092,55 +8204,6 @@ async function creditReviewedWinnings(tournamentId) {
              // FEATURE 1: Reset review results modal
              resetModal(elements.reviewResultsModalEl, null, elements.reviewResultsStatus, null, null, '', null);
              console.log("Admin Event Listeners Initialized.");
-
-// ================= TOP PLAYERS LEADERBOARD =================
-async function loadTopPlayersAdmin(){
- const body=document.getElementById("adminLeaderboardBody");
- if(!body) return;
- body.innerHTML="";
- try{
-  const snap=await get(ref(db,"weeklyLeaderboard"));
-  if(!snap.exists()) return;
-  const data=snap.val();
-  Object.keys(data).sort((a,b)=>a-b).forEach(rank=>{
-    addLeaderboardRow(rank,data[rank].name,data[rank].winnings);
-  });
- }catch(err){ console.log("Leaderboard load error",err);}
-}
-
-function addLeaderboardRow(rank="",name="",win=""){
- const body=document.getElementById("adminLeaderboardBody");
- if(!body) return;
- const tr=document.createElement("tr");
- tr.innerHTML=`<td><input class="form-control rank" value="${rank}"></td>
- <td><input class="form-control name" value="${name}"></td>
- <td><input class="form-control win" value="${win}"></td>
- <td><button class="btn btn-danger btn-sm delRow">X</button></td>`;
- body.appendChild(tr);
- tr.querySelector(".delRow").onclick=()=>tr.remove();
-}
-
-document.addEventListener("click",(e)=>{
- if(e.target.id==="addPlayerBtn") addLeaderboardRow();
-});
-
-document.addEventListener("click",async(e)=>{
- if(e.target.id==="saveLeaderboardBtn"){
-  const rows=document.querySelectorAll("#adminLeaderboardBody tr");
-  const updates={};
-  rows.forEach(row=>{
-   const rank=row.querySelector(".rank").value;
-   const name=row.querySelector(".name").value;
-   const win=row.querySelector(".win").value;
-   if(rank && name){
-     updates[`weeklyLeaderboard/${rank}`]={name:name,winnings:Number(win||0)};
-   }
-  });
-  await update(ref(db),updates);
-  alert("Leaderboard Saved ✅");
- }
-});
-
         }
 
         function filterUsers() {
@@ -9721,155 +9784,5 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 </script>
 <!-- END: ChatGPT force-restore-and-reapply on save/duplicate/edit -->
-
-<script>
-document.addEventListener("click", function(e){
-  if(!e.target.closest("#clearAllChatsBtn")) return;
-
-  if(!confirm("Delete ALL chats?")) return;
-
-  document.getElementById("adminLoader").style.display="flex";
-
-  setTimeout(()=>{
-      document.querySelectorAll(".btn-close-conversation").forEach(btn=>btn.click());
-      document.getElementById("adminLoader").style.display="none";
-      alert("All chats deleted");
-  },300);
-});
-</script>
-
-
-<script>
-document.addEventListener("input",(e)=>{
- if(e.target.id!=="chatSearchInput") return;
- const v=e.target.value.toLowerCase();
- document.querySelectorAll(".support-user-card").forEach(card=>{
-   card.style.display = card.textContent.toLowerCase().includes(v) ? "" : "none";
- });
-});
-</script>
-
-
-<script type="module">
-import { getApps, getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-const app = getApps().length ? getApp() : null;
-if(app){
-  const db = getDatabase(app);
-  const usersRef = ref(db,"users");
-  onValue(usersRef,(snap)=>{
-    if(!snap.exists()) return;
-    const count = Object.keys(snap.val()).length;
-    const el=document.getElementById("totalUsersCount");
-    if(el) el.innerText=count;
-  });
-}
-</script>
-
-
-<script type="module">
-import { getApps, getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-const app = getApps().length ? getApp() : null;
-if(app){
-  const db = getDatabase(app);
-  const walletsRef = ref(db,"wallets");
-  onValue(walletsRef,(snap)=>{
-    if(!snap.exists()) return;
-    const count = Object.keys(snap.val()).length;
-    const el=document.getElementById("totalUsersCount");
-    if(el) el.innerText=count;
-  });
-}
-</script>
-
-
-<script>
-// ===== Tournament Mgt Search =====
-document.addEventListener("input", function(e){
-  if(e.target.id==="tmsSearchInput"){
-    const q=e.target.value.toLowerCase();
-    document.querySelectorAll("#tmsPlayerListTableBody tr").forEach(tr=>{
-      tr.style.display = tr.innerText.toLowerCase().includes(q) ? "" : "none";
-    });
-  }
-});
-
-// ===== Player History Search =====
-document.addEventListener("input", function(e){
-  if(e.target.id==="playerHistorySearchInput"){
-    const q=e.target.value.toLowerCase();
-    document.querySelectorAll(".player-history-row").forEach(tr=>{
-      tr.style.display = tr.innerText.toLowerCase().includes(q) ? "" : "none";
-    });
-  }
-});
-</script>
-
-
-<script>
-function filterPlayerHistory(){
- const q=(document.getElementById('playerHistorySearchInput')?.value||'').toLowerCase();
- document.querySelectorAll('.player-history-row').forEach(r=>{
-   r.style.display=r.innerText.toLowerCase().includes(q)?'':'none';
- });
-}
-document.addEventListener('input',e=>{
- if(e.target.id==='playerHistorySearchInput') filterPlayerHistory();
-});
-
-// time filters
-function filterTime(hours){
- const now=Date.now();
- document.querySelectorAll('.player-history-row').forEach(r=>{
-   const t=parseInt(r.dataset.startTime||0);
-   if(!hours){r.style.display='';return;}
-   r.style.display=(now-t<=hours*3600000)?'':'none';
- });
-}
-document.addEventListener('click',e=>{
- if(e.target.id==='ph24') filterTime(24);
- if(e.target.innerText.includes('1 hr')) filterTime(1);
-});
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function(){
-  const rangeBox = document.getElementById("playerHistoryRangeFilters");
-  const typeBox = document.getElementById("playerHistoryTypeFilters");
-
-  if(rangeBox){
-    rangeBox.addEventListener("click", e=>{
-      const btn=e.target.closest("button");
-      if(!btn) return;
-      rangeBox.querySelectorAll("button").forEach(b=>b.classList.remove("active"));
-      btn.classList.add("active");
-
-      if(btn.dataset.range){
-        playerHistoryRange = btn.dataset.range;
-      }
-      if(btn.id==="ph24"){
-        playerHistoryRange = "24h";
-      }
-      applyPlayerHistoryFilters();
-    });
-  }
-
-  if(typeBox){
-    typeBox.addEventListener("click", e=>{
-      const btn=e.target.closest("button");
-      if(!btn) return;
-      typeBox.querySelectorAll("button").forEach(b=>b.classList.remove("active"));
-      btn.classList.add("active");
-
-      playerHistoryType = btn.dataset.type || "all";
-      applyPlayerHistoryFilters();
-    });
-  }
-});
-</script>
-
 </body>
 </html>
