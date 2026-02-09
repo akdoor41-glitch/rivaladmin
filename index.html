@@ -1860,7 +1860,8 @@ function renderWithdrawals(){
       <b>Amount:</b> ₹${d.amount || 0} <br>
       <b>Status:</b> ${d.status} <br>
       <b>Method:</b> ${d.paymentMethod || d.methodDetails?.accountInfo || '-'} <br>
-      <b>Time:</b> ${date}
+      <b>Time:</b> ${date}<br>
+        <b>Id:</b> ${d.userId || '-'} 
     </div>`;
   });
 
