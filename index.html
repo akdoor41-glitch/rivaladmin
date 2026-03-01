@@ -777,7 +777,104 @@
             border: 1px solid var(--border-color);
             cursor: pointer;
         }
-    </style>
+    
+/* ===== Unseen Live Support Highlight ===== */
+.support-user-card.unseen {
+    border-left: 4px solid #ff3b3b !important;
+    background: rgba(255, 59, 59, 0.08) !important;
+    animation: unseenPulse 1.2s infinite alternate;
+}
+
+@keyframes unseenPulse {
+    from { box-shadow: 0 0 5px rgba(255,59,59,0.4); }
+    to { box-shadow: 0 0 18px rgba(255,59,59,0.9); }
+}
+
+
+/* removed glow */
+.support-user-card.unseen {
+    border-left: 5px solid #ff0000 !important;
+    background: linear-gradient(90deg, rgba(255,0,0,0.18), rgba(255,0,0,0.05)) !important;
+    box-shadow: 0 0 12px rgba(255,0,0,0.6),
+                0 0 25px rgba(255,0,0,0.5),
+                0 0 45px rgba(255,0,0,0.4);
+    animation: unseenGlowPulse 1s infinite alternate;
+}
+
+/* removed animation */ {
+    from {
+        box-shadow: 0 0 10px rgba(255,0,0,0.5),
+                    0 0 20px rgba(255,0,0,0.4),
+                    0 0 35px rgba(255,0,0,0.3);
+    }
+    to {
+        box-shadow: 0 0 20px rgba(255,0,0,0.9),
+                    0 0 40px rgba(255,0,0,0.7),
+                    0 0 70px rgba(255,0,0,0.6);
+    }
+}
+
+
+/* ===== SEEN SOFT GREY HIGHLIGHT ===== */
+.support-user-card.seen-temp {
+    background: rgba(180, 180, 180, 0.08) !important;
+    border-left: 4px solid rgba(180, 180, 180, 0.4) !important;
+    box-shadow: none !important;
+    transition: all 0.3s ease;
+}
+
+
+/* replaced highlight */
+.support-user-card.unseen {
+    background: rgba(120, 130, 150, 0.15) !important;
+    border-left: 4px solid rgba(180, 190, 210, 0.6) !important;
+    box-shadow: none !important;
+    animation: none !important;
+}
+
+
+/* ===== FULL CARD BORDER UNSEEN HIGHLIGHT ===== */
+.support-user-card.unseen {
+    border: 2px solid rgba(180, 190, 210, 0.8) !important;
+    background: rgba(120, 130, 150, 0.12) !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease-in-out;
+}
+
+
+/* ===== QUICK REPLY SYSTEM ===== */
+.quick-reply-bar {
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:10px;
+}
+
+.quick-reply-btn {
+    padding:6px 10px;
+    background:#1f2937;
+    color:#e5e7eb;
+    border:1px solid #374151;
+    border-radius:6px;
+    font-size:12px;
+    cursor:pointer;
+}
+
+.quick-reply-btn:hover {
+    background:#374151;
+}
+
+.quick-manage-btn {
+    margin-left:10px;
+    padding:6px 10px;
+    background:#2563eb;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+</style>
 
 <style>
 #newUsersTableBody td small.text-muted {
@@ -794,6 +891,77 @@
     color:#ffffff !important;
     font-weight:600 !important;
 }
+</style>
+
+
+<style>
+.tag-badge { 
+    padding:4px 10px; 
+    border-radius:20px; 
+    font-size:12px; 
+    font-weight:600; 
+    color:white;
+}
+.tag-matches { background:#007bff; }
+.tag-payment { background:#28a745; }
+.tag-account { background:#ffc107; color:#000; }
+.tag-technical { background:#17a2b8; }
+.tag-complaints { background:#dc3545; }
+.tag-general { background:#6c757d; }
+</style>
+
+
+<style>
+/* ===== FILTER WRAPPER FIX ===== */
+.live-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 0 25px 40px;
+}
+
+/* ===== FILTER BUTTON FIX ===== */
+.live-filters button {
+    min-width: 120px;
+    text-align: center;
+    padding: 8px 0;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: transparent;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+/* Active effect */
+.live-filters button.active {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(255,255,255,0.2);
+}
+
+/* ===== COLOR TEXT STYLE ===== */
+.filter-matches { color:#007bff; border-color:#007bff; }
+.filter-payment { color:#28a745; border-color:#28a745; }
+.filter-account { color:#ffc107; border-color:#ffc107; }
+.filter-technical { color:#17a2b8; border-color:#17a2b8; }
+.filter-complaints { color:#dc3545; border-color:#dc3545; }
+.filter-general { color:#6c757d; border-color:#6c757d; }
+.filter-all { color:#ffffff; border-color:#ffffff; }
+
+.live-filters button.active.filter-matches { background:#007bff; color:#fff; }
+.live-filters button.active.filter-payment { background:#28a745; color:#fff; }
+.live-filters button.active.filter-account { background:#ffc107; color:#000; }
+.live-filters button.active.filter-technical { background:#17a2b8; color:#fff; }
+.live-filters button.active.filter-complaints { background:#dc3545; color:#fff; }
+.live-filters button.active.filter-general { background:#6c757d; color:#fff; }
+.live-filters button.active.filter-all { background:#ffffff; color:#000; }
+</style>
+
+
+<style>
+.section { display:none !important; }
+.section.active { display:block !important; }
 </style>
 
 </head>
@@ -903,8 +1071,13 @@
                 <h1 class="header-title ms-1" id="adminPageTitle">Dashboard</h1>
             </div>
             <div class="header-right">
-                <span class="admin-email-header" id="adminUserEmailShort"></span>
-                <button class="btn btn-sm btn-outline-danger" id="adminLogoutBtnHeader" title="Logout">
+                
+<button class="btn btn-sm btn-outline-info me-3" id="globalHeaderRefreshBtn" title="Refresh Page">
+<i class="bi bi-arrow-clockwise"></i>
+</button>
+
+<span class="admin-email-header" id="adminUserEmailShort"></span>
+                <button class="btn btn-sm btn-outline-danger" id="adminRefreshBtn" style="display:none;" title="Logout">
                     <i class="bi bi-box-arrow-right"></i>
                     <span class="d-none d-sm-inline ms-1">Logout</span>
                 </button>
@@ -920,25 +1093,33 @@
                 <ul class="nav flex-column">
                      <li class="nav-item"> <a class="nav-link active" href="#" data-section="dashboard-section"><i class="bi bi-speedometer2"></i> Dashboard</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="games-section"><i class="bi bi-controller"></i> Games</a> </li>
-                    <li class="nav-item"> <a class="nav-link" href="#" data-section="promotions-section"><i class="bi bi-images"></i> Promotions</a> </li>
-<li class="nav-item"><a class="nav-link" href="#" data-section="news-section"><i class="bi bi-newspaper"></i> News</a></li>
-                    
+                   
+                   
+                 <li class="nav-item"> <a class="nav-link" href="#" data-section="promotions-section"><i class="bi bi-images"></i> Promotions</a> </li>
+ <li class="nav-item"> <a class="nav-link" href="#" data-section="deposit-section">
+                            <img src="https://i.ibb.co/cWcfwt2/20250626-183518.png" alt="Deposit Icon" class="sidebar-icon" style="height: 20px; width: 20px; object-fit: contain;"> Deposit <span class="badge bg-warning ms-1" id="pendingDepositCountBadge" style="display: none;">0</span>
+                        </a>
+                    </li>
+
+
+               
 
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="tournaments-section"><i class="bi bi-trophy"></i> Tournaments</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="tournament-management-section"><i class="bi bi-award-fill"></i> Tournament Mgt</a> </li>
-                    <li class="nav-item"> <a class="nav-link" href="#" data-section="leaderboard-mgt-section"><i class="bi bi-bar-chart-line-fill"></i> Leaderboard Mgt</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="#" data-section="leaderboard-mgt-section"><i class="bi bi-bar-chart-line-fill"></i> Leaderboard Mgt</a>
+<a class="nav-link" href="#" data-section="top-players-section"><i class="bi bi-trophy-fill"></i> Top Players</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="users-section"><i class="bi bi-people"></i> Users</a> </li>
                     <li class="nav-item"><a class="nav-link" href="#" data-section="new-users-section"><i class="bi bi-person-plus-fill"></i> New Users</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="#" data-section="user-analytics-section"><i class="bi bi-pie-chart-fill"></i> User Analytics</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="#" data-section="user-analytics-section"><i class="bi bi-pie-chart-fill"></i> User Analytics
+
+
+</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="player-history-section"><i class="bi bi-people"></i> Player History <span class="badge bg-warning ms-1" id="playerHistoryNotificationBadge" style="display: none;">0</span></a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="notifications-section"><i class="bi bi-bell"></i> Notifications</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="user-notifications-section"><i class="bi bi-person-lines-fill"></i> User Notifications</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="transactions-section"><i class="bi bi-receipt"></i> Transactions</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="withdrawals-section"><i class="bi bi-cash-coin"></i> Withdrawals <span class="badge bg-danger ms-1" id="pendingWithdrawalCountBadge" style="display: none;">0</span></a> </li>
-                    <li class="nav-item"> <a class="nav-link" href="#" data-section="deposit-section">
-                            <img src="https://i.ibb.co/cWcfwt2/20250626-183518.png" alt="Deposit Icon" class="sidebar-icon" style="height: 20px; width: 20px; object-fit: contain;"> Deposit <span class="badge bg-warning ms-1" id="pendingDepositCountBadge" style="display: none;">0</span>
-                        </a>
-                    </li>
+                   
                     <li class="nav-item"> <a class="nav-link" href="#" data-section="referrals-section"><i class="bi bi-person-plus"></i> Referrals <span class="badge bg-info ms-1" id="pendingReferralCountBadge" style="display: none;">0</span></a> </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" data-section="live-support-section">
@@ -955,11 +1136,13 @@
                         </a>
                     </li>
 
+
                     <li class="nav-item">
   <a class="nav-link" href="#" data-section="total-amount-section">
     <i class="bi bi-currency-rupee"></i> Total Amount
   </a>
 </li>
+                    
                     <!-- ==================================================== -->
                     <!-- =================== END OF NEW LINK ================ -->
                     <!-- ==================================================== -->
@@ -967,11 +1150,7 @@
                     <!-- =============================================== -->
                     <!-- =========== NEW STAFF SIDEBAR LINK ============ -->
                     <!-- =============================================== -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" data-section="staff-section">
-                            <i class="bi bi-person-badge"></i> Add Staff
-                        </a>
-                    </li>
+                    
                     <!-- =============================================== -->
                     <!-- ============== END OF NEW LINK ================ -->
                     <!-- =============================================== -->
@@ -1173,6 +1352,12 @@
 
             <section id="tournament-management-section" class="section">
                 <h2>Tournament Prize Management</h2>
+<div class="mb-3" style="max-width:420px;">
+  <div class="input-group">
+    <span class="input-group-text bg-transparent"><i class="bi bi-search"></i></span>
+    <input type="text" id="tmsSearchInput" class="form-control" placeholder="Search player / gmail / uid...">
+  </div>
+</div>
                 <div class="card">
                     <div class="card-body">
                         <!-- FEATURE 1: MODIFIED ROW -->
@@ -1264,7 +1449,16 @@
                 <div class="user-controls mb-4">
                     <div class="user-search-bar mb-3">
                         <i class="bi bi-search"></i>
-                        <input type="search" class="form-control" id="userSearchInput" placeholder="Search by name or email...">
+                        <input type="search" class="form-control" id="userSearchInput" placeholder="Search by name or email"> </div>
+<div id="tagFilterBar" style="margin:15px 0; display:flex; gap:10px; flex-wrap:wrap;">
+    <button class="tag-filter-btn btn btn-sm btn-outline-light active" data-filter="all">ALL</button>
+    <button class="tag-filter-btn btn btn-sm btn-outline-primary" data-filter="matches">MATCHES</button>
+    <button class="tag-filter-btn btn btn-sm btn-outline-success" data-filter="payment">PAYMENT</button>
+    <button class="tag-filter-btn btn btn-sm btn-outline-warning" data-filter="account">ACCOUNT</button>
+    <button class="tag-filter-btn btn btn-sm btn-outline-info" data-filter="technical">TECHNICAL</button>
+    <button class="tag-filter-btn btn btn-sm btn-outline-danger" data-filter="complaints">COMPLAINTS</button>
+    <button class="tag-filter-btn btn btn-sm btn-outline-secondary" data-filter="general">GENERAL</button>
+</div>
 
 <!-- ChatGPT: Date Range Filter (From - To) injected -->
 <div id="tournament-date-filter-row" style="margin:10px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
@@ -1289,7 +1483,7 @@
                     <h2>New Users</h2>
                     <div class="d-flex flex-column align-items-end gap-2">
                         <div class="btn-group btn-group-sm" id="newUsersFilterGroup" role="group" aria-label="New users time filters">
-                            <button type="button" class="btn btn-outline-light active" data-new-users-range="24h">Last 24 hrs</button>
+                            <button type="button" class="btn btn-outline-light active" data-new-users-range="24h">1 hr</button><button id='ph24' class='btn btn-sm btn-outline-light'>Last 24 hrs</button>
                             <button type="button" class="btn btn-outline-light" data-new-users-range="7d">Last 7 days</button>
                             <button type="button" class="btn btn-outline-light" data-new-users-range="30d">Last 30 days</button>
                             <button type="button" class="btn btn-outline-light" data-new-users-range="90d">Last 90 days</button>
@@ -1324,11 +1518,17 @@
 
              <section id="user-analytics-section" class="section">
                  <h2>User Analytics</h2>
+
+<div class="card mb-3 p-3" style="max-width:350px;">
+  <h5 class="mb-1">Total Active Users</h5>
+  <h2 id="totalUsersCount">Loading...</h2>
+</div>
+
                  <div class="row">
                      <div class="col-lg-4 mb-4">
                          <div class="card h-100">
                              <div class="card-body">
-                                 <h5 class="card-title">Top 10 Spenders</h5>
+                                 <h5 class="card-title">Top 50 Spenders</h5>
                                  <div class="table-responsive" id="topSpendersContainer">
                                       <p class="text-secondary">Loading data...</p>
                                  </div>
@@ -1338,7 +1538,7 @@
                      <div class="col-lg-4 mb-4">
                           <div class="card h-100">
                              <div class="card-body">
-                                 <h5 class="card-title">Top 10 Active Players</h5>
+                                 <h5 class="card-title">Top 50 Active Players</h5>
                                  <div class="table-responsive" id="mostActiveContainer">
                                       <p class="text-secondary">Loading data...</p>
                                  </div>
@@ -1361,10 +1561,23 @@
             <section id="player-history-section" class="section">
                 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                     <h2>Player History</h2>
+
+<!-- Player History Search -->
+<div style="max-width:420px; margin-bottom:12px;">
+  <div class="input-group">
+    <span class="input-group-text bg-transparent">
+      <i class="bi bi-search"></i>
+    </span>
+    <input type="text" id="playerHistorySearchInput"
+           class="form-control"
+           placeholder="Search player / gmail / game uid...">
+  </div>
+</div>
+
                     <div class="d-flex flex-wrap gap-2">
                         <div class="btn-group btn-group-sm" id="playerHistoryRangeFilters" role="group" aria-label="Time range">
                             <button type="button" class="btn btn-outline-light active" data-range="all">All time</button>
-                            <button type="button" class="btn btn-outline-light" data-range="24h">Last 24 hrs</button>
+                            <button type="button" class="btn btn-outline-light" data-range="24h">1 hr</button><button id='ph24' class='btn btn-sm btn-outline-light'>Last 24 hrs</button>
                             <button type="button" class="btn btn-outline-light" data-range="7d">Last 7 days</button>
                         </div>
                         <div class="btn-group btn-group-sm" id="playerHistoryTypeFilters" role="group" aria-label="Player type">
@@ -1456,7 +1669,16 @@
                             type="text" 
                             id="transactionsSearchInput" 
                             class="form-control form-control-sm" 
-                            placeholder="Search by name or email">
+                            placeholder="Search by name or email"></div>
+<div id="tagFilterBar" style="margin:15px 0; display:flex; gap:10px; flex-wrap:wrap;">
+    <button class="tag-filter-btn btn btn-sm btn-outline-light active" data-filter="all">ALL</button>
+    <button class="tag-filter-btn btn btn-sm btn-outline-primary" data-filter="matches">MATCHES</button>
+    <button class="tag-filter-btn btn btn-sm btn-outline-success" data-filter="payment">PAYMENT</button>
+    <button class="tag-filter-btn btn btn-sm btn-outline-warning" data-filter="account">ACCOUNT</button>
+    <button class="tag-filter-btn btn btn-sm btn-outline-info" data-filter="technical">TECHNICAL</button>
+    <button class="tag-filter-btn btn btn-sm btn-outline-danger" data-filter="complaints">COMPLAINTS</button>
+    <button class="tag-filter-btn btn btn-sm btn-outline-secondary" data-filter="general">GENERAL</button>
+</div>
                     </div>
                 </div>
 
@@ -1528,7 +1750,21 @@
             <!-- ==================================================== -->
 
             
+            
             <section id="deposit-section" class="section">
+<div class="card mb-3" id="depositTotalCard">
+  <div class="card-body d-flex justify-content-between align-items-center">
+    <div>
+      <div class="text-muted">Total Deposit (Visible Records Only)</div>
+      <div id="depositTotalAmount" style="font-size:2rem;font-weight:700;color:var(--accent-color)">₹0.00</div>
+    </div>
+    <i class="bi bi-currency-rupee" style="font-size:3rem;opacity:0.15"></i>
+  </div>
+</div>
+
+
+
+
                 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                     <h2>Manage Deposits</h2>
                 </div>
@@ -1636,7 +1872,34 @@
 
             <section id="live-support-section" class="section">
                 <div id="liveSupportStatus" class="mb-3"></div>
-                <div id="liveSupportUserListContainer"></div>
+                
+<!-- LIVE SUPPORT TOOLBAR -->
+<div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
+ 
+<div class="input-group" style="max-width:350px;">
+
+   <span class="input-group-text bg-transparent"><i class="bi bi-search"></i></span>
+  <input type="text" id="chatSearchInput" class="form-control" placeholder="Search by name or email">
+
+    <div id="tagFilterBar" style="margin:15px 0; display:flex; gap:10px; flex-wrap:wrap;">
+    <button class="tag-filter-btn btn btn-sm btn-outline-light active" data-filter="all">ALL</button>
+    <button class="tag-filter-btn btn btn-sm btn-outline-primary" data-filter="matches">MATCHES</button>
+    <button class="tag-filter-btn btn btn-sm btn-outline-success" data-filter="payment">PAYMENT</button>
+    <button class="tag-filter-btn btn btn-sm btn-outline-warning" data-filter="account">ACCOUNT</button>
+    <button class="tag-filter-btn btn btn-sm btn-outline-info" data-filter="technical">TECHNICAL</button>
+    <button class="tag-filter-btn btn btn-sm btn-outline-danger" data-filter="complaints">COMPLAINTS</button>
+    <button class="tag-filter-btn btn btn-sm btn-outline-secondary" data-filter="general">GENERAL</button>
+    </div>
+
+    </div>
+  
+  <button id="clearAllChatsBtn" class="btn btn-danger btn-sm">
+      <i class="bi bi-trash3-fill"></i> Clear All Chats
+  </button>
+ </div> </div>
+
+
+<div id="liveSupportUserListContainer"></div>
                 <div id="liveSupportChatContainer" style="display: none;">
                     <div class="chat-header">
                         <button class="chat-back-button" id="liveSupportChatBackButton" title="Back to list">
@@ -1647,7 +1910,9 @@
                     <div class="chat-messages" id="liveSupportChatMessages"></div>
                     <form class="chat-input-form" id="liveSupportChatForm">
                         <input type="text" class="form-control" id="liveSupportChatInput" placeholder="Type a message..." autocomplete="off">
-                        <button type="submit" class="btn btn-primary">
+                        
+<button type="button" class="quick-manage-btn" onclick="openQuickManager()" style="margin-right:8px;">+ Replies</button>
+<button type="submit" class="btn btn-primary">
                             <i class="bi bi-send-fill"></i>
                         </button>
                     </form>
@@ -1728,175 +1993,6 @@
                     </div>
                 </div>
             </section>
-
-
-
-
-
-
-
-<section id="total-amount-section" class="section">
-
-  <h2>Total Amount</h2>
-
-  <!-- SEARCH + FILTER BAR -->
-  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px;align-items:center">
-
-    <input id="withdrawSearch" class="form-control form-control-sm"
-           placeholder="Search user name or email..."
-           style="max-width:250px">
-
-    <button class="btn btn-sm btn-warning tf" data-t="24">24 Hrs</button>
-    <button class="btn btn-sm btn-warning tf" data-t="7">7 Days</button>
-    <button class="btn btn-sm btn-warning tf" data-t="30">30 Days</button>
-    <button class="btn btn-sm btn-warning tf" data-t="all">All Time</button>
-
-    <select id="statusFilter" class="form-select form-select-sm" style="max-width:150px;">
-      <option value="all">All Status</option>
-      <option value="completed">Completed</option>
-      <option value="rejected">Rejected</option>
-    </select>
-
-  </div>
-
-  <!-- TOTAL AMOUNT CARD -->
-  <div id="totalWithdrawAmount"
-       style="font-size:22px;font-weight:600;margin-bottom:20px;color:#facc15">
-  </div>
-
-  <!-- LIST -->
-  <div id="completedWithdrawalsContainer"></div>
-
-</section>
-<script type="module">
-import { ref, get } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
-
-let allWithdrawals = [];
-let currentDays = "all";
-let currentStatus = "all";
-let searchText = "";
-
-/* 🔥 TIMESTAMP NORMALIZER */
-function getTime(w){
-  let t = w.requestTimestamp || w.timestamp || 0;
-  if(t < 1000000000000) t = t * 1000; // seconds → ms
-  return t;
-}
-
-async function loadCompletedWithdrawals(){
-  const db = window.db;
-  if(!db) return setTimeout(loadCompletedWithdrawals,1500);
-
-  const snap = await get(ref(db,'withdrawals'));
-
-  allWithdrawals = [];
-  if(snap.exists()){
-    snap.forEach(s=>{
-      const d = s.val() || {};
-      if(d.status !== "completed" && d.status !== "rejected") return;
-      allWithdrawals.push(d);
-    });
-  }
-
-  renderWithdrawals();
-}
-
-function renderWithdrawals(){
-  const container = document.getElementById("completedWithdrawalsContainer");
-  const totalBox = document.getElementById("totalWithdrawAmount");
-
-  let list = [...allWithdrawals];
-
-  /* 🔹 SORT newest first */
-  list.sort((a,b)=> getTime(b) - getTime(a));
-
-  /* ⏱️ REAL TIME FILTER (FINAL FIX) */
-  if(currentDays !== "all"){
-    const now = Date.now();
-    const limit = Number(currentDays) * 24 * 60 * 60 * 1000;
-
-    list = list.filter(w=>{
-      const t = getTime(w);
-      if(!t || t === 0) return false;   // skip invalid timestamps
-      return t >= (now - limit);        // only last timeframe
-    });
-  }
-
-  /* 📌 STATUS FILTER */
-  if(currentStatus !== "all"){
-    list = list.filter(w => w.status === currentStatus);
-  }
-
-  /* 🔎 SEARCH FILTER */
-  if(searchText){
-    const txt = searchText.toLowerCase();
-    list = list.filter(w =>
-      (w.userName || "").toLowerCase().includes(txt) ||
-      (w.email || "").toLowerCase().includes(txt) ||
-      (w.userId || "").toLowerCase().includes(txt)
-    );
-  }
-
-  /* 💰 TOTAL AMOUNT */
-  let totalAmount = 0;
-  list.forEach(w => totalAmount += Number(w.amount || 0));
-  totalBox.innerHTML = `Total Withdrawal Amount : ₹${totalAmount}`;
-
-  /* 🧾 RENDER LIST */
-  if(list.length === 0){
-    container.innerHTML = "<p>No withdrawals found</p>";
-    return;
-  }
-
-  let html = `<h2 style="margin-top:10px">Completed & Rejected Withdrawals</h2>`;
-
-  list.forEach(d=>{
-    const date = new Date(getTime(d)).toLocaleString();
-
-    html += `
-    <div style="border:1px solid #444;padding:12px;margin:12px 0;border-radius:10px">
-      <b>User:</b> ${d.userName || '-'} <br>
-      <b>Email:</b> ${d.userEmail || '-'} <br>
-      <b>Amount:</b> ₹${d.amount || 0} <br>
-      <b>Status:</b> ${d.status} <br>
-      <b>Method:</b> ${d.paymentMethod || d.methodDetails?.accountInfo || '-'} <br>
-      <b>Time:</b> ${date}<br>
-        <b>Id:</b> ${d.userId || '-'} 
-    </div>`;
-  });
-
-  container.innerHTML = html;
-}
-
-//// EVENTS ////
-
-document.querySelectorAll(".tf").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    currentDays = btn.dataset.t;
-    renderWithdrawals();
-  });
-});
-
-document.getElementById("statusFilter").addEventListener("change",(e)=>{
-  currentStatus = e.target.value;
-  renderWithdrawals();
-});
-
-document.getElementById("withdrawSearch").addEventListener("input",(e)=>{
-  searchText = e.target.value;
-  renderWithdrawals();
-});
-
-setTimeout(loadCompletedWithdrawals,2000);
-</script>
-
-
-
-
-
-
-
-
             <!-- ==================================================== -->
             <!-- ============= NEW PROMO CODE SECTION END ============= -->
             <!-- ==================================================== -->
@@ -2007,19 +2103,6 @@ setTimeout(loadCompletedWithdrawals,2000);
                 </div>
             </section>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
             <section id="settings-section" class="section card">
                 <div class="card-body">
                     <h2 class="card-title">App Settings</h2>
@@ -2069,7 +2152,19 @@ setTimeout(loadCompletedWithdrawals,2000);
                     </form>
                 </div>
             </section>
-        </main>
+        
+<section id="top-players-section" class="section">
+<h2 class="section-title">Weekly Top 50 Players</h2>
+<div class="card p-3">
+<button class="btn btn-warning mb-3" id="addPlayerBtn">+ Add Player</button>
+<table class="table table-dark table-hover">
+<thead><tr><th>Rank</th><th>Name</th><th>₹</th><th></th></tr></thead>
+<tbody id="adminLeaderboardBody"></tbody></table>
+<button class="btn btn-success mt-3" id="saveLeaderboardBtn">Save Leaderboard</button>
+</div>
+</section>
+
+</main>
     </div>
 
     <!-- Modals -->
@@ -2134,6 +2229,48 @@ setTimeout(loadCompletedWithdrawals,2000);
             </div>
         </div>
     </div>
+
+
+
+    
+
+
+<section id="total-amount-section" class="section">
+
+  <h2>Total Amount</h2>
+
+  <!-- SEARCH + FILTER BAR -->
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px;align-items:center">
+
+    <input id="withdrawSearch" class="form-control form-control-sm"
+           placeholder="Search user name or email..."
+           style="max-width:250px">
+
+    <button class="btn btn-sm btn-warning tf" data-t="24"> 24 Hrs</button>
+    <button class="btn btn-sm btn-warning tf" data-t="7">7 Days</button>
+    <button class="btn btn-sm btn-warning tf" data-t="30">30 Days</button>
+    <button class="btn btn-sm btn-warning tf" data-t="all">All Time</button>
+
+    <select id="statusFilter" class="form-select form-select-sm" style="max-width:150px;">
+      <option value="all">All Status</option>
+      <option value="completed">Completed</option>
+      <option value="rejected">Rejected</option>
+    </select>
+
+  </div>
+
+  <!-- TOTAL AMOUNT CARD -->
+  <div id="totalWithdrawAmount"
+       style="font-size:22px;font-weight:600;margin-bottom:20px;color:#facc15">
+  </div>
+
+  <!-- LIST -->
+  <div id="completedWithdrawalsContainer"></div>
+
+</section>
+
+
+
     
     <!-- ==================================================== -->
     <!-- ================ NEW STAFF MODAL =================== -->
@@ -2252,6 +2389,7 @@ setTimeout(loadCompletedWithdrawals,2000);
                             <thead>
                                 <tr>
                                     <th>Player</th>
+<th>Gmail</th>
                                     <th>Kills</th>
                                     <th>Rank</th>
                                     <th>Calculated Prize</th>
@@ -2812,10 +2950,10 @@ setTimeout(loadCompletedWithdrawals,2000);
                  console.log("Detached active live chat listener due to section change.");
              }
 
-             elements.sections.forEach(sec => sec.classList.remove('active'));
+             document.querySelectorAll('.section').forEach(sec => { sec.classList.remove('active'); sec.style.display='none'; });
              const targetSection = getElement(sectionId);
              if (targetSection) {
-                 targetSection.classList.add('active');
+                 targetSection.classList.add('active'); targetSection.style.display='block';
                  const linkElement = querySel(`#adminSidebar .nav-link[data-section="${sectionId}"]`);
                  let title = 'Admin Panel';
                  if (linkElement) {
@@ -2894,6 +3032,7 @@ setTimeout(loadCompletedWithdrawals,2000);
                  case 'user-notifications-section': loadUserNotificationsHistory(); break;
                  case 'tournament-management-section': populateTournamentManagementSelector(); break;
                  case 'leaderboard-mgt-section': loadLeaderboardManagementData(); break;
+case 'top-players-section': loadTopPlayersAdmin(); break;
                  case 'user-analytics-section': loadUserAnalyticsData(); break;
                  case 'player-history-section':
                     loadPlayerHistory();
@@ -5018,84 +5157,150 @@ async function deleteTournament(tournamentId) { if (!db || !tournamentId || !isD
             }
         }
         
-        async function loadLiveSupportConversations() {
-            if (!db || !isDesignatedAdmin(currentAdminUser)) return;
+        
+async function loadLiveSupportConversations() {
+    if (!db || !isDesignatedAdmin(currentAdminUser)) return;
 
-            elements.liveSupportUserListContainer.style.display = 'grid';
-            elements.liveSupportChatContainer.style.display = 'none';
-            elements.liveSupportUserListContainer.innerHTML = `<p class="text-secondary">Loading conversations...</p>`;
+    elements.liveSupportUserListContainer.style.display = 'grid';
+    elements.liveSupportChatContainer.style.display = 'none';
+    elements.liveSupportUserListContainer.innerHTML = `<p class="text-secondary">Loading conversations...</p>`;
 
-            try {
-                const supportChatsRef = ref(db, 'liveSupportChats');
-                const snapshot = await get(supportChatsRef);
+    try {
+        const [chatsSnap, metaSnap] = await Promise.all([
+            get(ref(db, 'liveSupportChats')),
+            get(ref(db, 'liveSupportMeta'))
+        ]);
 
-                if (!snapshot.exists()) {
-                    elements.liveSupportUserListContainer.innerHTML = `<p class="text-center text-muted p-3">No user has started a conversation yet.</p>`;
-                    return;
-                }
-
-                const conversations = snapshot.val();
-                const userIds = Object.keys(conversations);
-                let cardsHtml = '';
-
-                for (const userId of userIds) {
-                    const user = fullUserDataCache[userId] || await get(ref(db, `users/${userId}`)).then(s => s.exists() ? {uid: s.key, ...s.val()} : null);
-                    if (!user) {
-                        console.warn(`User data not found for chat UID: ${userId}. Skipping.`);
-                        continue;
-                    }
-                    if (!fullUserDataCache[userId]) fullUserDataCache[userId] = user;
-
-                    const userChat = conversations[userId];
-                    const messageKeys = Object.keys(userChat).sort((a,b) => userChat[a].timestamp - userChat[b].timestamp);
-                    const lastMessageKey = messageKeys[messageKeys.length - 1];
-                    const lastMessage = userChat[lastMessageKey];
-
-                    let hasUnread = false;
-                    Object.values(userChat).forEach(msg => {
-                        if (msg.sender === 'user' && !msg.readByAdmin) {
-                            hasUnread = true;
-                        }
-                    });
-                    const unreadClass = hasUnread ? 'selected' : '';
-
-                    let lastMessageText = lastMessage.message || '';
-                    if (lastMessageText.length > 40) {
-                        lastMessageText = lastMessageText.substring(0, 40) + '...';
-                    }
-
-                    const senderBadge = lastMessage.sender === 'user'
-                        ? `<span class="badge text-bg-info">User</span>`
-                        : `<span class="badge text-bg-warning">You</span>`;
-
-                    cardsHtml += `
-                        <div class="support-user-card ${unreadClass}" data-uid="${userId}">
-                            <div class="user-info">
-                                <p class="name">${sanitizeHTML(user.displayName || 'N/A')}</p>
-                                <p class="email">${sanitizeHTML(user.email || 'N/A')}</p>
-                            </div>
-                            <div class="last-message">
-                                ${senderBadge} ${sanitizeHTML(lastMessageText)}
-                            </div>
-                            <div class="support-card-footer">
-                                <button class="btn btn-sm btn-danger btn-close-conversation" data-uid="${userId}" title="Close & Delete Conversation">
-                                    <i class="bi bi-trash3"></i> Close Chat
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                }
-
-                elements.liveSupportUserListContainer.innerHTML = cardsHtml || `<p class="text-center text-muted p-3">No conversations found.</p>`;
-
-            } catch (error) {
-                console.error("Error loading live support conversations:", error);
-                showStatus(elements.liveSupportStatus, `Error loading chats: ${error.message}`, 'danger', false);
-                elements.liveSupportUserListContainer.innerHTML = `<p class="text-center text-danger p-3">Error loading chats.</p>`;
-            }
+        if (!chatsSnap.exists()) {
+            elements.liveSupportUserListContainer.innerHTML = `<p class="text-center text-muted p-3">No conversations yet.</p>`;
+            return;
         }
 
-        async function openLiveSupportChat(userId) {
+        const conversations = chatsSnap.val();
+        const metaData = metaSnap.exists() ? metaSnap.val() : {};
+        const userIds = Object.keys(conversations);
+        let chatList = [];
+
+        for (const userId of userIds) {
+
+            let user = fullUserDataCache[userId];
+            if (!user) {
+                const userSnap = await get(ref(db, `users/${userId}`));
+                if (!userSnap.exists()) continue;
+                user = { uid: userSnap.key, ...userSnap.val() };
+                fullUserDataCache[userId] = user;
+            }
+
+            const userChat = conversations[userId];
+            const userMeta = metaData[userId] || { tag: "general", pinned: false };
+
+            const messagesOnly = Object.values(userChat);
+            if (messagesOnly.length === 0) continue;
+
+            messagesOnly.sort((a,b)=> a.timestamp - b.timestamp);
+            const lastMessage = messagesOnly[messagesOnly.length - 1];
+
+            let lastMessageText = lastMessage.message || '';
+            if (lastMessageText.length > 40) {
+                lastMessageText = lastMessageText.substring(0, 40) + '...';
+            }
+
+            const senderBadge = lastMessage.sender === 'user'
+                ? `<span class="badge text-bg-info">User</span>`
+                : `<span class="badge text-bg-warning">You</span>`;
+
+            chatList.push({
+                userId,
+                tag: userMeta.tag || "general",
+                pinned: userMeta.pinned || false,
+                lastTimestamp: lastMessage.timestamp || 0,
+                user,
+                lastMessageText,
+                senderBadge
+            });
+        }
+
+        chatList.sort((a,b)=>{
+            if (a.pinned && !b.pinned) return -1;
+            if (!a.pinned && b.pinned) return 1;
+            return b.lastTimestamp - a.lastTimestamp;
+        });
+
+        let cardsHtml = '';
+
+        for (const chat of chatList) {
+
+            const { userId, tag, pinned, user, lastMessageText, senderBadge } = chat;
+
+            const tagOptions = ["matches","payment","account","technical","complaints","general"]
+                .map(t => `<option value="${t}" ${tag===t?'selected':''}>${t.toUpperCase()}</option>`)
+                .join("");
+
+            cardsHtml += `
+                <div class="support-user-card" data-uid="${userId}" style="position:relative;">
+                    
+                    <div style="position:absolute;top:8px;right:8px;display:flex;gap:6px;" onclick="event.stopPropagation();">
+                        <select class="form-select form-select-sm ls-tag" data-uid="${userId}" style="width:120px;">
+                            ${tagOptions}
+                        </select>
+                        <button class="btn btn-sm btn-dark ls-pin" data-uid="${userId}">
+                            ${pinned ? '📌' : '📍'}
+                        </button>
+                    </div>
+
+                    <div class="user-info">
+                        <p class="name">${sanitizeHTML(user.displayName || 'N/A')}
+                            <span class="tag-badge tag-${tag} ms-2">${tag.toUpperCase()}</span>
+                        </p>
+                        <p class="email">${sanitizeHTML(user.email || 'N/A')}</p>
+                    </div>
+
+                    <div class="last-message">
+                        ${senderBadge} ${sanitizeHTML(lastMessageText)}
+                    </div>
+
+                    <div class="support-card-footer">
+                        <button class="btn btn-sm btn-danger btn-close-conversation" data-uid="${userId}">
+                            <i class="bi bi-trash3"></i> Close Chat
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        elements.liveSupportUserListContainer.innerHTML = cardsHtml;
+
+        document.querySelectorAll(".ls-tag").forEach(select=>{
+            select.addEventListener("click", e=>e.stopPropagation());
+            select.addEventListener("change", async function(e){
+                e.stopPropagation();
+                const uid = this.dataset.uid;
+                await update(ref(db, `liveSupportMeta/${uid}`), {
+                    tag: this.value
+                });
+                loadLiveSupportConversations();
+            });
+        });
+
+        document.querySelectorAll(".ls-pin").forEach(btn=>{
+            btn.addEventListener("click", async function(e){
+                e.stopPropagation();
+                const uid = this.dataset.uid;
+                const current = chatList.find(c=>c.userId===uid)?.pinned || false;
+                await update(ref(db, `liveSupportMeta/${uid}`), {
+                    pinned: !current
+                });
+                loadLiveSupportConversations();
+            });
+        });
+
+    } catch (error) {
+        console.error("Error loading live support conversations:", error);
+    }
+}
+
+
+async function openLiveSupportChat(userId) {
             if (!userId) return;
             const user = fullUserDataCache[userId];
             if (!user) {
@@ -7002,17 +7207,19 @@ async function loadLeaderboardManagementData() {
                     const tournamentName = t.name || 'Tournament';
 
                     const reg = t.registeredPlayers || {};
-                    Object.keys(reg).forEach(uid => {
-                        const r = reg[uid] || {};
+Object.keys(reg).forEach(uid => {
+    const r = reg[uid] || {};
 
-                        if (!playerMap[uid]) {
-                            playerMap[uid] = {
-                                uid,
-                                username: r.username || r.gameUid || 'N/A',
-                                gameUid: r.gameUid || 'N/A',
-                                tournaments: []
-                            };
-                        }
+    if (!playerMap[uid]) {
+        playerMap[uid] = {
+            uid,
+            username: r.username || r.gameUid || 'N/A',
+            gameUid: r.gameUid || 'N/A',
+            email: 'Loading...', // 🔥 email later fetch hoga users node se
+            tournaments: []
+        };
+    }
+
 
                         playerMap[uid].tournaments.push({
                             tournamentId: tId,
@@ -7027,6 +7234,20 @@ async function loadLeaderboardManagementData() {
                 });
 
                 const players = Object.values(playerMap);
+                // 🔥 Fetch REAL EMAILS from users node
+const userSnap = await get(ref(db, 'users'));
+if (userSnap.exists()) {
+    const usersData = userSnap.val();
+
+    players.forEach(p => {
+        if (usersData[p.uid] && usersData[p.uid].email) {
+            p.email = usersData[p.uid].email;
+        } else {
+            p.email = 'N/A';
+        }
+    });
+}
+
                 let latestJoinedAt = 0;
 
                 if (!players.length) {
@@ -7062,6 +7283,7 @@ async function loadLeaderboardManagementData() {
                         <thead>
                             <tr>
                                 <th>Player</th>
+<th>Gmail</th>
                                 <th>Game UID</th>
                                 <th>Tournaments</th>
                                 <th>Game / Details</th>
@@ -7083,14 +7305,16 @@ async function loadLeaderboardManagementData() {
                         latest.status || 'Unknown';
 
                     tableHtml += `
-                        <tr class="player-history-row"
-                            data-start-time="${latest.startTime || 0}"
-                            data-match-status="${statusRaw}"
-                            data-user-id="${p.uid}"
-                            data-joined-at="${latest.joinedAt || 0}">
-                            <td>${sanitizeHTML(p.username)}</td>
-                            <td>${sanitizeHTML(p.gameUid)}</td>
-                            <td>${p.tournaments.length}</td>
+    <tr class="player-history-row"
+        data-start-time="${latest.startTime || 0}"
+        data-match-status="${statusRaw}"
+        data-user-id="${p.uid}"
+        data-joined-at="${latest.joinedAt || 0}">
+        <td>${sanitizeHTML(p.username)}</td>
+        <td>${sanitizeHTML(p.email || 'N/A')}</td>  
+        <td>${sanitizeHTML(p.gameUid)}</td>
+        <td>${p.tournaments.length}</td>
+
                             <td>
                                 ${sanitizeHTML(latest.gameName || 'Multiple Games')}
                                 <div class="mt-1">
@@ -7822,7 +8046,20 @@ async function creditReviewedWinnings(tournamentId) {
                 elements.sidebar.classList.remove('is-open');
             });
             
-            elements.sidebarLinks?.forEach(link => { link.addEventListener('click', (e) => { e.preventDefault(); const sectionId = link.dataset.section; if (sectionId && !link.classList.contains('active')) { showAdminSection(sectionId); } else { elements.sidebar.classList.remove('is-open'); } }); });
+            elements.sidebarLinks?.forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const sectionId = link.dataset.section;
+        if (!sectionId) return;
+
+        // Remove active class from all sidebar links
+        document.querySelectorAll('#adminSidebar .nav-link').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+
+        showAdminSection(sectionId);
+        elements.sidebar.classList.remove('is-open');
+    });
+});
 
             // Hook up tournament search input (if present)
             if (elements.tournamentSearchInput) {
@@ -8205,6 +8442,55 @@ async function creditReviewedWinnings(tournamentId) {
              // FEATURE 1: Reset review results modal
              resetModal(elements.reviewResultsModalEl, null, elements.reviewResultsStatus, null, null, '', null);
              console.log("Admin Event Listeners Initialized.");
+
+// ================= TOP PLAYERS LEADERBOARD =================
+async function loadTopPlayersAdmin(){
+ const body=document.getElementById("adminLeaderboardBody");
+ if(!body) return;
+ body.innerHTML="";
+ try{
+  const snap=await get(ref(db,"weeklyLeaderboard"));
+  if(!snap.exists()) return;
+  const data=snap.val();
+  Object.keys(data).sort((a,b)=>a-b).forEach(rank=>{
+    addLeaderboardRow(rank,data[rank].name,data[rank].winnings);
+  });
+ }catch(err){ console.log("Leaderboard load error",err);}
+}
+
+function addLeaderboardRow(rank="",name="",win=""){
+ const body=document.getElementById("adminLeaderboardBody");
+ if(!body) return;
+ const tr=document.createElement("tr");
+ tr.innerHTML=`<td><input class="form-control rank" value="${rank}"></td>
+ <td><input class="form-control name" value="${name}"></td>
+ <td><input class="form-control win" value="${win}"></td>
+ <td><button class="btn btn-danger btn-sm delRow">X</button></td>`;
+ body.appendChild(tr);
+ tr.querySelector(".delRow").onclick=()=>tr.remove();
+}
+
+document.addEventListener("click",(e)=>{
+ if(e.target.id==="addPlayerBtn") addLeaderboardRow();
+});
+
+document.addEventListener("click",async(e)=>{
+ if(e.target.id==="saveLeaderboardBtn"){
+  const rows=document.querySelectorAll("#adminLeaderboardBody tr");
+  const updates={};
+  rows.forEach(row=>{
+   const rank=row.querySelector(".rank").value;
+   const name=row.querySelector(".name").value;
+   const win=row.querySelector(".win").value;
+   if(rank && name){
+     updates[`weeklyLeaderboard/${rank}`]={name:name,winnings:Number(win||0)};
+   }
+  });
+  await update(ref(db),updates);
+  alert("Leaderboard Saved ✅");
+ }
+});
+
         }
 
         function filterUsers() {
@@ -9785,5 +10071,919 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 </script>
 <!-- END: ChatGPT force-restore-and-reapply on save/duplicate/edit -->
+
+<script>
+document.addEventListener("click", function(e){
+  if(!e.target.closest("#clearAllChatsBtn")) return;
+
+  if(!confirm("Delete ALL chats?")) return;
+
+  document.getElementById("adminLoader").style.display="flex";
+
+  setTimeout(()=>{
+      document.querySelectorAll(".btn-close-conversation").forEach(btn=>btn.click());
+      document.getElementById("adminLoader").style.display="none";
+      alert("All chats deleted");
+  },300);
+});
+</script>
+
+
+<script>
+document.addEventListener("input",(e)=>{
+ if(e.target.id!=="chatSearchInput") return;
+ const v=e.target.value.toLowerCase();
+ document.querySelectorAll(".support-user-card").forEach(card=>{
+   card.style.display = card.textContent.toLowerCase().includes(v) ? "" : "none";
+ });
+});
+</script>
+
+
+<script type="module">
+import { getApps, getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+const app = getApps().length ? getApp() : null;
+if(app){
+  const db = getDatabase(app);
+  const usersRef = ref(db,"users");
+  onValue(usersRef,(snap)=>{
+    if(!snap.exists()) return;
+    const count = Object.keys(snap.val()).length;
+    const el=document.getElementById("totalUsersCount");
+    if(el) el.innerText=count;
+  });
+}
+</script>
+
+
+<script type="module">
+import { getApps, getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+const app = getApps().length ? getApp() : null;
+if(app){
+  const db = getDatabase(app);
+  const walletsRef = ref(db,"wallets");
+  onValue(walletsRef,(snap)=>{
+    if(!snap.exists()) return;
+    const count = Object.keys(snap.val()).length;
+    const el=document.getElementById("totalUsersCount");
+    if(el) el.innerText=count;
+  });
+}
+</script>
+
+
+<script>
+// ===== Tournament Mgt Search =====
+document.addEventListener("input", function(e){
+  if(e.target.id==="tmsSearchInput"){
+    const q=e.target.value.toLowerCase();
+    document.querySelectorAll("#tmsPlayerListTableBody tr").forEach(tr=>{
+      tr.style.display = tr.innerText.toLowerCase().includes(q) ? "" : "none";
+    });
+  }
+});
+
+// ===== Player History Search =====
+document.addEventListener("input", function(e){
+  if(e.target.id==="playerHistorySearchInput"){
+    const q=e.target.value.toLowerCase();
+    document.querySelectorAll(".player-history-row").forEach(tr=>{
+      tr.style.display = tr.innerText.toLowerCase().includes(q) ? "" : "none";
+    });
+  }
+});
+</script>
+
+
+<script>
+function filterPlayerHistory(){
+ const q=(document.getElementById('playerHistorySearchInput')?.value||'').toLowerCase();
+ document.querySelectorAll('.player-history-row').forEach(r=>{
+   r.style.display=r.innerText.toLowerCase().includes(q)?'':'none';
+ });
+}
+document.addEventListener('input',e=>{
+ if(e.target.id==='playerHistorySearchInput') filterPlayerHistory();
+});
+
+// time filters
+function filterTime(hours){
+ const now=Date.now();
+ document.querySelectorAll('.player-history-row').forEach(r=>{
+   const t=parseInt(r.dataset.startTime||0);
+   if(!hours){r.style.display='';return;}
+   r.style.display=(now-t<=hours*3600000)?'':'none';
+ });
+}
+document.addEventListener('click',e=>{
+ if(e.target.id==='ph24') filterTime(24);
+ if(e.target.innerText.includes('1 hr')) filterTime(1);
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  const rangeBox = document.getElementById("playerHistoryRangeFilters");
+  const typeBox = document.getElementById("playerHistoryTypeFilters");
+
+  if(rangeBox){
+    rangeBox.addEventListener("click", e=>{
+      const btn=e.target.closest("button");
+      if(!btn) return;
+      rangeBox.querySelectorAll("button").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+
+      if(btn.dataset.range){
+        playerHistoryRange = btn.dataset.range;
+      }
+      if(btn.id==="ph24"){
+        playerHistoryRange = "24h";
+      }
+      applyPlayerHistoryFilters();
+    });
+  }
+
+  if(typeBox){
+    typeBox.addEventListener("click", e=>{
+      const btn=e.target.closest("button");
+      if(!btn) return;
+      typeBox.querySelectorAll("button").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+
+      playerHistoryType = btn.dataset.type || "all";
+      applyPlayerHistoryFilters();
+    });
+  }
+});
+</script>
+
+
+<!-- ===== Tournament Total Prize Feature Added ===== -->
+<script>
+function updateTotalPrize() {
+    let total = 0;
+    document.querySelectorAll('#tmsPlayerListTableBody .calculated-prize').forEach(el => {
+        let amount = parseFloat(el.textContent.replace('₹','')) || 0;
+        total += amount;
+    });
+
+    let totalEl = document.getElementById('tmsTotalPrize');
+    if (!totalEl) {
+        const container = document.getElementById('tmsPlayerListContainer');
+        if (container) {
+            const div = document.createElement('div');
+            div.className = "mt-3 text-end";
+            div.innerHTML = `
+                <h5>
+                    Total Prize:
+                    <span id="tmsTotalPrize" style="color: var(--accent-color); font-weight:700;">
+                        ₹0.00
+                    </span>
+                </h5>`;
+            container.appendChild(div);
+        }
+        totalEl = document.getElementById('tmsTotalPrize');
+    }
+
+    if (totalEl) {
+        totalEl.textContent = "₹" + total.toFixed(2);
+    }
+}
+
+// Auto observe changes in prize column
+const observer = new MutationObserver(updateTotalPrize);
+document.addEventListener("DOMContentLoaded", function() {
+    const target = document.getElementById('tmsPlayerListTableBody');
+    if (target) {
+        observer.observe(target, { childList: true, subtree: true });
+    }
+});
+</script>
+<!-- ===== End Total Prize Feature ===== -->
+
+
+<script>
+document.addEventListener("click", function(e){
+    if(e.target.classList.contains("tag-filter-btn")){
+        document.querySelectorAll(".tag-filter-btn").forEach(btn=>btn.classList.remove("active"));
+        e.target.classList.add("active");
+
+        const filter = e.target.dataset.filter;
+        document.querySelectorAll(".support-user-card").forEach(card=>{
+            const badge = card.querySelector(".tag-badge");
+            if(!badge) return;
+            const tag = badge.textContent.toLowerCase();
+            if(filter === "all" || tag === filter){
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
+        });
+    }
+});
+</script>
+
+
+
+
+<!-- ===== SIMPLE UNSEEN SCRIPT ===== -->
+<script>
+function applyUnseenHighlight() {
+    document.querySelectorAll('.support-user-card').forEach(card => {
+        const badge = card.querySelector('.badge');
+        if (!badge) return;
+
+        const text = badge.textContent.toLowerCase();
+
+        if (text.includes('user')) {
+            card.classList.add('unseen');
+        } else {
+            card.classList.remove('unseen');
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const container = document.getElementById('liveSupportUserListContainer');
+    if (!container) return;
+
+    const observer = new MutationObserver(() => {
+        applyUnseenHighlight();
+    });
+
+    observer.observe(container, { childList: true, subtree: true });
+
+    container.addEventListener('click', function(e) {
+        const card = e.target.closest('.support-user-card');
+        if (!card) return;
+
+        // Remove highlight when opened
+        card.classList.remove('unseen');
+    });
+
+    applyUnseenHighlight();
+});
+</script>
+
+
+
+
+
+<!-- ===== QUICK REPLY SYSTEM CLEAN ===== -->
+
+<!-- Modal -->
+<div id="quickReplyManager" style="display:none; position:fixed; top:20%; left:50%; transform:translateX(-50%); background:#0f172a; padding:20px; border-radius:12px; z-index:9999; width:380px;">
+    <h3 style="color:white; margin-bottom:10px;">Manage Quick Replies</h3>
+    <input type="text" id="newQuickText" placeholder="Enter quick reply text"
+        style="width:100%; padding:10px; margin-bottom:10px; border-radius:6px; border:none;">
+    <button onclick="addQuickReply()" style="padding:6px 12px; margin-bottom:15px;">Add</button>
+
+    <div id="quickReplyList" style="max-height:200px; overflow:auto;"></div>
+
+    <button onclick="closeQuickManager()" style="margin-top:15px;">Close</button>
+</div>
+
+<script>
+function getQuickReplies(){
+    return JSON.parse(localStorage.getItem("quickReplies") || "[]");
+}
+
+function saveQuickReplies(data){
+    localStorage.setItem("quickReplies", JSON.stringify(data));
+}
+
+
+function renderQuickReplies(){
+    const list = document.getElementById("quickReplyList");
+    const replies = getQuickReplies();
+
+    if(list){
+        list.innerHTML = "";
+
+        replies.forEach((text, index)=>{
+
+            const row = document.createElement("div");
+            row.style.display="flex";
+            row.style.justifyContent="space-between";
+            row.style.alignItems="center";
+            row.style.marginBottom="8px";
+
+            const left = document.createElement("div");
+            left.style.display="flex";
+            left.style.gap="8px";
+            left.style.alignItems="center";
+
+            const number = document.createElement("strong");
+            number.style.color="white";
+            number.innerText = (index+1) + ".";
+
+            const span = document.createElement("span");
+            span.style.color="white";
+            span.innerText = text;
+
+            left.appendChild(number);
+            left.appendChild(span);
+
+            const right = document.createElement("div");
+            right.style.display="flex";
+            right.style.gap="6px";
+
+            const selectBtn = document.createElement("button");
+            selectBtn.innerText="Select";
+            selectBtn.className="btn btn-sm btn-primary";
+            selectBtn.onclick = ()=>{
+                const chatBox = document.querySelector("textarea");
+                if(chatBox){
+                    chatBox.value = text;
+                    chatBox.dispatchEvent(new Event("input", { bubbles: true }));
+                    chatBox.focus();
+                }
+            };
+
+            const del = document.createElement("button");
+            del.innerText="Delete";
+            del.className="btn btn-sm btn-danger";
+            del.onclick = ()=>{
+                const data = getQuickReplies();
+                data.splice(index,1);
+                saveQuickReplies(data);
+                renderQuickReplies();
+            };
+
+            right.appendChild(selectBtn);
+            right.appendChild(del);
+
+            row.appendChild(left);
+            row.appendChild(right);
+
+            list.appendChild(row);
+        });
+    }
+}
+
+
+function addQuickReply(){
+    const input = document.getElementById("newQuickText");
+    if(!input || !input.value.trim()) return;
+
+    const data = getQuickReplies();
+    data.push(input.value.trim());
+    saveQuickReplies(data);
+    input.value="";
+    renderQuickReplies();
+}
+
+function openQuickManager(){
+    document.getElementById("quickReplyManager").style.display="block";
+    renderQuickReplies();
+}
+
+function closeQuickManager(){
+    document.getElementById("quickReplyManager").style.display="none";
+}
+</script>
+
+
+<!-- ===== CUSTOM FIXES ADDED ===== -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    // ===============================
+    // QUICK REPLY SELECT → CHAT FIX
+    // ===============================
+    document.addEventListener("click", function(e) {
+        if (e.target && e.target.innerText === "Select") {
+            const replyText = e.target.closest("li")?.innerText?.replace("Select", "").replace("Delete", "").trim();
+            const chatInput = document.querySelector("#chatMessageInput, #chatInput, textarea");
+            if (replyText && chatInput) {
+                chatInput.value = replyText;
+                chatInput.focus();
+            }
+        }
+    });
+
+    // =======================================
+    // TOURNAMENT MGT PLAYER NUMBERING (1,2,3)
+    // =======================================
+    function applyPlayerNumbering() {
+        const tableBody = document.querySelector("#tmsPlayerListTableBody");
+        if (!tableBody) return;
+
+        const rows = tableBody.querySelectorAll("tr");
+        rows.forEach((row, index) => {
+            const firstCell = row.querySelector("td");
+            if (firstCell && !firstCell.dataset.numbered) {
+                firstCell.innerHTML = "<strong>" + (index + 1) + ".</strong> " + firstCell.innerHTML;
+                firstCell.dataset.numbered = "true";
+            }
+        });
+    }
+
+    // Run on load
+    applyPlayerNumbering();
+
+    // Run again if table updates dynamically
+    const observer = new MutationObserver(applyPlayerNumbering);
+    const targetNode = document.querySelector("#tmsPlayerListTableBody");
+    if (targetNode) {
+        observer.observe(targetNode, { childList: true });
+    }
+
+});
+</script>
+
+
+<!-- ===== COPY BUTTON + REMOVE FILTER FIX ===== -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    // ===== COPY QUICK REPLY TEXT =====
+    document.addEventListener("click", function(e) {
+        if (e.target && e.target.innerText === "Copy") {
+            const li = e.target.closest("li");
+            if (!li) return;
+
+            let text = li.innerText
+                .replace("Copy", "")
+                .replace("Delete", "")
+                .trim();
+
+            navigator.clipboard.writeText(text).then(() => {
+                e.target.innerText = "Copied!";
+                setTimeout(() => { e.target.innerText = "Copy"; }, 1200);
+            });
+        }
+    });
+
+    // ===== REMOVE FILTER BUTTONS FROM USERS & TRANSACTIONS =====
+    function removeFilters(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (!section) return;
+
+        const buttons = section.querySelectorAll("button, .btn");
+        buttons.forEach(btn => {
+            const txt = btn.innerText.trim().toUpperCase();
+            if (["ALL","MATCHES","PAYMENT","ACCOUNT","TECHNICAL","COMPLAINTS","GENERAL"].includes(txt)) {
+                btn.remove();
+            }
+        });
+    }
+
+    removeFilters("users-section");
+    removeFilters("transactions-section");
+
+});
+</script>
+
+
+<!-- ===== FINAL QUICK REPLY COPY + USERS PERFORMANCE BOOST ===== -->
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+    // ========= FORCE SELECT → COPY BUTTON =========
+    function convertSelectToCopy(){
+        document.querySelectorAll("button").forEach(btn=>{
+            if(btn.innerText.trim()==="Select"){
+                btn.innerText="Copy";
+                btn.classList.remove("btn-primary");
+                btn.classList.add("btn-info");
+
+                btn.onclick=function(){
+                    const li = btn.closest("li");
+                    if(!li) return;
+                    let text = li.innerText.replace("Copy","").replace("Delete","").trim();
+                    navigator.clipboard.writeText(text);
+                    btn.innerText="Copied!";
+                    setTimeout(()=>btn.innerText="Copy",1000);
+                }
+            }
+        });
+    }
+
+    convertSelectToCopy();
+    setTimeout(convertSelectToCopy,1000);
+
+    // ========= USERS SECTION PERFORMANCE FIX =========
+    const USERS_PER_PAGE = 50;
+
+    function optimizeUsersSection(){
+        const container = document.querySelector("#users-section-container");
+        if(!container) return;
+
+        const users = Array.from(container.children);
+        if(users.length <= USERS_PER_PAGE) return;
+
+        let currentVisible = USERS_PER_PAGE;
+
+        users.forEach((user,i)=>{
+            if(i>=USERS_PER_PAGE) user.style.display="none";
+        });
+
+        const loadBtn = document.createElement("button");
+        loadBtn.innerText="Load More Users";
+        loadBtn.className="btn btn-warning mt-3";
+        loadBtn.onclick=function(){
+            users.slice(currentVisible, currentVisible+USERS_PER_PAGE)
+                 .forEach(u=>u.style.display="block");
+            currentVisible += USERS_PER_PAGE;
+            if(currentVisible>=users.length) loadBtn.remove();
+        };
+
+        container.after(loadBtn);
+    }
+
+    // run when users section opened
+    document.querySelectorAll("[data-section='users-section']").forEach(link=>{
+        link.addEventListener("click", function(){
+            setTimeout(optimizeUsersSection,500);
+        });
+    });
+
+});
+</script>
+
+
+<!-- ===== FIXED QUICK REPLY COPY + SECTION NAV FIX ===== -->
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+    // ===============================
+    // FORCE REPLACE SELECT → COPY
+    // ===============================
+    function forceCopyButtons(){
+        document.querySelectorAll("button").forEach(btn=>{
+            if(btn.textContent.trim() === "Select"){
+                btn.textContent = "Copy";
+                btn.classList.remove("btn-primary");
+                btn.classList.add("btn-info");
+
+                btn.onclick = function(e){
+                    e.stopPropagation();
+                    const li = btn.closest("li");
+                    if(!li) return;
+
+                    let text = li.childNodes[1]?.textContent?.trim() || 
+                               li.innerText.replace("Copy","").replace("Delete","").trim();
+
+                    navigator.clipboard.writeText(text);
+                    btn.textContent = "Copied!";
+                    setTimeout(()=> btn.textContent="Copy",1000);
+                };
+            }
+        });
+    }
+
+    setTimeout(forceCopyButtons, 500);
+    setInterval(forceCopyButtons, 2000); // keep fixing dynamically
+
+    // ===============================
+    // SECTION NAVIGATION HARD FIX
+    // ===============================
+    const navLinks = document.querySelectorAll("[data-section]");
+    const sections = document.querySelectorAll(".section");
+
+    navLinks.forEach(link=>{
+        link.addEventListener("click", function(e){
+            e.preventDefault();
+
+            const targetId = this.getAttribute("data-section");
+
+            // hide all sections
+            sections.forEach(sec=>{
+                sec.classList.remove("active");
+                sec.style.display = "none";
+            });
+
+            // show only target
+            const targetSection = document.getElementById(targetId);
+            if(targetSection){
+                targetSection.classList.add("active");
+                targetSection.style.display = "block";
+                window.scrollTo(0,0);
+            }
+        });
+    });
+
+});
+</script>
+
+
+
+
+<!-- ===== UNIVERSAL QUICK REPLY COPY FIX (FILE MODE SAFE) ===== -->
+<script>
+document.addEventListener("click", function(e){
+
+    const btn = e.target.closest("button");
+    if(!btn) return;
+
+    if(btn.textContent.trim() === "Copy"){
+
+        const li = btn.closest("li");
+        if(!li) return;
+
+        let text = li.innerText
+            .replace("Copy","")
+            .replace("Delete","")
+            .replace(/^\d+\.\s*/,"")
+            .trim();
+
+        function fallbackCopy(txt){
+            const textarea = document.createElement("textarea");
+            textarea.value = txt;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try{
+                document.execCommand("copy");
+                btn.textContent = "Copied!";
+                setTimeout(()=> btn.textContent="Copy",1000);
+            }catch(err){
+                alert("Copy failed. Please copy manually.");
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // Try modern clipboard first
+        if(navigator.clipboard && window.isSecureContext){
+            navigator.clipboard.writeText(text)
+            .then(()=>{
+                btn.textContent = "Copied!";
+                setTimeout(()=> btn.textContent="Copy",1000);
+            })
+            .catch(()=> fallbackCopy(text));
+        } else {
+            // file:// fallback
+            fallbackCopy(text);
+        }
+    }
+
+});
+</script>
+
+
+<!-- ===== HEADER FIXED REFRESH BUTTON ===== -->
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+    const btn = document.getElementById("globalHeaderRefreshBtn");
+    if(btn){
+        btn.addEventListener("click", function(){
+            location.reload();
+        });
+    }
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+<!-- ===== Deposit Total Script (FINAL FIX) ===== -->
+<script>
+function calculateDepositTotal() {
+  let total = 0;
+
+  // deposit history container (fallback-safe)
+  const scope = document.querySelector('#deposit-section') || document;
+
+  // amounts are always right-aligned green values (₹xx.xx)
+  const amountEls = scope.querySelectorAll('*');
+
+  amountEls.forEach(el => {
+    if (el.offsetParent === null) return;
+
+    const style = window.getComputedStyle(el);
+    const txt = (el.textContent || '').trim();
+
+    // only exact amount text, no children, green colored (deposit amount)
+    if (
+      el.children.length === 0 &&
+      /^₹\s*[0-9,.]+$/.test(txt) &&
+      (style.color.includes('rgb(16, 185, 129)') || style.color.includes('rgb(34, 197, 94)'))
+    ) {
+      const val = Number(txt.replace(/[^0-9.]/g,''));
+      if (!isNaN(val)) total += val;
+    }
+  });
+
+  const out = document.getElementById('depositTotalAmount');
+  if (out) {
+    out.innerText = '₹' + total.toLocaleString('en-IN', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+}
+
+// re-run ONLY after filters change
+['click','change','keyup'].forEach(evt => {
+  document.addEventListener(evt, () => {
+    setTimeout(calculateDepositTotal, 300);
+  });
+});
+
+// first load
+setTimeout(calculateDepositTotal, 1200);
+</script>
+
+
+
+
+
+
+<script type="module">
+import { ref, get } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+let allWithdrawals = [];
+let currentFilter = "all";
+let currentStatus = "all";
+let searchText = "";
+
+/* SAFE TIMESTAMP */
+function getTime(w){
+  let t = w.requestTimestamp ?? w.timestamp ?? 0;
+
+  if (typeof t === "string") t = Number(t);
+  if (!t || isNaN(t)) return 0;
+
+  if (t < 1000000000000) t *= 1000;
+  return t;
+}
+
+/* LOAD */
+async function loadCompletedWithdrawals(){
+  const db = window.db;
+  if(!db){
+    setTimeout(loadCompletedWithdrawals,1000);
+    return;
+  }
+
+  const snap = await get(ref(db,'withdrawals'));
+  allWithdrawals = [];
+
+  if(snap.exists()){
+    snap.forEach(s=>{
+      const d = s.val() || {};
+      if(d.status !== "completed" && d.status !== "rejected") return;
+      allWithdrawals.push(d);
+    });
+  }
+
+  renderWithdrawals();
+}
+
+/* RENDER */
+function renderWithdrawals(){
+
+  const container = document.getElementById("completedWithdrawalsContainer");
+  const totalBox = document.getElementById("totalWithdrawAmount");
+
+  let list = [...allWithdrawals];
+
+  list.sort((a,b)=> getTime(b) - getTime(a));
+
+  const now = new Date();
+
+  /* =======================
+     TODAY FILTER (24Hrs)
+  ======================== */
+  if(currentFilter === "today"){
+
+    const start = new Date();
+    start.setHours(0,0,0,0);
+
+    list = list.filter(w=>{
+      const t = getTime(w);
+      if(!t) return false;
+
+      const d = new Date(t);
+      return d >= start && d <= now;
+    });
+  }
+
+  /* 7 DAYS */
+  else if(currentFilter === "7"){
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - 7);
+    cutoff.setHours(0,0,0,0);
+
+    list = list.filter(w=>{
+      const t = getTime(w);
+      if(!t) return false;
+      return new Date(t) >= cutoff;
+    });
+  }
+
+  /* 30 DAYS */
+  else if(currentFilter === "30"){
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - 30);
+    cutoff.setHours(0,0,0,0);
+
+    list = list.filter(w=>{
+      const t = getTime(w);
+      if(!t) return false;
+      return new Date(t) >= cutoff;
+    });
+  }
+
+  /* STATUS */
+  if(currentStatus !== "all"){
+    list = list.filter(w => w.status === currentStatus);
+  }
+
+  /* SEARCH */
+  if(searchText){
+    const txt = searchText.toLowerCase();
+    list = list.filter(w =>
+      (w.userName || "").toLowerCase().includes(txt) ||
+      (w.userEmail || "").toLowerCase().includes(txt) ||
+      (w.userId || "").toLowerCase().includes(txt)
+    );
+  }
+
+  /* TOTAL */
+  let totalAmount = 0;
+  list.forEach(w => totalAmount += Number(w.amount || 0));
+
+  if(totalBox){
+    totalBox.innerHTML = `Total Withdrawal Amount : ₹${totalAmount}`;
+  }
+
+  if(!container) return;
+
+  if(list.length === 0){
+    container.innerHTML = "<p>No withdrawals found</p>";
+    return;
+  }
+
+  let html = `<h2 style="margin-top:10px">Completed & Rejected Withdrawals</h2>`;
+
+  list.forEach(d=>{
+    const date = getTime(d) ? new Date(getTime(d)).toLocaleString() : "-";
+
+    html += `
+    <div style="border:1px solid #444;padding:12px;margin:12px 0;border-radius:10px">
+      <b>User:</b> ${d.userName || '-'} <br>
+      <b>Email:</b> ${d.userEmail || '-'} <br>
+      <b>Amount:</b> ₹${Number(d.amount || 0)} <br>
+      <b>Status:</b> ${d.status} <br>
+      <b>Method:</b> ${d.paymentMethod || d.methodDetails?.accountInfo || '-'} <br>
+      <b>Time:</b> ${date} <br>
+      <b>Id:</b> ${d.userId || '-'}
+    </div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+/* BUTTON EVENTS */
+document.querySelectorAll(".tf").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+
+    document.querySelectorAll(".tf").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+
+    const text = btn.innerText.toLowerCase();
+
+    if(text.includes("24")) currentFilter = "today";
+    else if(text.includes("7")) currentFilter = "7";
+    else if(text.includes("30")) currentFilter = "30";
+    else currentFilter = "all";
+
+    renderWithdrawals();
+  });
+});
+
+/* STATUS */
+document.getElementById("statusFilter")?.addEventListener("change",(e)=>{
+  currentStatus = e.target.value;
+  renderWithdrawals();
+});
+
+/* SEARCH */
+document.getElementById("withdrawSearch")?.addEventListener("input",(e)=>{
+  searchText = e.target.value;
+  renderWithdrawals();
+});
+
+/* INITIAL LOAD */
+setTimeout(loadCompletedWithdrawals,1000);
+
+</script>
+
+
+
+
+
+
 </body>
 </html>
